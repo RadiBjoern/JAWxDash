@@ -1,3 +1,6 @@
+import numpy as np
+
+
 INCH2MM = 25.4
 INCH2CM = 2.54
 
@@ -19,9 +22,37 @@ def wafer_inch(dia_inch:float) -> dict:
         name="sample_outline",
     )
 
+def quarter_wafer_inch(dia_inch:float, seg:bool=False) -> dict:
+
+    radius_cm = .5 * dia_inch * 2.54
+    center = (0, 0)
+    n = 50
+    t1_deg = 225
+    t2_deg = 315
+    t1_rad = np.deg2rad(t1_deg)
+    t2_rad = np.deg2rad(t2_deg)
+
+    t = np.linspace(t1_rad, t2_rad, n)
+    x = center[0] + radius_cm * np.cos(t)
+    y = center[1] + radius_cm * np.sin(t)
+
+    path = f"M {x[0]},{y[0]}"
+
+    for xc, yc in zip(x[1:], y[1:]):
+        path += f" L{xc},{yc}"
+
+    
+    return dict(
+        type="path",
+        path=path + f" L{center[0]},{center[1]} Z", #sector
+        line_color="Crimson",
+    )
+    
+
 
 sample_outlines = {
     "wafer 4 inch": wafer_inch(4),
     "wafer 6 inch": wafer_inch(6),
     "wafer 8 inch": wafer_inch(8),
+    "1/4 wafer 4 inch": quarter_wafer_inch(4),
 }
