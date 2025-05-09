@@ -5,7 +5,7 @@ import plotly.express as px
 
 # Local import
 import ids
-from sample_outlines import sample_outlines
+from utils.sample_outlines import sample_outlines
 
 
 

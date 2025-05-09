@@ -6,9 +6,9 @@ import numpy as np
 
 # Local imports
 import ids
-from utilities import gen_spot, delete_shape_by_attribute
-from readers import DataXYC
-from sample_outlines import sample_outlines
+from utils.utilities import gen_spot, delete_shape_by_attribute
+from utils.readers import DataXYC
+from utils.sample_outlines import sample_outlines
 
 from templates.graph_template import FIGURE_LAYOUT
 

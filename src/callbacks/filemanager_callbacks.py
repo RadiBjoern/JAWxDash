@@ -3,7 +3,7 @@ from dash import html, callback, Output, Input, State
 
 # Local import
 import ids
-from readers import parse_contents
+from utils.readers import parse_contents
 
 
 @callback(

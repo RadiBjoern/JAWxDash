@@ -1,9 +1,7 @@
-from dash import dcc, callback, Output, Input
+from dash import callback, Output, Input
 
 
 import ids
-
-files_store = dcc.Store(id=ids.Store.UPLOADED_FILES, data={})
 
 
 @callback(
