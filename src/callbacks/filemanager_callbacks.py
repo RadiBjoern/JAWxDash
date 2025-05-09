@@ -1,31 +1,9 @@
 # Package import
-from dash import dcc, html, callback, Output, Input, State
+from dash import html, callback, Output, Input, State
 
 # Local import
 import ids
 from readers import parse_contents
-
-
-drag_n_drop = dcc.Upload(
-    id=ids.Upload.DRAG_N_DROP,
-    children=html.Div([
-        'Drag and Drop or ',
-        html.A('Select Files')
-    ]),
-    style={
-        'width': '100%',
-        'height': '60px',
-        'lineHeight': '60px',
-        'borderWidth': '1px',
-        'borderStyle': 'dashed',
-        'borderRadius': '10px',
-        'textAlign': 'center',
-        'margin': '10px'
-    },
-    # Allow multiple files to be uploaded
-    multiple=True
-)
-
 
 
 @callback(
@@ -53,4 +31,21 @@ def update_uploaded_files(contents, filename:str, current_data:dict):
                     current_data[file] = data.to_dict()
         
         return current_data, html.Div("Uploaded: " + ', '.join([name for name in filename]))
+
+
+
+@callback(
+    Output(ids.Store.UPLOADED_FILES, 'data'),
+    Output(ids.DropDown.UPLOADED_FILES, 'options'),
+    Output(ids.Div.INFO, 'children'),
+    Input(ids.Button.DELETE_SELECTED, 'n_clicks'),
+    State(ids.DropDown.UPLOADED_FILES, 'value'),
+    State(ids.Store.UPLOADED_FILES, 'data'),
+    prevent_initial_call=True,
+)
+def delete_selected_from_list(_, selected_file, current_files):
+    # Removing selected file from dropdown
+    new_options = [f for f in current_files if f != selected_file]
+    del current_files[selected_file]
     
+    return current_files, new_options, html.Div(f"Deleted: {selected_file}")

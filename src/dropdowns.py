@@ -8,13 +8,6 @@ import ids
 from sample_outlines import sample_outlines
 
 
-file_listbox = dcc.Dropdown(
-    id=ids.DropDown.UPLOADED_FILES,
-    options=[],
-    value='',
-    multi=False,
-    clearable=False,
-)
 
 
 colormaps = dcc.Dropdown(

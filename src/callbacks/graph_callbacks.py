@@ -1,5 +1,5 @@
 # Library imports
-from dash import dcc, callback, Output, Input, State
+from dash import callback, Output, Input, State
 import plotly.graph_objs as go
 import plotly.express as px
 import numpy as np
@@ -10,38 +10,13 @@ from utilities import gen_spot, delete_shape_by_attribute
 from readers import DataXYC
 from sample_outlines import sample_outlines
 
-
-# template for the figure layout
-FIGURE_LAYOUT = dict(
-    xaxis_title = "X-axis (cm)",
-    yaxis_title = "Y-axis (cm)",
-    xaxis=dict(
-        scaleanchor="y",
-        scaleratio=1,
-    ),
-    yaxis=dict(
-        scaleanchor="x",
-        scaleratio=1,
-    ),
-)
+from templates.graph_template import FIGURE_LAYOUT
 
 
 CRITICAL_COUNT = 500
 
 
-# Base template for the figure
-figure = go.Figure(
-    layout=go.Layout(
-        FIGURE_LAYOUT
-    ),
-)
 
-# Adding a placeholder for colormap
-figure.add_trace(go.Scatter(
-        x=[None],
-        y=[None],
-        name='colormap_placeholder',
-))
 
 # Adding a placeholder for sample outline
 # 8in wafer
@@ -49,11 +24,7 @@ r = 1*2.54
 
 
 # Setting dcc.Graph object
-layout = dcc.Graph(
-    id=ids.Graph.MAIN, 
-    style={'height': '900px', 'width': '100%'},
-    figure=figure,
-)
+
 
 @callback(
     Output(ids.Graph.MAIN, 'figure', allow_duplicate=True),

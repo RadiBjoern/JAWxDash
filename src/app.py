@@ -1,14 +1,12 @@
-from dash import Dash, dcc, html
+from dash import Dash, html
 
 # Local import
-from buttons import delete_selected
 from divs import info_panel
-from dropdowns import file_listbox, colormaps, sample_outline, z_data
-import graphs
-from spot.spot_layout import spot_settings
+from dropdowns import colormaps, sample_outline, z_data
+
+from layouts import filemanager_layout, graph_layout, spot_layout
 
 from stores import files_store
-from uploads import drag_n_drop
 
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
@@ -23,8 +21,7 @@ app.layout = html.Div([
     # Left column
     html.Div(
         [
-            drag_n_drop,
-            delete_selected,
+            filemanager_layout,
         ], 
         style={
             'width': '15%', 
@@ -38,8 +35,7 @@ app.layout = html.Div([
     html.Div(
         [
             # Main graph window
-            file_listbox,
-            graphs.layout,
+            graph_layout,
         ], 
         style={
             'width': '60%', 
@@ -52,7 +48,7 @@ app.layout = html.Div([
     # Right column
     html.Div(
         [
-            spot_settings,
+            spot_layout,
             html.H6("Colormap", style={'textAlign': 'center',}),
             colormaps,
             html.H6("Sample outline", style={'textAlign': 'center',}),
@@ -72,6 +68,10 @@ app.layout = html.Div([
     info_panel
 ])
 
+
+# Register callbacks
+import callbacks.filemanager_callbacks
+import callbacks.graph_callbacks
 
 
 if __name__ == '__main__':
