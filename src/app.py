@@ -2,17 +2,16 @@ from dash import Dash, html
 
 # Local import
 from divs import info_panel
-from dropdowns import colormaps, sample_outline, z_data
 
-from layouts import filemanager_layout, graph_layout, spot_layout
+from layouts import filemanager_layout, graph_layout, sample_layout, spot_layout
 
 from stores import files_store
-
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
 
 app = Dash(__name__, external_stylesheets=external_stylesheets)
+
 
 app.layout = html.Div([
     # Initiating 'Store' for holding uploaded files i.e. *.txt and *.csv
@@ -49,12 +48,7 @@ app.layout = html.Div([
     html.Div(
         [
             spot_layout,
-            html.H6("Colormap", style={'textAlign': 'center',}),
-            colormaps,
-            html.H6("Sample outline", style={'textAlign': 'center',}),
-            sample_outline,
-            html.H6("Z-Data", style={'textAlign': 'center',}),
-            z_data,
+            sample_layout,
         ], 
         style={
             'width': '20%', 
@@ -66,7 +60,7 @@ app.layout = html.Div([
     
     # Bottom info panel
     info_panel
-])
+])  #, className="app-container")
 
 
 # Register callbacks
