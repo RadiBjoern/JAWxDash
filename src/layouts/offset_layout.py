@@ -53,7 +53,7 @@ sample_info = [
         "value": SAMPLE_OFFSET["theta"]
     },
 ]
-sample_div = get_input_div(sample_info)
+sample_div = [get_input_div(setting) for setting in sample_info]
 
 
 offset_layout = html.Div(
