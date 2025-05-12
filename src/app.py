@@ -2,7 +2,7 @@ from dash import Dash, dcc, html
 
 # Local import
 import ids
-from layouts import filemanager_layout, graph_layout, sample_layout, spot_layout
+from layouts import filemanager_layout, graph_layout, offset_layout, sample_layout, spot_layout
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 
@@ -46,6 +46,7 @@ app.layout = html.Div([
         [
             spot_layout,
             sample_layout,
+            offset_layout,
         ], 
         style={
             'width': '20%', 

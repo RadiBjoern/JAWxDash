@@ -22,13 +22,13 @@ def wafer_inch(dia_inch:float) -> dict:
         name="sample_outline",
     )
 
-def quarter_wafer_inch(dia_inch:float, seg:bool=False) -> dict:
+def quarter_wafer_inch(dia_inch:float) -> dict:
 
     radius_cm = .5 * dia_inch * 2.54
-    center = (-0.5673, 0.9477)
+    center = (-0.0673, 0.822)
     n = 50
-    t1_deg = 225 + 5.1
-    t2_deg = 315 + 5.1
+    t1_deg = 225 + 1
+    t2_deg = 315 + 1
     t1_rad = np.deg2rad(t1_deg)
     t2_rad = np.deg2rad(t2_deg)
 
