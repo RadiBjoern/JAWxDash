@@ -3,8 +3,6 @@ SAMPLE_OFFSET = {
     "y": 2.948,
     "theta": 5.1,
 }
-
-
 MAPPATTERN_OFFSET = {
     "x": 2.5,
     "y": 0.0,

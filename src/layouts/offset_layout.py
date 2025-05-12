@@ -1,4 +1,4 @@
-from dash import dcc, html
+from dash import dcc, html, callback, Output, Input
 
 import ids
 from templates.offset_template import MAPPATTERN_OFFSET, SAMPLE_OFFSET
@@ -9,7 +9,6 @@ def get_input_div(info:dict) -> html.Div:
         html.H6(info["label"]),
         dcc.Input(
             id=info["id"],
-            value=info["value"],
             #placeholder=info["placeholder"],
             debounce=True,
         )
@@ -17,47 +16,35 @@ def get_input_div(info:dict) -> html.Div:
 
 
 map_pattern_info = [
-    {
-        "label": "X:",
-        "id": ids.Offset.MAPPATTERN_X,
-        "value": MAPPATTERN_OFFSET["x"]
-    },
-    {
-        "label": "Y:",
-        "id": ids.Offset.MAPPATTERN_Y,
-        "value": MAPPATTERN_OFFSET["y"]
-    },
-    {
-        "label": "Theta:",
-        "id": ids.Offset.MAPPATTERN_THETA,
-        "value": MAPPATTERN_OFFSET["theta"]
-    },
+    {"label": "X:", "id": ids.Offset.MAPPATTERN_X},
+    {"label": "Y:", "id": ids.Offset.MAPPATTERN_Y},
+    {"label": "Theta:", "id": ids.Offset.MAPPATTERN_THETA},
 ]
 map_pattern_div = [get_input_div(setting) for setting in map_pattern_info]
 
 
 sample_info = [
-    {
-        "label": "X:",
-        "id": ids.Offset.SAMPLE_X,
-        "value": SAMPLE_OFFSET["x"]
-    },
-    {
-        "label": "Y:",
-        "id": ids.Offset.SAMPLE_Y,
-        "value": SAMPLE_OFFSET["y"]
-    },
-    {
-        "label": "Theta:",
-        "id": ids.Offset.SAMPLE_THETA,
-        "value": SAMPLE_OFFSET["theta"]
-    },
+    {"label": "X:", "id": ids.Offset.SAMPLE_X},
+    {"label": "Y:", "id": ids.Offset.SAMPLE_Y},
+    {"label": "Theta:", "id": ids.Offset.SAMPLE_THETA},
 ]
 sample_div = [get_input_div(setting) for setting in sample_info]
 
 
 offset_layout = html.Div(
     [
+        dcc.Store(
+            id=ids.Store.OFFSET_MAPPATTERN_SETTINGS,
+            data=MAPPATTERN_OFFSET,
+            storage_type="memory",
+        ),
+        dcc.Store(
+            id=ids.Store.OFFSET_SAMPLE_SETTINGS,
+            data=SAMPLE_OFFSET,
+            storage_type="memory",
+        ),
+
+
         ### MapPattern Offset ###
         html.H6("MapPattern Offset"),
         html.Div(map_pattern_div),
@@ -77,3 +64,25 @@ offset_layout = html.Div(
         'margin': '10px'
     },
 )
+
+
+@callback(
+    Output(ids.Offset.MAPPATTERN_X, "value"),
+    Output(ids.Offset.MAPPATTERN_Y, "value"),
+    Output(ids.Offset.MAPPATTERN_THETA, "value"),
+    Output(ids.Offset.SAMPLE_X, "value"),
+    Output(ids.Offset.SAMPLE_Y, "value"),
+    Output(ids.Offset.SAMPLE_THETA, "value"),
+    Input(ids.Store.OFFSET_MAPPATTERN_SETTINGS, "data"),
+    Input(ids.Store.OFFSET_SAMPLE_SETTINGS, "data"),
+)
+def load_defaults_offsets(mappattern_offset, sample_offset):
+    print("load_default_offsets")
+    return (
+        mappattern_offset["x"],
+        mappattern_offset["y"],
+        mappattern_offset["theta"],
+        sample_offset["x"],
+        sample_offset["y"],
+        sample_offset["theta"],
+    )

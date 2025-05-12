@@ -1,14 +1,14 @@
 from dash import dcc, html, callback, Output, Input
 
 import ids
-from templates.spot_template import spot_default_settings
+from templates.spot_template import SPOT_DEFAULT_SETTINGS
 
 
 spot_layout = html.Div(
     [
         dcc.Store(
             id=ids.Store.SPOT_SETTINGS,
-            data=spot_default_settings,
+            data=SPOT_DEFAULT_SETTINGS,
             storage_type="memory",
         ),
 
@@ -20,7 +20,7 @@ spot_layout = html.Div(
                    {'label': 'Point', 'value': 'point'},
                    {'label': 'Ellipse', 'value': 'ellipse'},
                 ],
-                value='point',
+                #value='point',
                 inline=True,
                 style={"alignItems": "right", "width": "200px"},
             ),
@@ -33,7 +33,7 @@ spot_layout = html.Div(
             min=45, 
             max=85, 
             step=1, 
-            value=65,
+            #value=65,
             marks={i: str(i) for i in range(45, 86, 5)},
         ),
 
@@ -46,7 +46,7 @@ spot_layout = html.Div(
                     {'label': 'wo. FP', 'value': 0.3},
                     {'label': 'w. FP', 'value': 0.03},
                 ],
-                value=0.3,
+                #value=0.3,
                 inline=True,
                 style={"alignItems": "right", "width": "200px"},
             ),
@@ -61,7 +61,7 @@ spot_layout = html.Div(
     Output(ids.RadioItems.SPOT_SIZE, "value"),
     Input(ids.Store.SPOT_SETTINGS, "data"),
 )
-def load_defaults(data):
+def load_defaults_spot_settings(data):
     """
     RadioItems -> value='point'
     Slider -> value=65

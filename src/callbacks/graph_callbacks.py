@@ -50,8 +50,8 @@ def update_figure(selected_file:str) -> go.Figure:
 
 @callback(
     Output(ids.Graph.MAIN, 'figure', allow_duplicate=True),
-    Output(ids.DropDown.Z_DATA, 'value'),
-    Output(ids.DropDown.Z_DATA, 'options'),
+    #Output(ids.DropDown.Z_DATA, 'value'),
+    #Output(ids.DropDown.Z_DATA, 'options'),
     Input(ids.DropDown.UPLOADED_FILES, 'value'),
     Input(ids.RadioItems.PLOT_STYLE, 'value'),
     Input(ids.Slider.ANGLE_OF_INCIDENT, 'value'),
@@ -178,7 +178,7 @@ def update_graph(
     value = key
     options = sample.data.columns
     
-    return figure, value, options
+    return figure #, value, options
 
 
 @callback(

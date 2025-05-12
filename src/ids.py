@@ -26,7 +26,8 @@ class Store:
     UPLOADED_FILES = "store_uploaded_files"
     SPOT_SETTINGS = "store_spot_settings"
     SAMPLE_SETTINGS = "store_sample_settings"
-    OFFSET_SETTINGS = "store_offset_settings"
+    OFFSET_MAPPATTERN_SETTINGS = "store_mappattern_offset_settings"
+    OFFSET_SAMPLE_SETTINGS = "store_sample_offset_settings"
 
 
 class Upload:
