@@ -33,4 +33,12 @@ class Upload:
 class RadioItems:
     PLOT_STYLE = "plot_style"
     SPOT_SIZE = "spot_size"
-    
+
+
+class Offset:
+    MAPPATTERN_X = "mappattern_x"
+    MAPPATTERN_Y = "mappattern_y"
+    MAPPATTERN_THETA = "mappattern_theta"
+    SAMPLE_X = "sample_x"
+    SAMPLE_Y = "sample_y"
+    SAMPLE_THETA = "sample_theta"

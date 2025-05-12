@@ -16,14 +16,9 @@ from templates.graph_template import FIGURE_LAYOUT
 CRITICAL_COUNT = 500
 
 
-
-
 # Adding a placeholder for sample outline
 # 8in wafer
 r = 1*2.54
-
-
-# Setting dcc.Graph object
 
 
 @callback(
