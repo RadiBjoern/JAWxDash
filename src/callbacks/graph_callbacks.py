@@ -21,6 +21,33 @@ CRITICAL_COUNT = 500
 r = 1*2.54
 
 
+def update_figure(selected_file:str) -> go.Figure:
+    """
+    Updates the figure, in accordance with:
+    - Selected file
+    - Spot style
+        - Shape [point/ellipse]
+        - Size [focus probe on/off]
+        - Angle of incident
+        - Colormap
+    - Sample outline
+    - Data 'channel'
+    - MapPattern offset
+        - x
+        - y
+        - theta
+    - Sample offset
+        - x
+        - y
+        - theta
+    """
+
+    if not selected_file:
+        return None
+    
+    return go.Figure
+
+
 @callback(
     Output(ids.Graph.MAIN, 'figure', allow_duplicate=True),
     Output(ids.DropDown.Z_DATA, 'value'),

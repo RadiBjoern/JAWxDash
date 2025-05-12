@@ -1,10 +1,17 @@
-from dash import html, dcc
+from dash import dcc, html, callback, Output, Input
 
 import ids
+from templates.spot_template import spot_default_settings
 
 
 spot_layout = html.Div(
     [
+        dcc.Store(
+            id=ids.Store.SPOT_SETTINGS,
+            data=spot_default_settings,
+            storage_type="memory",
+        ),
+
         html.Div([
             html.H6("Marker style:", style={"marginRight": "10px"}),
             dcc.RadioItems(
@@ -46,3 +53,22 @@ spot_layout = html.Div(
         ], style={"display": "flex", "alignItems": "center", "gap": "10px"})
     ]
 )
+
+
+@callback(
+    Output(ids.RadioItems.PLOT_STYLE, "value"),
+    Output(ids.Slider.ANGLE_OF_INCIDENT, "value"),
+    Output(ids.RadioItems.SPOT_SIZE, "value"),
+    Input(ids.Store.SPOT_SETTINGS, "data"),
+)
+def load_defaults(data):
+    """
+    RadioItems -> value='point'
+    Slider -> value=65
+    RadioItems -> value=0.3
+    """
+    return (
+        data["marker_type"],
+        data["angle_of_incident"],
+        data["spot_size"],
+    )
