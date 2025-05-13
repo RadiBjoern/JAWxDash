@@ -1,12 +1,11 @@
 # Package import
-from dash import html, dcc, callback, Output, Input
+from dash import html, dcc
 import logging
 
 
 # Local import
 import ids
 from utils.sample_outlines import sample_outlines
-from templates.sample_template import SAMPLE_SETTINGS
 
 
 logger = logging.getLogger(__name__)
@@ -14,12 +13,6 @@ logger = logging.getLogger(__name__)
 
 sample_layout = html.Div(
     [
-        dcc.Store(
-            id=ids.Store.SAMPLE_SETTINGS,
-            data=SAMPLE_SETTINGS,
-            storage_type="memory",
-        ),
-
         html.H6("Sample"),
 
         # colormaps
@@ -78,35 +71,3 @@ sample_layout = html.Div(
     },
 )
 
-
-
-@callback(
-    Output(ids.DropDown.COLORMAPS, "value"),
-    Output(ids.DropDown.COLORMAPS, "options"),
-    Output(ids.DropDown.SAMPLE_OUTLINE, "value"),
-    Output(ids.DropDown.Z_DATA, "value"),
-    Input(ids.Store.SAMPLE_SETTINGS, "data"),
-)
-def load_default_sample_settings(sample_settings):
-    return (
-        sample_settings["colormap_value"],
-        sample_settings["colormap_options"],
-        sample_settings["outline"],
-        sample_settings["z_data"],
-    )
-
-
-@callback(
-    Output(ids.Store.SAMPLE_SETTINGS, "data"),
-    Input(ids.DropDown.COLORMAPS, "value"),
-    Input(ids.DropDown.SAMPLE_OUTLINE, "value"),
-    Input(ids.DropDown.Z_DATA, "value"),
-    prevent_initial_call=True,
-)
-def update_sample_setting_store(colormap:str, sample_outline:str, z_data:str):
-    logger.debug("Triggered")
-    return dict(
-        colormap_value=colormap,
-        outline=sample_outline,
-        z_data=z_data,
-    )

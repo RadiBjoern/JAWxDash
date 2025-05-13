@@ -5,6 +5,9 @@ import ids
 from logger_config import setup_logging
 from layouts import filemanager_layout, graph_layout, offset_layout, sample_layout, spot_layout
 
+from templates.settings_template import DEFAULT_SETTINGS
+
+
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 setup_logging()  # initiate logging module
 
@@ -14,6 +17,8 @@ app = Dash(__name__, external_stylesheets=external_stylesheets)
 app.layout = html.Div([
     # Initiating 'Store' for holding uploaded files i.e. *.txt and *.csv
     dcc.Store(id=ids.Store.UPLOADED_FILES, data={}),
+    dcc.Store(id=ids.Store.DEFAULT_SETTINGS, data=DEFAULT_SETTINGS),
+    dcc.Store(id=ids.Store.SETTINGS, data={}),
 
     # Left column
     html.Div(
@@ -70,6 +75,7 @@ app.layout = html.Div([
 import callbacks.filemanager_callbacks
 import callbacks.graph_callbacks
 import callbacks.store_callbacks
+import callbacks.settings_callback
 
 if __name__ == '__main__':
     app.run(debug=True)

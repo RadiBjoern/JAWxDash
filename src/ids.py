@@ -24,11 +24,8 @@ class Slider:
 
 class Store:
     UPLOADED_FILES = "store_uploaded_files"
-    SPOT_SETTINGS = "store_spot_settings"
-    SAMPLE_SETTINGS = "store_sample_settings"
-    OFFSET_MAPPATTERN_SETTINGS = "store_mappattern_offset_settings"
-    OFFSET_SAMPLE_SETTINGS = "store_sample_offset_settings"
-
+    DEFAULT_SETTINGS = "store_default_settings"
+    SETTINGS = "store_settings"
 
 class Upload:
     DRAG_N_DROP = "upload_drag_n_drop"

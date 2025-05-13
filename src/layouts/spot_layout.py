@@ -1,8 +1,7 @@
-from dash import dcc, html, callback, Output, Input
+from dash import dcc, html
 import logging
 
 import ids
-from templates.spot_template import SPOT_DEFAULT_SETTINGS
 
 
 logger = logging.getLogger(__name__)
@@ -10,12 +9,6 @@ logger = logging.getLogger(__name__)
 
 spot_layout = html.Div(
     [
-        dcc.Store(
-            id=ids.Store.SPOT_SETTINGS,
-            data=SPOT_DEFAULT_SETTINGS,
-            storage_type="memory",
-        ),
-
         html.Div([
             html.H6("Marker style:", style={"marginRight": "10px"}),
             dcc.RadioItems(
@@ -58,39 +51,3 @@ spot_layout = html.Div(
     ]
 )
 
-
-@callback(
-    Output(ids.RadioItems.PLOT_STYLE, "value"),
-    Output(ids.Slider.ANGLE_OF_INCIDENT, "value"),
-    Output(ids.RadioItems.SPOT_SIZE, "value"),
-    Input(ids.Store.SPOT_SETTINGS, "data"),
-    prevent_initial_call=False,
-)
-def load_defaults_spot_settings(data):
-    """
-    RadioItems -> value='point'
-    Slider -> value=65
-    RadioItems -> value=0.3
-    """
-    return (
-        data["marker_type"],
-        data["angle_of_incident"],
-        data["spot_size"],
-    )
-
-
-@callback(
-    Output(ids.Store.SPOT_SETTINGS, "data"),
-    Input(ids.RadioItems.PLOT_STYLE, "value"),
-    Input(ids.Slider.ANGLE_OF_INCIDENT, "value"),
-    Input(ids.RadioItems.SPOT_SIZE, "value"),
-    prevent_initial_call=True,
-)
-def update_spot_settings_store(marker_type, angle_of_incident, spot_size):
-    logger.debug("Triggered")
-
-    return dict(
-        marker_type=marker_type,
-        angle_of_incident=angle_of_incident,
-        spot_size=spot_size,
-    )
