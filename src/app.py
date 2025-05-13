@@ -2,10 +2,11 @@ from dash import Dash, dcc, html
 
 # Local import
 import ids
+from logger_config import setup_logging
 from layouts import filemanager_layout, graph_layout, offset_layout, sample_layout, spot_layout
 
 external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
-
+setup_logging()  # initiate logging module
 
 app = Dash(__name__, external_stylesheets=external_stylesheets)
 

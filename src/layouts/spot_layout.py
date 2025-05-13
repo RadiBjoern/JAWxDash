@@ -87,7 +87,7 @@ def load_defaults_spot_settings(data):
     prevent_initial_call=True,
 )
 def update_spot_settings_store(marker_type, angle_of_incident, spot_size):
-    logger.debug("Ran")
+    logger.debug("Triggered")
 
     return dict(
         marker_type=marker_type,

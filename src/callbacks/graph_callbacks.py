@@ -3,6 +3,7 @@ from dash import callback, Output, Input, State
 import plotly.graph_objs as go
 import plotly.express as px
 import numpy as np
+import logging
 
 # Local imports
 import ids
@@ -11,6 +12,8 @@ from utils.readers import DataXYC
 from utils.sample_outlines import sample_outlines
 
 from templates.graph_template import FIGURE_LAYOUT
+
+logger = logging.getLogger(__name__)
 
 
 CRITICAL_COUNT = 500
@@ -56,7 +59,9 @@ def update_figure(
         - y
         - theta
     """
-    print("updated figure")
+    
+    logger.debug("Tiggered")
+    
     # Setting up an empty figure
     figure = go.Figure(
         layout=go.Layout(
