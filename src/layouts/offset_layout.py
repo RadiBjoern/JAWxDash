@@ -77,7 +77,6 @@ offset_layout = html.Div(
     Input(ids.Store.OFFSET_SAMPLE_SETTINGS, "data"),
 )
 def load_defaults_offsets(mappattern_offset, sample_offset):
-    print("load_default_offsets")
     return (
         mappattern_offset["x"],
         mappattern_offset["y"],

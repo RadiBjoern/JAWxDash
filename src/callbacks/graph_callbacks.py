@@ -20,8 +20,23 @@ CRITICAL_COUNT = 500
 # 8in wafer
 r = 1*2.54
 
-
-def update_figure(selected_file:str) -> go.Figure:
+@callback(
+        Output(ids.Graph.MAIN, "figure"),
+        Input(ids.DropDown.UPLOADED_FILES, "value"),
+        State(ids.Store.UPLOADED_FILES, "data"),
+        Input(ids.Store.SPOT_SETTINGS, "data"),
+        Input(ids.Store.SAMPLE_SETTINGS, "data"),
+        #Input(ids.Store.OFFSET_MAPPATTERN_SETTINGS, "data"),
+        #Input(ids.Store.OFFSET_SAMPLE_SETTINGS, "data"),
+)
+def update_figure(
+    selected_file:str, 
+    uploaded_files:dict, 
+    spot_settings:dict, 
+    sample_settings:dict, 
+    #mappattern_offset:dict, 
+    #sample_offset:dict
+    ) -> go.Figure:
     """
     Updates the figure, in accordance with:
     - Selected file
@@ -41,15 +56,73 @@ def update_figure(selected_file:str) -> go.Figure:
         - y
         - theta
     """
-
-    if not selected_file:
-        return None
+    print("updated figure")
+    # Setting up an empty figure
+    figure = go.Figure(
+        layout=go.Layout(
+            FIGURE_LAYOUT  # Joining the template with the updates
+        ),
+    )
     
-    return go.Figure
+
+    # No file selected, return an empty figure
+    if not selected_file:
+        return figure
+    
+    
+    # A sample has been selected, now let's unpack
+    sample = uploaded_files[selected_file]
+    data = sample["data"]
+    settings = sample["settings"]
+    
+
+    # List for holding 'shapes'
+    shapes = []
+
+
+    # Determine if we're plotting spots as ellipse or points
+    if spot_settings["marker_type"] == "point":
+        figure.add_trace(go.Scatter(
+            x=data["x"],
+            y=data["y"],
+            mode='markers',
+            marker_color=data["Thickness # 1 (nm)"],
+        ))
+
+
+    else:
+        d_min, d_max = min(data["Thickness # 1 (nm)"]), max(data["Thickness # 1 (nm)"])
+
+        
+        color = (data["Thickness # 1 (nm)"] - d_min) / (d_max-d_min)
+        shapes.extend([gen_spot(x, y, c, spot_settings["spot_size"], spot_settings["angle_of_incident"]) for x, y, c in zip(data["x"], data["y"], color)])
+    
+
+    # Adds outline if outline is selected
+    if sample_settings["outline"]:
+        # add sample outline to 'shapes'
+        print(sample_settings["outline"])
+
+    # Creating a new figure object
+    layout_updates = dict(
+        title = f"Selected file: {selected_file}",
+        shapes = tuple(shapes),
+        xaxis = {'range': sample.x_range()} | FIGURE_LAYOUT['xaxis'],
+        yaxis = {'range': sample.y_range()} | FIGURE_LAYOUT['yaxis'],
+    )
+ 
+    figure = go.Figure(
+        layout=go.Layout(
+            FIGURE_LAYOUT | layout_updates  # Joining the template with the updates
+        ),
+    )
+    
+    return figure
+
 
 
 @callback(
-    Output(ids.Graph.MAIN, 'figure', allow_duplicate=True),
+    #Output(ids.Graph.MAIN, 'figure', allow_duplicate=True),
     #Output(ids.DropDown.Z_DATA, 'value'),
     #Output(ids.DropDown.Z_DATA, 'options'),
     Input(ids.DropDown.UPLOADED_FILES, 'value'),
@@ -182,7 +255,7 @@ def update_graph(
 
 
 @callback(
-    Output(ids.Graph.MAIN, 'figure'),
+    #Output(ids.Graph.MAIN, 'figure'),
     Input(ids.DropDown.SAMPLE_OUTLINE, 'value'),
     State(ids.Graph.MAIN, 'figure'),
     prevent_initial_call=True,
@@ -210,4 +283,4 @@ def update_sample_outline(selected_outline:str, figure:dict) -> go.Figure:
         #shapes=tuple(shapes),
     #)
 
-    return figure
+    return None #figure
