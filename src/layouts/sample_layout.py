@@ -1,12 +1,15 @@
 # Package import
 from dash import html, dcc, callback, Output, Input
-
+import logging
 
 
 # Local import
 import ids
 from utils.sample_outlines import sample_outlines
 from templates.sample_template import SAMPLE_SETTINGS
+
+
+logger = logging.getLogger(__name__)
 
 
 sample_layout = html.Div(
@@ -93,3 +96,17 @@ def load_default_sample_settings(sample_settings):
     )
 
 
+@callback(
+    Output(ids.Store.SAMPLE_SETTINGS, "data"),
+    Input(ids.DropDown.COLORMAPS, "value"),
+    Input(ids.DropDown.SAMPLE_OUTLINE, "value"),
+    Input(ids.DropDown.Z_DATA, "value"),
+    prevent_initial_call=True,
+)
+def update_sample_setting_store(colormap:str, sample_outline:str, z_data:str):
+    logger.debug("Triggered")
+    return dict(
+        colormap_value=colormap,
+        outline=sample_outline,
+        z_data=z_data,
+    )
