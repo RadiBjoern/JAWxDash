@@ -17,7 +17,6 @@ logger = logging.getLogger(__name__)
     Output(ids.DropDown.COLORMAPS, "options"),
     Output(ids.DropDown.SAMPLE_OUTLINE, "value"),
     Output(ids.DropDown.Z_DATA, "value"),
-    Output(ids.DropDown.Z_DATA, "options"),
     # MapPattern offsets
     Output(ids.Offset.MAPPATTERN_X, "value"),
     Output(ids.Offset.MAPPATTERN_Y, "value"),
@@ -43,7 +42,6 @@ def load_default_settings(default_settings):
         default_settings["colormap_options"],
         default_settings["sample_outline"],
         default_settings["z_data_value"],
-        default_settings["z_data_options"],
         
         # Mappattern offset
         default_settings["x_mappattern"],
@@ -85,7 +83,7 @@ def load_default_settings(default_settings):
 )
 def update_offset_setting_store(
     marker_type, angle_of_incident, spot_size,
-    colormap_value, sample_outline, z_data,
+    colormap_value, sample_outline, z_data_value,
     x_map, y_map, t_map, 
     x_sam, y_sam, t_sam, 
     settings
@@ -95,13 +93,13 @@ def update_offset_setting_store(
 
     keys = (
         "marker_type", "angle_of_incident", "spot_size",
-        "colormap_value", "sample_outline", "z_data",
+        "colormap_value", "sample_outline", "z_data_value",
         "x_mappattern", "y_mappattern", "theta_mappattern",
         "x_sample", "y_sample", "theta_sample",
     )
     values = (
         marker_type, angle_of_incident, spot_size,
-        colormap_value, sample_outline, z_data,
+        colormap_value, sample_outline, z_data_value,
         x_map, y_map, t_map,
         x_sam, y_sam, t_sam,
     )

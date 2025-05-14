@@ -21,8 +21,6 @@ sample_layout = html.Div(
                 html.H6("Colormap:", style={"marginRight": "10px"}),
                 dcc.Dropdown(
                     id=ids.DropDown.COLORMAPS,
-                    #options=sorted([colorscale for colorscale in px.colors.named_colorscales()]),
-                    #value='viridis',
                     multi=False,
                     clearable=False,
                     style={"alignItems": "right", "width": "200px"},
@@ -38,7 +36,6 @@ sample_layout = html.Div(
             dcc.Dropdown(
                 id=ids.DropDown.SAMPLE_OUTLINE,
                 options=list(sample_outlines.keys()),
-                #value='',
                 multi=False,
                 clearable=True,
                 style={"width": "200px"},
@@ -52,7 +49,6 @@ sample_layout = html.Div(
             dcc.Dropdown(
                 id=ids.DropDown.Z_DATA,
                 options=[],
-                #value='',
                 multi=False,
                 clearable=False,
                 style={"width": "200px"},

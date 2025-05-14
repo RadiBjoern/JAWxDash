@@ -11,8 +11,7 @@ DEFAULT_SETTINGS = dict(
     colormap_value="viridis",
     colormap_options=sorted([colorscale for colorscale in px.colors.named_colorscales()]),
     sample_outline="",
-    z_data_value="Thickness",
-    z_data_options=("MSE", "Thickness"),
+    z_data_value="",
 
     # Mappattern offset
     x_mappattern=2.5,

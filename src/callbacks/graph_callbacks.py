@@ -7,8 +7,7 @@ import logging
 
 # Local imports
 import ids
-from utils.utilities import gen_spot, delete_shape_by_attribute
-from utils.readers import DataXYC
+from utils.utilities import gen_spot
 from utils.sample_outlines import sample_outlines
 
 from templates.graph_template import FIGURE_LAYOUT
@@ -25,6 +24,7 @@ r = 1*2.54
 
 @callback(
         Output(ids.Graph.MAIN, "figure"),
+        Output(ids.DropDown.Z_DATA, "options"),
         Input(ids.DropDown.UPLOADED_FILES, "value"),
         State(ids.Store.UPLOADED_FILES, "data"),
         Input(ids.Store.SETTINGS, "data")
@@ -64,15 +64,23 @@ def update_figure(
     )
     
 
-    # No file selected, return an empty figure
+    # If no file or z-data-value selected, return an empty figure
     if not selected_file:
-        return figure
+        return figure, []
+    
     
     
     # A sample has been selected, now let's unpack
     sample = uploaded_files[selected_file]
     data = sample["data"]
-    
+
+
+    # Setting z-data-value default if non selected
+    if not settings["z_data_value"]:
+        settings["z_data_value"] = sorted(list(data.keys()))[0]
+
+    z_data = np.array(data[settings["z_data_value"]])
+
 
     # List for holding 'shapes'
     shapes = []
@@ -80,206 +88,48 @@ def update_figure(
 
     # Determine if we're plotting spots as ellipse or points
     if settings["marker_type"] == "point":
+        logger.debug("Plotting 'points'")
+
         figure.add_trace(go.Scatter(
             x=data["x"],
             y=data["y"],
             mode='markers',
-            marker_color=data["Thickness # 1 (nm)"],
+            marker_color=z_data,
         ))
 
 
     else:
-        pass
-        d_min, d_max = min(data["Thickness # 1 (nm)"]), max(data["Thickness # 1 (nm)"])
-    
+        logger.debug("Plotting NOT 'points'")
+
+        # Making colors
+        d_min, d_max = min(z_data), max(z_data)
+
+        norm_zdata = (z_data-d_min) / (d_max-d_min)
+        colors = px.colors.sample_colorscale(colorscale=settings["colormap_value"], samplepoints=norm_zdata)
         
-        color = ([dt - d_min for dt in data["Thickness # 1 (nm)"]]) / (d_max-d_min)
-        shapes.extend([gen_spot(x, y, c, settings["spot_size"], settings["angle_of_incident"]) for x, y, c in zip(data["x"], data["y"], color)])
+        shapes.extend([gen_spot(x, y, c, settings["spot_size"], settings["angle_of_incident"]) for x, y, c in zip(data["x"], data["y"], colors)])
     
+
+    for shape in shapes:
+        print(shape)
 
     # Adds outline if outline is selected
     if settings["sample_outline"]:
         # add sample outline to 'shapes'
-        print(settings["outline"])
-
-#    # Creating a new figure object
-#    layout_updates = dict(
-#        title = f"Selected file: {selected_file}",
-#        shapes = tuple(shapes),
-#        xaxis = {'range': sample.x_range()} | FIGURE_LAYOUT['xaxis'],
-#        yaxis = {'range': sample.y_range()} | FIGURE_LAYOUT['yaxis'],
-#    )
-# 
-#    figure = go.Figure(
-#        layout=go.Layout(
-#            FIGURE_LAYOUT | layout_updates  # Joining the template with the updates
-#        ),
-#    )
-    
-    return figure
+        shapes.append(sample_outlines[settings["sample_outline"]])
 
 
+    # Calculate 'zoom-window'
+    xmin, xmax = min(data["x"]), max(data["x"])
+    ymin, ymax = min(data["y"]), max(data["y"])
 
-#@callback(
-#    #Output(ids.Graph.MAIN, 'figure', allow_duplicate=True),
-#    #Output(ids.DropDown.Z_DATA, 'value'),
-#    #Output(ids.DropDown.Z_DATA, 'options'),
-#    Input(ids.DropDown.UPLOADED_FILES, 'value'),
-#    Input(ids.RadioItems.PLOT_STYLE, 'value'),
-#    Input(ids.Slider.ANGLE_OF_INCIDENT, 'value'),
-#    Input(ids.RadioItems.SPOT_SIZE, 'value'),
-#    Input(ids.DropDown.COLORMAPS, 'value'),
-#    Input(ids.DropDown.Z_DATA, 'value'),
-#    State(ids.DropDown.SAMPLE_OUTLINE, 'value'), # Sample outline as an input is handled seperatly
-#    State(ids.Store.UPLOADED_FILES, 'data'),
-#    prevent_initial_call=True,
-#)
-#def update_graph(
-#        selected_file:str,
-#        plot_style:str, 
-#        angle_of_incident:int, 
-#        spot_size:float, 
-#        selected_colormap:str,
-#        selected_z_data:str, 
-#        selected_outline:str, 
-#        current_files:dict
-#    ) -> go.Figure:
-#    """
-#    Updates the graph object uppon changes to one of the following:
-#    - File dropdown
-#    - Angle of incident
-#    - Spot size
-#    - Colormap dropdown
-#    - Sample outline
-#
-#
-#    """
-#    # Ensuring valid selection and file store
-#    if not selected_file or not current_files:
-#        return None
-#            
-#    
-#    # Retriving data from dcc.Store
-#    selected_data = current_files[selected_file]
-#
-#    # Retriving data
-#    sample = DataXYC.from_dict(selected_data)
-#
-#    # Checking for selected Z-data
-#    if not selected_z_data:
-#        if 'thickness_nm' in sample.data.columns:
-#            key = 'thickness_nm'
-#        else:
-#            key = sample.data.columns[0]
-#    
-#    else:
-#        key = selected_z_data
-#    
-#
-#    # Making colors
-#    colormap = selected_colormap
-#    colors = px.colors.sample_colorscale(
-#        colorscale=colormap, 
-#        samplepoints=sample.normalized()
-#    )
-#
-#    shapes = []
-#    x = [None]
-#    y = [None]
-#    marker_color = 'rgb(255,0,0)'
-#
-#    if plot_style == 'point':
-#        # Plot at scatter
-#        x = sample.data.x
-#        y = sample.data.y
-#        marker_color = sample.data[key]
-#
-#    
-#    elif plot_style == 'ellipse':
-#        # Plot as ellipse
-#        # Initializing list of shapes + Generating spots and collecting
-#        shapes = [
-#            gen_spot(x, y, c, spot_size, angle_of_incident) 
-#            for x, y, c 
-#            in zip(sample.data.x, sample.data.y, colors)
-#        ]  # List comprehension
-#
-#    
-#    
-#    # Generating outline if any
-#    if selected_outline:
-#        shapes.append(sample_outlines[selected_outline])
-#    
-#    # Creating a new figure object
-#    layout_updates = dict(
-#        title = f"Selected file: {selected_file}",
-#        shapes = tuple(shapes),
-#        xaxis = {'range': sample.x_range()} | FIGURE_LAYOUT['xaxis'],
-#        yaxis = {'range': sample.y_range()} | FIGURE_LAYOUT['yaxis'],
-#    )
-# 
-#    figure = go.Figure(
-#        layout=go.Layout(
-#            FIGURE_LAYOUT | layout_updates  # Joining the template with the updates
-#        ),
-#    )
-#    
-#
-#    # Adding a dummy scatter plot to display colorbar
-#    figure.add_trace(go.Scatter(
-#        x=x,
-#        y=y,
-#        mode='markers',
-#        marker_color=marker_color,
-#        marker=dict(
-#            size=10,
-#            color=[int(min(sample.data[key])), int(max(sample.data[key]))],
-#            showscale=True,
-#            colorscale=colormap,
-#            colorbar=dict(
-#                title=key,
-#                titleside="right",
-#                tickvals=[int(x) for x in np.linspace(min(sample.data[key]), max(sample.data[key]), 10)],
-#                ticks="outside",
-#                len=0.8,
-#            )
-#        ),
-#        name='colormap_placeholder',
-#    ))
-#    
-#    value = key
-#    options = sample.data.columns
-#    
-#    return figure #, value, options
-#
-#
-#@callback(
-#    #Output(ids.Graph.MAIN, 'figure'),
-#    Input(ids.DropDown.SAMPLE_OUTLINE, 'value'),
-#    State(ids.Graph.MAIN, 'figure'),
-#    prevent_initial_call=True,
-#)
-#def update_sample_outline(selected_outline:str, figure:dict) -> go.Figure:
-#
-#    # Converting the figure from dict to go.Figure
-#    figure = go.Figure(figure)
-#
-#    # If no outline selected return the same figure
-#    if not selected_outline:
-#        return figure
-#    
-#    # Deletes shape if exist
-#    shapes = delete_shape_by_attribute(figure, "name", "sample_outline")
-#
-#    # Creates new "sample_outline" and adds it to the figure
-#    shape = sample_outlines[selected_outline]
-#    
-#    # Add outline to list of shapes
-#    shapes.append(shape)
-#
-#    # Explicit update of the figure
-#    figure.layout.shapes = shapes
-#        #shapes=tuple(shapes),
-#    #)
-#
-#    return None #figure
+
+    #Adding shapes to the figure
+    figure.update_layout(
+        shapes=shapes,
+        xaxis=dict(range=[xmin, xmax]),
+        yaxis=dict(range=[ymin, ymax]),
+    )
+
+
+    return figure, sorted(list(data.keys()))
