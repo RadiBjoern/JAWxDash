@@ -8,7 +8,7 @@ import logging
 # Local imports
 import ids
 from utils.utilities import gen_spot, rotate, translate
-from utils.sample_outlines import sample_outlines, edge_exclusion_outline
+from utils.sample_outlines import sample_outlines, uniform_edge_exclusion_outline, radial_edge_exclusion_outline
 
 from templates.graph_template import FIGURE_LAYOUT
 
@@ -142,11 +142,14 @@ def update_figure(
     
     # Add edge exclusion outline if selected
     if settings["sample_outline"] and settings["ee_state"]:
-        ee = edge_exclusion_outline(settings["x_sample"], settings["y_sample"], settings["theta_sample"], settings["ee_distance"])
+        if settings["ee_type"] == "radial":
+            ee = radial_edge_exclusion_outline(settings["x_sample"], settings["y_sample"], settings["theta_sample"], settings["ee_distance"])
+        elif settings["ee_type"] == "uniform":
+            ee = uniform_edge_exclusion_outline(settings["x_sample"], settings["y_sample"], settings["theta_sample"], settings["ee_distance"])
 
         shapes.extend(ee)
     
-    
+
     # Calculate 'zoom-window'
     xmin, xmax = min(x_data), max(x_data)
     ymin, ymax = min(y_data), max(y_data)

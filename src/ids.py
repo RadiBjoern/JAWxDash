@@ -39,6 +39,7 @@ class RadioItems:
     PLOT_STYLE = "radioitems_plot_style"
     SPOT_SIZE = "radioitems_spot_size"
     EDGE_EXCLUSION_STATE = "radioitems_edge_exclusion_state"
+    EDGE_EXCLUSION_TYPE = "radioitems_edge_exclusion_type"
 
 
 class Offset:

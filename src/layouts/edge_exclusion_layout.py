@@ -18,10 +18,27 @@ edge_exclusion_layout = html.Div([
         )
     ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
 
+    
+    html.Div([
+        html.H6("Type:"),
+        dcc.RadioItems(
+            id=ids.RadioItems.EDGE_EXCLUSION_TYPE,
+            options=[
+                {"label": "Uniform", "value": "uniform"},
+                {"label": "Radial", "value": "radial"},
+            ],
+            inline=True,
+            style={"alignItems": "right", "width": "200px"},
+        )
+    ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+
+    
     html.Div([
         html.H6("Distance:"),
         dcc.Input(
             id=ids.Input.EDGE_EXCLUSION_DISTANCE,
+            type="number",
+            step=0.1,
             debounce=True,
         )
     ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),

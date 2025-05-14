@@ -25,5 +25,6 @@ DEFAULT_SETTINGS = dict(
 
     # Edge exclusion
     ee_state=False,
+    ee_type="uniform",
     ee_distance=1.0,
 )

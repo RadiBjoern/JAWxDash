@@ -31,6 +31,7 @@ logger = logging.getLogger(__name__)
     
     # Edge exclusion
     Output(ids.RadioItems.EDGE_EXCLUSION_STATE, "value"),
+    Output(ids.RadioItems.EDGE_EXCLUSION_TYPE, "value"),
     Output(ids.Input.EDGE_EXCLUSION_DISTANCE, "value"),
 
     # Input
@@ -65,6 +66,7 @@ def load_default_settings(default_settings):
 
         # Edge exclusion
         default_settings["ee_state"],
+        default_settings["ee_type"],
         default_settings["ee_distance"],
     )
 
@@ -94,6 +96,7 @@ def load_default_settings(default_settings):
 
     # Edge exclusion
     Input(ids.RadioItems.EDGE_EXCLUSION_STATE, "value"),
+    Input(ids.RadioItems.EDGE_EXCLUSION_TYPE, "value"),
     Input(ids.Input.EDGE_EXCLUSION_DISTANCE, "value"),
 
     # Store state
@@ -104,7 +107,7 @@ def update_offset_setting_store(
     colormap_value, sample_outline, z_data_value,
     x_map, y_map, t_map, 
     x_sam, y_sam, t_sam, 
-    ee_state, ee_distance,
+    ee_state, ee_type, ee_distance,
     settings
     ):
 
@@ -115,14 +118,14 @@ def update_offset_setting_store(
         "colormap_value", "sample_outline", "z_data_value",
         "x_mappattern", "y_mappattern", "theta_mappattern",
         "x_sample", "y_sample", "theta_sample",
-        "ee_state", "ee_distance",
+        "ee_state", "ee_type", "ee_distance",
     )
     values = (
         marker_type, angle_of_incident, spot_size,
         colormap_value, sample_outline, z_data_value,
         x_map, y_map, t_map,
         x_sam, y_sam, t_sam,
-        ee_state, ee_distance,
+        ee_state, ee_type, ee_distance,
     )
 
     for key, value in zip(keys, values):

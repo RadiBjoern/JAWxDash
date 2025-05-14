@@ -8,6 +8,7 @@ def get_input_div(info:dict) -> html.Div:
         html.H6(info["label"]),
         dcc.Input(
             id=info["id"],
+            type="number",
             debounce=True,
         )
     ], style={"display": "flex", "alignItems": "center", "gap": "10px"})
