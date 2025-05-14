@@ -22,4 +22,8 @@ DEFAULT_SETTINGS = dict(
     x_sample=-0.067,
     y_sample=2.948,
     theta_sample=5.1,
+
+    # Edge exclusion
+    ee_state=False,
+    ee_distance=1.0,
 )

@@ -1,3 +1,4 @@
+from layouts.edge_exclusion_layout import edge_exclusion_layout
 from layouts.filemanager_layout import filemanager_layout
 from layouts.spot_layout import spot_layout
 from layouts.graph_layout import graph_layout

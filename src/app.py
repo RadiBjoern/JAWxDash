@@ -3,7 +3,7 @@ from dash import Dash, dcc, html
 # Local import
 import ids
 from logger_config import setup_logging
-from layouts import filemanager_layout, graph_layout, offset_layout, sample_layout, spot_layout
+from layouts import edge_exclusion_layout, filemanager_layout, graph_layout, offset_layout, sample_layout, spot_layout
 
 from templates.settings_template import DEFAULT_SETTINGS
 
@@ -53,6 +53,7 @@ app.layout = html.Div([
             spot_layout,
             sample_layout,
             offset_layout,
+            edge_exclusion_layout,
         ], 
         style={
             'width': '20%', 

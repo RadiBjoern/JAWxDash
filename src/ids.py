@@ -17,6 +17,9 @@ class Graph:
     MAIN = "graph_main"
 
 
+class Input:
+    EDGE_EXCLUSION_DISTANCE = "input_edge_exclusion_distance"
+
 class Slider:
     ANGLE_OF_INCIDENT = "slider_angle_of_incident"
     SPOT_SIZE = "slider_spot_size"
@@ -27,13 +30,15 @@ class Store:
     DEFAULT_SETTINGS = "store_default_settings"
     SETTINGS = "store_settings"
 
+
 class Upload:
     DRAG_N_DROP = "upload_drag_n_drop"
 
 
 class RadioItems:
-    PLOT_STYLE = "plot_style"
-    SPOT_SIZE = "spot_size"
+    PLOT_STYLE = "radioitems_plot_style"
+    SPOT_SIZE = "radioitems_spot_size"
+    EDGE_EXCLUSION_STATE = "radioitems_edge_exclusion_state"
 
 
 class Offset:

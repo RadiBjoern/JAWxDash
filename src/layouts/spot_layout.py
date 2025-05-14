@@ -9,8 +9,9 @@ logger = logging.getLogger(__name__)
 
 spot_layout = html.Div(
     [
+        html.H6("Beam Settings"),
         html.Div([
-            html.H6("Marker style:", style={"marginRight": "10px"}),
+            html.H6("Style:", style={"marginRight": "10px"}),
             dcc.RadioItems(
                 id=ids.RadioItems.PLOT_STYLE,
                 options=[
@@ -19,7 +20,7 @@ spot_layout = html.Div(
                 ],
                 #value='point',
                 inline=True,
-                style={"alignItems": "right", "width": "200px"},
+                style={"alignItems": "right", "width": "100px"},
             ),
         ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
 
@@ -36,7 +37,7 @@ spot_layout = html.Div(
 
 
         html.Div([
-            html.H6("Spot size", style={"marginRight": "10px"}),
+            html.H6("Size", style={"marginRight": "10px"}),
             dcc.RadioItems(
                 id=ids.RadioItems.SPOT_SIZE,
                 options=[
@@ -48,6 +49,15 @@ spot_layout = html.Div(
                 style={"alignItems": "right", "width": "200px"},
             ),
         ], style={"display": "flex", "alignItems": "center", "gap": "10px"})
-    ]
+    ],
+    style={
+        'width': '100%',
+        #'lineHeight': '60px',
+        'borderWidth': '1px',
+        'borderStyle': 'solid',
+        'borderRadius': '10px',
+        'textAlign': 'center',
+        'margin': '10px'
+    },
 )
 

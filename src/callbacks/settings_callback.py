@@ -12,20 +12,30 @@ logger = logging.getLogger(__name__)
     Output(ids.RadioItems.PLOT_STYLE, "value"),
     Output(ids.Slider.ANGLE_OF_INCIDENT, "value"),
     Output(ids.RadioItems.SPOT_SIZE, "value"),
+    
     # Sample
     Output(ids.DropDown.COLORMAPS, "value"),
     Output(ids.DropDown.COLORMAPS, "options"),
     Output(ids.DropDown.SAMPLE_OUTLINE, "value"),
     Output(ids.DropDown.Z_DATA, "value"),
+    
     # MapPattern offsets
     Output(ids.Offset.MAPPATTERN_X, "value"),
     Output(ids.Offset.MAPPATTERN_Y, "value"),
     Output(ids.Offset.MAPPATTERN_THETA, "value"),
+    
     # Sample offsets
     Output(ids.Offset.SAMPLE_X, "value"),
     Output(ids.Offset.SAMPLE_Y, "value"),
     Output(ids.Offset.SAMPLE_THETA, "value"),
+    
+    # Edge exclusion
+    Output(ids.RadioItems.EDGE_EXCLUSION_STATE, "value"),
+    Output(ids.Input.EDGE_EXCLUSION_DISTANCE, "value"),
+
+    # Input
     Input(ids.Store.DEFAULT_SETTINGS, "data"),
+
 )
 def load_default_settings(default_settings):
 
@@ -52,6 +62,10 @@ def load_default_settings(default_settings):
         default_settings["x_sample"],
         default_settings["y_sample"],
         default_settings["theta_sample"],
+
+        # Edge exclusion
+        default_settings["ee_state"],
+        default_settings["ee_distance"],
     )
 
 
@@ -78,6 +92,10 @@ def load_default_settings(default_settings):
     Input(ids.Offset.SAMPLE_Y, "value"),
     Input(ids.Offset.SAMPLE_THETA, "value"),
 
+    # Edge exclusion
+    Input(ids.RadioItems.EDGE_EXCLUSION_STATE, "value"),
+    Input(ids.Input.EDGE_EXCLUSION_DISTANCE, "value"),
+
     # Store state
     State(ids.Store.SETTINGS, "data"),
 )
@@ -86,6 +104,7 @@ def update_offset_setting_store(
     colormap_value, sample_outline, z_data_value,
     x_map, y_map, t_map, 
     x_sam, y_sam, t_sam, 
+    ee_state, ee_distance,
     settings
     ):
 
@@ -96,12 +115,14 @@ def update_offset_setting_store(
         "colormap_value", "sample_outline", "z_data_value",
         "x_mappattern", "y_mappattern", "theta_mappattern",
         "x_sample", "y_sample", "theta_sample",
+        "ee_state", "ee_distance",
     )
     values = (
         marker_type, angle_of_incident, spot_size,
         colormap_value, sample_outline, z_data_value,
         x_map, y_map, t_map,
         x_sam, y_sam, t_sam,
+        ee_state, ee_distance,
     )
 
     for key, value in zip(keys, values):
