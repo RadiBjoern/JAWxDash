@@ -110,13 +110,17 @@ def update_figure(
         shapes.extend([gen_spot(x, y, c, settings["spot_size"], settings["angle_of_incident"]) for x, y, c in zip(data["x"], data["y"], colors)])
     
 
-    for shape in shapes:
-        print(shape)
-
     # Adds outline if outline is selected
     if settings["sample_outline"]:
         # add sample outline to 'shapes'
-        shapes.append(sample_outlines[settings["sample_outline"]])
+        kwargs = dict(
+            x_off = settings["x_sample"], 
+            y_off = settings["y_sample"],
+            t_off = settings["theta_sample"],
+        )
+        
+ 
+        shapes.append(sample_outlines[settings["sample_outline"]](**kwargs))
 
 
     # Calculate 'zoom-window'

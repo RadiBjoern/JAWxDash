@@ -14,6 +14,7 @@ def get_input_div(info:dict) -> html.Div:
     ], style={"display": "flex", "alignItems": "center", "gap": "10px"})
 
 
+
 map_pattern_info = [
     {"label": "X:", "id": ids.Offset.MAPPATTERN_X},
     {"label": "Y:", "id": ids.Offset.MAPPATTERN_Y},
@@ -22,12 +23,14 @@ map_pattern_info = [
 map_pattern_div = [get_input_div(setting) for setting in map_pattern_info]
 
 
+
 sample_info = [
     {"label": "X:", "id": ids.Offset.SAMPLE_X},
     {"label": "Y:", "id": ids.Offset.SAMPLE_Y},
     {"label": "Theta:", "id": ids.Offset.SAMPLE_THETA},
 ]
 sample_div = [get_input_div(setting) for setting in sample_info]
+
 
 
 offset_layout = html.Div(
