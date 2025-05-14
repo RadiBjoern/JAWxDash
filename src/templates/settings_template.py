@@ -21,7 +21,7 @@ DEFAULT_SETTINGS = dict(
     # Sample offset
     x_sample=-0.067,
     y_sample=2.948,
-    theta_sample=5.1,
+    theta_sample=5.1+225,
 
     # Edge exclusion
     ee_state=False,

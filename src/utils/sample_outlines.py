@@ -53,7 +53,7 @@ def quarter_wafer_inch(dia_inch:float) -> dict:
         return dict(
             type="path",
             path=path + f" L{center[0]},{center[1]} Z", #sector
-            line_color="Crimson",
+            line_color="rgba(27, 96, 151, 255)"
         )
     
     return quarter_wafer_inch_offset
@@ -66,3 +66,50 @@ sample_outlines = {
     "wafer 8 inch": wafer_inch(8),
     "1/4 wafer 4 inch": quarter_wafer_inch(4),
 }
+
+
+def edge_exclusion_outline(x_sample, y_sample, t_off, ee_dist):
+    t1 = np.deg2rad(0 + t_off)
+    t2 = np.deg2rad(90 + t_off)
+    t_ee = (t2-t1)/2 + t1
+
+    c = float(ee_dist)/np.cos(np.pi/4)
+
+    x_ee = np.cos(t_ee) * c + x_sample
+    y_ee = np.sin(t_ee) * c + y_sample
+
+
+    # Creating arc
+    t = np.linspace(t1, t2, 50)
+    x = x_sample + (2*2.54-ee_dist) * np.cos(t)
+    y = y_sample + (2*2.54-ee_dist) * np.sin(t)
+    path = f"M {x[0]},{y[0]}"
+    for xc, yc in zip(x[1:], y[1:]):
+        path += f" L{xc},{yc}"
+
+
+    shapes=[
+        dict(
+            type="line",
+            x0=x_ee,
+            y0=y_ee,
+            x1=(2*2.54-2*ee_dist) * np.cos(t1) + x_ee,
+            y1=(2*2.54-2*ee_dist) * np.sin(t1) + y_ee,
+            line=dict(color="rgba(193, 0, 1, 255)", width=2),
+        ),
+        dict(
+            type="line",
+            x0=x_ee,
+            y0=y_ee,
+            x1=(2*2.54-2*ee_dist) * np.cos(t2) + x_ee,
+            y1=(2*2.54-2*ee_dist) * np.sin(t2) + y_ee,
+            line=dict(color="rgba(193, 0, 1, 255)", width=2),
+        ),
+        dict(
+            type="path",
+            path=path, #sector
+            line=dict(color="rgba(193, 0, 1, 255)", width=2),
+        ),
+    ]
+    return shapes
+    

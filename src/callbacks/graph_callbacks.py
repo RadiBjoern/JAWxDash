@@ -8,7 +8,7 @@ import logging
 # Local imports
 import ids
 from utils.utilities import gen_spot, rotate, translate
-from utils.sample_outlines import sample_outlines
+from utils.sample_outlines import sample_outlines, edge_exclusion_outline
 
 from templates.graph_template import FIGURE_LAYOUT
 
@@ -133,13 +133,20 @@ def update_figure(
         kwargs = dict(
             x_off = settings["x_sample"], 
             y_off = settings["y_sample"],
-            t_off = settings["theta_sample"] + 225,
+            t_off = settings["theta_sample"],
         )
         
  
         shapes.append(sample_outlines[settings["sample_outline"]](**kwargs))
 
+    
+    # Add edge exclusion outline if selected
+    if settings["sample_outline"] and settings["ee_state"]:
+        ee = edge_exclusion_outline(settings["x_sample"], settings["y_sample"], settings["theta_sample"], settings["ee_distance"])
 
+        shapes.extend(ee)
+    
+    
     # Calculate 'zoom-window'
     xmin, xmax = min(x_data), max(x_data)
     ymin, ymax = min(y_data), max(y_data)
