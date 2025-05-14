@@ -86,7 +86,6 @@ def update_figure(
 
     xy = rotate(np.vstack([x_data, y_data]), settings["theta_mappattern"])
 
-    print(settings["x_mappattern"], settings["y_mappattern"])
     xy = translate(xy, [settings["x_mappattern"], settings["y_mappattern"]])
     x_data = xy[0,:]
     y_data = xy[1,:]
@@ -106,7 +105,13 @@ def update_figure(
             x=x_data,
             y=y_data,
             mode='markers',
-            marker_color=z_data,
+            marker=dict(
+                size=10,
+                color=z_data,  # numeric value
+                colorscale=settings["colormap_value"],  # set the colormap
+                colorbar=dict(title='Value'),  # optional colorbar
+                showscale=True  # show the color scale
+            ),
         ))
 
 

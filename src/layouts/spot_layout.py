@@ -11,16 +11,15 @@ spot_layout = html.Div(
     [
         html.H6("Beam Settings"),
         html.Div([
-            html.H6("Style:", style={"marginRight": "10px"}),
+            html.H6("Style:"),
             dcc.RadioItems(
                 id=ids.RadioItems.PLOT_STYLE,
                 options=[
                    {'label': 'Point', 'value': 'point'},
                    {'label': 'Ellipse', 'value': 'ellipse'},
                 ],
-                #value='point',
                 inline=True,
-                style={"alignItems": "right", "width": "100px"},
+                style={"alignItems": "right", "width": "200px"},
             ),
         ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
 
@@ -31,7 +30,6 @@ spot_layout = html.Div(
             min=45, 
             max=85, 
             step=1, 
-            #value=65,
             marks={i: str(i) for i in range(45, 86, 5)},
         ),
 
@@ -44,7 +42,6 @@ spot_layout = html.Div(
                     {'label': 'wo. FP', 'value': 0.3},
                     {'label': 'w. FP', 'value': 0.03},
                 ],
-                #value=0.3,
                 inline=True,
                 style={"alignItems": "right", "width": "200px"},
             ),
