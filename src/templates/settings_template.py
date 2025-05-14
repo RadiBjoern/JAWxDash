@@ -14,8 +14,8 @@ DEFAULT_SETTINGS = dict(
     z_data_value="",
 
     # Mappattern offset
-    x_mappattern=2.5,
-    y_mappattern=0.0,
+    x_mappattern=0.0,
+    y_mappattern=2.5,
     theta_mappattern=4.1,
 
     # Sample offset

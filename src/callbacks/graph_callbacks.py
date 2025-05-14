@@ -7,7 +7,7 @@ import logging
 
 # Local imports
 import ids
-from utils.utilities import gen_spot
+from utils.utilities import gen_spot, rotate, translate
 from utils.sample_outlines import sample_outlines
 
 from templates.graph_template import FIGURE_LAYOUT
@@ -79,6 +79,18 @@ def update_figure(
     if not settings["z_data_value"]:
         settings["z_data_value"] = sorted(list(data.keys()))[0]
 
+    
+    # exposing x,y,z data directly
+    x_data = np.array(data["x"])
+    y_data = np.array(data["y"])
+
+    xy = rotate(np.vstack([x_data, y_data]), settings["theta_mappattern"])
+
+    print(settings["x_mappattern"], settings["y_mappattern"])
+    xy = translate(xy, [settings["x_mappattern"], settings["y_mappattern"]])
+    x_data = xy[0,:]
+    y_data = xy[1,:]
+    
     z_data = np.array(data[settings["z_data_value"]])
 
 
@@ -91,8 +103,8 @@ def update_figure(
         logger.debug("Plotting 'points'")
 
         figure.add_trace(go.Scatter(
-            x=data["x"],
-            y=data["y"],
+            x=x_data,
+            y=y_data,
             mode='markers',
             marker_color=z_data,
         ))
@@ -107,7 +119,7 @@ def update_figure(
         norm_zdata = (z_data-d_min) / (d_max-d_min)
         colors = px.colors.sample_colorscale(colorscale=settings["colormap_value"], samplepoints=norm_zdata)
         
-        shapes.extend([gen_spot(x, y, c, settings["spot_size"], settings["angle_of_incident"]) for x, y, c in zip(data["x"], data["y"], colors)])
+        shapes.extend([gen_spot(x, y, c, settings["spot_size"], settings["angle_of_incident"]) for x, y, c in zip(x_data, y_data, colors)])
     
 
     # Adds outline if outline is selected
@@ -116,7 +128,7 @@ def update_figure(
         kwargs = dict(
             x_off = settings["x_sample"], 
             y_off = settings["y_sample"],
-            t_off = settings["theta_sample"],
+            t_off = settings["theta_sample"] + 225,
         )
         
  
@@ -124,15 +136,16 @@ def update_figure(
 
 
     # Calculate 'zoom-window'
-    xmin, xmax = min(data["x"]), max(data["x"])
-    ymin, ymax = min(data["y"]), max(data["y"])
-
+    xmin, xmax = min(x_data), max(x_data)
+    ymin, ymax = min(y_data), max(y_data)
+    scale_factor = 0.2
+    scale_range = xmax - xmin
 
     #Adding shapes to the figure
     figure.update_layout(
         shapes=shapes,
-        xaxis=dict(range=[xmin, xmax]),
-        yaxis=dict(range=[ymin, ymax]),
+        xaxis=dict(range=[xmin - scale_factor*scale_range, xmax + scale_factor*scale_range]),
+        yaxis=dict(range=[ymin - scale_factor*scale_range, ymax + scale_factor*scale_range]),
     )
 
 
