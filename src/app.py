@@ -16,7 +16,7 @@ app = Dash(__name__, external_stylesheets=external_stylesheets)
 
 app.layout = html.Div([
     # Initiating 'Store' for holding uploaded files i.e. *.txt and *.csv
-    dcc.Store(id=ids.Store.UPLOADED_FILES, data={}, storage_type="local"),
+    dcc.Store(id=ids.Store.UPLOADED_FILES, data={}, storage_type="session"),
     dcc.Store(id=ids.Store.DEFAULT_SETTINGS, data=DEFAULT_SETTINGS),
     dcc.Store(id=ids.Store.SETTINGS, data={}),
 
@@ -78,6 +78,7 @@ import callbacks.graph_callbacks
 import callbacks.store_callbacks
 import callbacks.settings_callback
 import callbacks.edge_exclusion_callbacks
+
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -24,8 +24,8 @@ edge_exclusion_layout = html.Div([
         dcc.RadioItems(
             id=ids.RadioItems.EDGE_EXCLUSION_TYPE,
             options=[
-                {"label": "Uniform", "value": "uniform"},
                 {"label": "Radial", "value": "radial"},
+                {"label": "Uniform", "value": "uniform"},
             ],
             inline=True,
             style={"alignItems": "right", "width": "200px"},

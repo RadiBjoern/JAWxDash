@@ -10,7 +10,7 @@ DEFAULT_SETTINGS = dict(
     # Sample settings
     colormap_value="viridis",
     colormap_options=sorted([colorscale for colorscale in px.colors.named_colorscales()]),
-    sample_outline="",
+    sample_outline="1/4 wafer 4 inch",
     z_data_value="",
 
     # Mappattern offset
@@ -25,6 +25,6 @@ DEFAULT_SETTINGS = dict(
 
     # Edge exclusion
     ee_state=False,
-    ee_type="uniform",
+    ee_type="radial",
     ee_distance=1.0,
 )

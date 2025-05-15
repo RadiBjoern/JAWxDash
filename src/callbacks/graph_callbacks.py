@@ -7,8 +7,9 @@ import logging
 
 # Local imports
 import ids
-from utils.utilities import gen_spot, rotate, translate
+from utils.readers import JAWFile
 from utils.sample_outlines import sample_outlines, uniform_edge_exclusion_outline, radial_edge_exclusion_outline
+from utils.utilities import gen_spot, rotate, translate
 
 from templates.graph_template import FIGURE_LAYOUT
 
@@ -69,20 +70,19 @@ def update_figure(
         return figure, []
     
     
-    
     # A sample has been selected, now let's unpack
-    sample = uploaded_files[selected_file]
-    data = sample["data"]
+    file = JAWFile.from_dict(uploaded_files[selected_file])
+    
 
 
     # Setting z-data-value default if non selected
     if not settings["z_data_value"]:
-        settings["z_data_value"] = sorted(list(data.keys()))[0]
+        settings["z_data_value"] = sorted(file.get_z_values())[1]
 
     
     # exposing x,y,z data directly
-    x_data = np.array(data["x"])
-    y_data = np.array(data["y"])
+    x_data = np.array(file.data["x"])
+    y_data = np.array(file.data["y"])
 
     xy = rotate(np.vstack([x_data, y_data]), settings["theta_mappattern"])
 
@@ -90,7 +90,7 @@ def update_figure(
     x_data = xy[0,:]
     y_data = xy[1,:]
     
-    z_data = np.array(data[settings["z_data_value"]])
+    z_data = file.data[settings["z_data_value"]].to_numpy()
 
 
     # List for holding 'shapes'
@@ -119,7 +119,7 @@ def update_figure(
         logger.debug("Plotting NOT 'points'")
 
         # Making colors
-        d_min, d_max = min(z_data), max(z_data)
+        d_min, d_max = z_data.min(), z_data.max()
 
         norm_zdata = (z_data-d_min) / (d_max-d_min)
         colors = px.colors.sample_colorscale(colorscale=settings["colormap_value"], samplepoints=norm_zdata)
@@ -164,4 +164,4 @@ def update_figure(
     )
 
 
-    return figure, sorted(list(data.keys()))
+    return figure, sorted(file.get_z_values())
