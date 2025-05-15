@@ -3,6 +3,10 @@ class Button:
     APPLY_EDGE_EXCLUSION = "btn_apply_edge_exclusion"
 
 
+class Download:
+    EDGE_EXCLUDED_FILE = "download_edge_excluded_file"
+
+
 class Div:
     INFO = "div_info"
 

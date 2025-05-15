@@ -77,6 +77,7 @@ import callbacks.filemanager_callbacks
 import callbacks.graph_callbacks
 import callbacks.store_callbacks
 import callbacks.settings_callback
+import callbacks.edge_exclusion_callbacks
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -39,7 +39,7 @@ filemanager_layout = html.Div(
         # File delete button
         html.Button(
             "Delete Selected",
-            id=ids.Button.DELETE_SELECTED
+            id=ids.Button.DELETE_SELECTED,
         ),
-    ]
+    ],
 )

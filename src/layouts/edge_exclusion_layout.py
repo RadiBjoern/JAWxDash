@@ -48,6 +48,7 @@ edge_exclusion_layout = html.Div([
         "Apply edge exclusion",
         id=ids.Button.APPLY_EDGE_EXCLUSION,
     ),
+    dcc.Download(id=ids.Download.EDGE_EXCLUDED_FILE)
 ],
 style={
         'width': '100%',
