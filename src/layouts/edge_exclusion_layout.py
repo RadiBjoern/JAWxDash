@@ -42,6 +42,12 @@ edge_exclusion_layout = html.Div([
             debounce=True,
         )
     ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+
+
+    html.Button(
+        "Apply edge exclusion",
+        id=ids.Button.APPLY_EDGE_EXCLUSION,
+    ),
 ],
 style={
         'width': '100%',

@@ -1,5 +1,6 @@
 class Button:
     DELETE_SELECTED = "btn_delete_selected"
+    APPLY_EDGE_EXCLUSION = "btn_apply_edge_exclusion"
 
 
 class Div:
