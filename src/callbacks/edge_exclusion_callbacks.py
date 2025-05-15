@@ -13,7 +13,7 @@ logger = logging.getLogger(__name__)
 
 @callback(
     Output(ids.Download.EDGE_EXCLUDED_FILE, "data"),
-    Input(ids.Button.APPLY_EDGE_EXCLUSION, "n_clicks"),
+    Input(ids.Button.DOWNLOAD_MASKED_DATA, "n_clicks"),
     State(ids.DropDown.UPLOADED_FILES, "value"),
     State(ids.Store.UPLOADED_FILES, "data"),
     State(ids.Store.SETTINGS, "data"),

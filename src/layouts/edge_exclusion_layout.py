@@ -45,8 +45,8 @@ edge_exclusion_layout = html.Div([
 
 
     html.Button(
-        "Apply edge exclusion",
-        id=ids.Button.APPLY_EDGE_EXCLUSION,
+        "Download masked data",
+        id=ids.Button.DOWNLOAD_MASKED_DATA,
     ),
     dcc.Download(id=ids.Download.EDGE_EXCLUDED_FILE)
 ],
