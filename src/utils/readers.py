@@ -59,13 +59,15 @@ class JAWFile:
     
 
     
-    def update_header(self):
+    def update_header(self) -> None:
         """
         Updates the header will update the following:
         - Average
         - Min
         - Max
         - Std. Dev.
+
+        Sets a new header 
         """
 
         # Generating the state for the columns
