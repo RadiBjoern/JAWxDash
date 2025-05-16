@@ -70,6 +70,10 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
 
     out_file.data.drop(["x", "y"], axis="columns", inplace=True)
 
+
+    # Check the new header
+    out_file.update_header()
+
     # Build the output manually
     buffer = StringIO()
 

@@ -56,6 +56,49 @@ class JAWFile:
 
         
         return xy_rot_trans.T
+    
+
+    
+    def update_header(self):
+        """
+        Updates the header will update the following:
+        - Average
+        - Min
+        - Max
+        - Std. Dev.
+        """
+
+        # Generating the state for the columns
+        average = ["%.4f" % self.data[col].mean() if self.data[col].dtypes  in (float, int) else "N/A" for col in self.data.columns]
+        minimum = ["%.4f" % self.data[col].min() if self.data[col].dtypes in (float, int) else "N/A" for col in self.data.columns]
+        maximum = ["%.4f" % self.data[col].max() if self.data[col].dtypes in (float, int) else "N/A" for col in self.data.columns]
+        std_dev = ["%.4f" % self.data[col].std() if self.data[col].dtypes in (float, int) else "N/A" for col in self.data.columns]
+
+
+        # Removing the stat for the "Point #"
+        average.pop(1)
+        minimum.pop(1)
+        maximum.pop(1)
+        std_dev.pop(1)
+
+
+        # Generate new header
+        new_header = [
+            " \t" + self.header[0].strip() + "\n",
+            "Average\t" + "\t".join(average) + "\n",
+            "Min\t" + "\t".join(minimum) + "\n",
+            "Max\t" + "\t".join(maximum) + "\n",
+            "Std. Dev.\t" + "\t".join(std_dev) + "\n",
+            self.header[5].strip() + "\n",
+            self.header[6].strip() + "\n",
+        ]
+
+
+        # Setting new header
+        self.header = new_header
+
+
+        return None
 
 
 
