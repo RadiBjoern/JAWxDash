@@ -60,7 +60,7 @@ def rotate(xy:np.ndarray, angle:float) -> np.ndarray:
 
 
 
-def translate(xy:np.ndarray, offset:np.ndarray) -> np.ndarray:
+def translate(xy:np.ndarray, offset:np.ndarray|list[float]) -> np.ndarray:
     """
     Translates Numpy array [2, N] 'offset' amount
     xy: np.ndarray dimension [2, N] containing x and y coordinates

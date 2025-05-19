@@ -91,4 +91,4 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
     
     buffer.seek(0)
 
-    return dcc.send_string(buffer.getvalue(), filename=os.path.join([root, "_masked", ext]))
+    return dcc.send_string(buffer.getvalue(), filename=os.path.join(root, "_masked", ext))

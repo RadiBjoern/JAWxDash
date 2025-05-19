@@ -104,7 +104,12 @@ class JAWFile:
 
 
 
-def read_jaw_txt(file:bytes) -> pd.DataFrame:
+def read_jaw_txt(file:bytes):
+    """
+    Read a *.txt file from the JAW instruments
+    
+    Returns: Header[list], Data[Pandas.DataFrame]
+    """
 
     # Opening file and reading into list
     buffer = io.StringIO(file.decode("utf-8"))
