@@ -33,6 +33,7 @@ logger = logging.getLogger(__name__)
     Output(ids.RadioItems.EDGE_EXCLUSION_STATE, "value"),
     Output(ids.RadioItems.EDGE_EXCLUSION_TYPE, "value"),
     Output(ids.Input.EDGE_EXCLUSION_DISTANCE, "value"),
+    Output(ids.RadioItems.BATCH_PROCESSING, "value"),
 
     # Input
     Input(ids.Store.DEFAULT_SETTINGS, "data"),
@@ -68,6 +69,7 @@ def load_default_settings(default_settings):
         default_settings["ee_state"],
         default_settings["ee_type"],
         default_settings["ee_distance"],
+        default_settings["batch_processing"],
     )
 
 
@@ -98,6 +100,7 @@ def load_default_settings(default_settings):
     Input(ids.RadioItems.EDGE_EXCLUSION_STATE, "value"),
     Input(ids.RadioItems.EDGE_EXCLUSION_TYPE, "value"),
     Input(ids.Input.EDGE_EXCLUSION_DISTANCE, "value"),
+    Input(ids.RadioItems.BATCH_PROCESSING, "value"),
 
     # Store state
     State(ids.Store.SETTINGS, "data"),
@@ -107,7 +110,7 @@ def update_offset_setting_store(
     colormap_value, sample_outline, z_data_value,
     x_map, y_map, t_map, 
     x_sam, y_sam, t_sam, 
-    ee_state, ee_type, ee_distance,
+    ee_state, ee_type, ee_distance, batch_processing,
     settings
     ):
 
@@ -118,14 +121,14 @@ def update_offset_setting_store(
         "colormap_value", "sample_outline", "z_data_value",
         "x_mappattern", "y_mappattern", "theta_mappattern",
         "x_sample", "y_sample", "theta_sample",
-        "ee_state", "ee_type", "ee_distance",
+        "ee_state", "ee_type", "ee_distance", "batch_processing",
     )
     values = (
         marker_type, angle_of_incident, spot_size,
         colormap_value, sample_outline, z_data_value,
         x_map, y_map, t_map,
         x_sam, y_sam, t_sam,
-        ee_state, ee_type, ee_distance,
+        ee_state, ee_type, ee_distance, batch_processing,
     )
 
     for key, value in zip(keys, values):

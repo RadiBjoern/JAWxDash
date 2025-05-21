@@ -1,11 +1,12 @@
 from dash import callback, dcc, Input, Output, State
-import numpy as np
 import logging
-from copy import copy
 from io import StringIO
 import os
+import io
+import zipfile
 
 from utils.readers import JAWFile
+from utils.edge_exclusion_helper import create_masked_file
 import ids
 
 
@@ -28,67 +29,66 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
         return None
 
 
-    file = JAWFile.from_dict(stored_files[selected_file])
 
-    # Getting instrumented coordinate of the measurement
-    xy_off = file.offset(
-        x=settings["x_mappattern"],
-        y=settings["y_mappattern"],
-        theta=settings["theta_mappattern"],
-    )
+    if settings["batch_processing"]:
+        """
+        Batch processing is selected and all the files in the 'file_manager' will be processed
+        and downloaded as a zip-file
+        """
 
-    
+        file_dict = {}
+        for selected_file in stored_files:
 
-    if settings["ee_type"] == "radial":
-
-        # Sector parameters
-        cx, cy = settings["x_sample"], settings["y_sample"]  # center
-        radius = (2*2.54 - settings["ee_distance"])
-        angle_start = np.deg2rad(0 + settings["theta_sample"])  # in radians
-        angle_end = np.deg2rad(90 + settings["theta_sample"])
+            # File output name
+            root, ext = os.path.splitext(selected_file)
+            filename = root + "_masked" + ext
 
 
-        # Polar coordinates
-        dx = xy_off[:,0] - cx
-        dy = xy_off[:,1] - cy
-        r = np.sqrt(dx**2 + dy**2)
-        theta = np.arctan2(dy, dx)
+            # Loading into JAWFile object
+            file = JAWFile.from_dict(stored_files[selected_file])
+            out_file = create_masked_file(file, settings)
+            
+            file_dict[filename] = out_file.content()
 
-
-        # Normalize angle to [0, 2pi]
-        theta = (theta + 2 * np.pi) % (2 * np.pi)
-
-        mask = (r <= radius) & (theta >= angle_start) & (theta <= angle_end)
-
+        
+        # Create in-memory zip
+        buffer = io.BytesIO()
+        with zipfile.ZipFile(buffer, "w") as zf:
+            for filename, content in file_dict.items():
+                zf.writestr(filename, content)
+        
+        buffer.seek(0)
+        
+        return dcc.send_bytes(buffer.getvalue(), filename="multiple_files.zip")           
+        
 
     else:
-        print("Edge exclusion type not implemented. Please select another")
-
-
-    out_file = copy(file)
-    out_file.data = file.data[mask]
-
-
-    out_file.data.drop(["x", "y"], axis="columns", inplace=True)
-
-
-    # Check the new header
-    out_file.update_header()
-
-    # File output name
-    root, ext = os.path.splitext(selected_file)
-
-    # Build the output manually
-    buffer = StringIO()
-
-    # 1. Write header
-    for line in out_file.header:
-        buffer.write(line)
-
-    # 2. Write data rows
-    for row in out_file.data.itertuples(index=False):
-        buffer.write("\t".join(map(str, row)) + "\n")
+        """
+        Single file processing
+        """
+        # File output name
+        root, ext = os.path.splitext(selected_file)
+        filename = os.path.join(root, "_masked", ext)
     
-    buffer.seek(0)
 
-    return dcc.send_string(buffer.getvalue(), filename=os.path.join(root, "_masked", ext))
+        # Loading into JAWFile object
+        file = JAWFile.from_dict(stored_files[selected_file])
+        out_file = create_masked_file(file, settings)
+
+
+        # Build the output manually
+        buffer = StringIO()
+
+
+        # 1. Write header
+        for line in out_file.header:
+            buffer.write(line)
+
+        # 2. Write data rows
+        for row in out_file.data.itertuples(index=False):
+            buffer.write("\t".join(map(str, row)) + "\n")
+
+
+        buffer.seek(0)
+        
+        return dcc.send_string(buffer.getvalue(), filename=filename)

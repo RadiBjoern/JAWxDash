@@ -27,4 +27,5 @@ DEFAULT_SETTINGS = dict(
     ee_state=False,
     ee_type="radial",
     ee_distance=1.0,
+    batch_processing=False,
 )

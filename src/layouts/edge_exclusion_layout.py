@@ -44,6 +44,20 @@ edge_exclusion_layout = html.Div([
     ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
 
 
+    html.Div([
+        html.H6("Batch process:"),
+        dcc.RadioItems(
+            id=ids.RadioItems.BATCH_PROCESSING,
+            options=[
+                {"label": "On", "value": True},
+                {"label": "Off", "value": False},
+            ],
+            inline=True,
+            style={"alignItems": "rigth", "width": "200px"},
+        ),
+    ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+
+
     html.Button(
         "Download masked data",
         id=ids.Button.DOWNLOAD_MASKED_DATA,

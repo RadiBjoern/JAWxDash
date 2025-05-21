@@ -45,7 +45,7 @@ class RadioItems:
     SPOT_SIZE = "radioitems_spot_size"
     EDGE_EXCLUSION_STATE = "radioitems_edge_exclusion_state"
     EDGE_EXCLUSION_TYPE = "radioitems_edge_exclusion_type"
-
+    BATCH_PROCESSING = "radioitems_batch_processing"
 
 class Offset:
     MAPPATTERN_X = "mappattern_x"

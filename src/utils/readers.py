@@ -38,6 +38,12 @@ class JAWFile:
         )
     
 
+    def content(self):
+        data_list = ["\t".join(map(str, row)) + "\n" for row in self.data.itertuples(index=False)]
+
+        return "".join(self.header) + "".join(data_list)
+    
+
     def get_z_values(self) -> list:
         return list(self.data.columns.values)
     
