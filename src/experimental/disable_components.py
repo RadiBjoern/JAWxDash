@@ -1,9 +1,8 @@
 import dash
-from dash import dcc, html, Input, Output, State
+from dash import dcc, html, Input, Output
 
 app = dash.Dash(__name__)
 
-# Helper to generate radio options with optional disabling
 def get_radio_options(disabled=False):
     return [
         {"label": "Choice A", "value": "A", "disabled": disabled},
@@ -12,8 +11,7 @@ def get_radio_options(disabled=False):
 
 app.layout = html.Div([
     html.H4("Control Panel"),
-    
-    # Master control to enable/disable inputs
+
     dcc.Dropdown(
         id='enable-toggle',
         options=[
@@ -35,13 +33,18 @@ app.layout = html.Div([
 
     html.Div([
         html.H6("Dropdown:"),
-        dcc.Dropdown(
-            id='my-dropdown',
-            options=[
-                {'label': 'Option 1', 'value': 'opt1'},
-                {'label': 'Option 2', 'value': 'opt2'}
-            ],
-            value='opt1'
+        html.Div(
+            dcc.Dropdown(
+                id='my-dropdown',
+                options=[
+                    {'label': 'Option 1', 'value': 'opt1'},
+                    {'label': 'Option 2', 'value': 'opt2'}
+                ],
+                value='opt1',
+                clearable=False
+            ),
+            id='my-dropdown-container',
+            style={"width": "300px"}
         )
     ]),
 
@@ -57,16 +60,22 @@ app.layout = html.Div([
     ])
 ])
 
-# Callback to enable/disable all inputs
 @app.callback(
     Output('my-input', 'disabled'),
     Output('my-dropdown', 'disabled'),
     Output('my-radio', 'options'),
+    Output('my-dropdown-container', 'style'),
     Input('enable-toggle', 'value')
 )
 def toggle_all_inputs(mode):
     disable = (mode == 'disable')
-    return disable, disable, get_radio_options(disable)
+    dropdown_style = {
+        "width": "300px",
+        "pointerEvents": "none" if disable else "auto",
+        "opacity": 0.5 if disable else 1,
+        "color": "#888" if disable else "black"
+    }
+    return disable, disable, get_radio_options(disable), dropdown_style
 
 if __name__ == '__main__':
     app.run_server(debug=True)
