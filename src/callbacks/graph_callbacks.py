@@ -84,7 +84,6 @@ def update_figure(
     y_data = np.array(file.data["y"])
 
     xy = rotate(np.vstack([x_data, y_data]), settings["mappattern_theta"])
-
     xy = translate(xy, [settings["mappattern_x"], settings["mappattern_y"]])
     x_data = xy[0,:]
     y_data = xy[1,:]
@@ -96,24 +95,22 @@ def update_figure(
     shapes = []
 
 
-    # Determine if we're plotting spots as ellipse or points
-    if settings["marker_type"] == "point":
-        
-        figure.add_trace(go.Scatter(
-            x=x_data,
-            y=y_data,
-            mode='markers',
-            marker=dict(
-                size=10,
-                color=z_data,  # numeric value
-                colorscale=settings["colormap_value"],  # set the colormap
-                colorbar=dict(title='Value'),  # optional colorbar
-                showscale=True  # show the color scale
-            ),
-        ))
+    # Plotting trace
+    figure.add_trace(go.Scatter(
+        x=x_data,
+        y=y_data,
+        mode='markers',
+        marker=dict(
+            size=15 if settings["marker_type"]=="point" else 1,
+            color=z_data,  # numeric value
+            colorscale=settings["colormap_value"],  # set the colormap
+            colorbar=dict(title="value"),  # optional colorbar
+            showscale=True  # show the color scale
+        ),
+    ))
 
 
-    else:
+    if settings["marker_type"] == "ellipse":
         # Making colors
         d_min, d_max = z_data.min(), z_data.max()
 

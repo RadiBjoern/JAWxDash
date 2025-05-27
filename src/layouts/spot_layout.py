@@ -70,8 +70,8 @@ spot_layout = html.Div(
             dcc.RadioItems(
                 id=ids.RadioItems.SPOT_SIZE,
                 options=[
-                    {'label': 'ON', 'value': 0.3},
-                    {'label': 'OFF', 'value': 0.03},
+                    {'label': 'ON', 'value': 0.03},
+                    {'label': 'OFF', 'value': 0.3},
                 ],
                 inline=True,
                 style={"alignItems": "right", "width": "200px"},
