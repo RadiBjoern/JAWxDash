@@ -95,36 +95,20 @@ def radial_edge_exclusion_outline(x_sample, y_sample, t_off, ee_dist):
     t = np.linspace(t1, t2, 50)
     x = x_sample + (2*2.54-ee_dist) * np.cos(t)
     y = y_sample + (2*2.54-ee_dist) * np.sin(t)
-    path = f"M {x[0]},{y[0]}"
-    for xc, yc in zip(x[1:], y[1:]):
+
+
+    path = f"M {x_sample},{y_sample}"
+    for xc, yc in zip(x, y):
         path += f" L{xc},{yc}"
 
+    path += f" L{x_sample},{y_sample} Z"
 
-    shapes=[
-        dict(
-            type="line",
-            x0=x_sample,
-            y0=y_sample,
-            x1=(2*2.54-ee_dist) * np.cos(t1) + x_sample,
-            y1=(2*2.54-ee_dist) * np.sin(t1) + y_sample,
-            line=dict(color="rgba(193, 0, 1, 255)", width=2),
-        ),
-        dict(
-            type="line",
-            x0=x_sample,
-            y0=y_sample,
-            x1=(2*2.54-ee_dist) * np.cos(t2) + x_sample,
-            y1=(2*2.54-ee_dist) * np.sin(t2) + y_sample,
-            line=dict(color="rgba(193, 0, 1, 255)", width=2),
-        ),
-        dict(
-            type="path",
-            path=path, #sector
-            line=dict(color="rgba(193, 0, 1, 255)", width=2),
-        ),
-    ]
 
-    return shapes
+    return dict(
+        type="path",
+        path=path, #sector
+        line=dict(color="rgba(193, 0, 1, 255)", width=2),
+    )
 
 
 
@@ -142,9 +126,6 @@ def uniform_edge_exclusion_outline(x_sample, y_sample, t_off, ee_dist):
     x_ee = np.cos(t_ee) * c + x_sample
     y_ee = np.sin(t_ee) * c + y_sample
 
-    # Calc edge lengths
-    e_ee = np.sqrt((2*2.54-ee_dist)**2 - ee_dist**2) - ee_dist
-
     # Calc offset angle 
     t_o = np.arcsin(ee_dist/(2*2.54-ee_dist))
     
@@ -153,35 +134,18 @@ def uniform_edge_exclusion_outline(x_sample, y_sample, t_off, ee_dist):
     t = np.linspace(t1+t_o, t2-t_o, 50)
     x = x_sample + (2*2.54-ee_dist) * np.cos(t)
     y = y_sample + (2*2.54-ee_dist) * np.sin(t)
-    path = f"M {x[0]},{y[0]}"
-    for xc, yc in zip(x[1:], y[1:]):
+
+    path = f"M {x_ee},{y_ee}"
+    for xc, yc in zip(x, y):
         path += f" L{xc},{yc}"
 
+    path += f" L{x_ee},{y_ee} Z"
 
-    shapes=[
-        dict(
-            type="line",
-            x0=x_ee,
-            y0=y_ee,
-            x1=e_ee * np.cos(t1) + x_ee,
-            y1=e_ee * np.sin(t1) + y_ee,
-            line=dict(color="rgba(193, 0, 1, 255)", width=2),
-        ),
-        dict(
-            type="line",
-            x0=x_ee,
-            y0=y_ee,
-            x1=e_ee * np.cos(t2) + x_ee,
-            y1=e_ee * np.sin(t2) + y_ee,
-            line=dict(color="rgba(193, 0, 1, 255)", width=2),
-        ),
-        dict(
-            type="path",
-            path=path, #sector
-            line=dict(color="rgba(193, 0, 1, 255)", width=2),
-        ),
-    ]
-    return shapes
-    
+
+    return dict(
+        type="path",
+        path=path, #sector
+        line=dict(color="rgba(193, 0, 1, 255)", width=2),
+    )
 
 

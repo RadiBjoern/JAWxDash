@@ -136,10 +136,12 @@ def update_figure(
     
     # Add edge exclusion outline if selected
     if settings["sample_outline"] and settings["ee_state"]:
+
+        ee = []
         if settings["ee_type"] == "radial":
-            ee = sample_outlines.radial_edge_exclusion_outline(settings["x_sample"], settings["y_sample"], settings["theta_sample"], settings["ee_distance"])
+            ee.append(sample_outlines.radial_edge_exclusion_outline(settings["sample_x"], settings["sample_y"], settings["sample_theta"], settings["ee_distance"]))
         elif settings["ee_type"] == "uniform":
-            ee = sample_outlines.uniform_edge_exclusion_outline(settings["x_sample"], settings["y_sample"], settings["theta_sample"], settings["ee_distance"])
+            ee.append(sample_outlines.uniform_edge_exclusion_outline(settings["sample_x"], settings["sample_y"], settings["sample_theta"], settings["ee_distance"]))
 
         shapes.extend(ee)
     
