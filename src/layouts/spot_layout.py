@@ -10,8 +10,37 @@ logger = logging.getLogger(__name__)
 spot_layout = html.Div(
     [
         html.H6("Beam Settings"),
+
+
+        # z_data
         html.Div([
-            html.H6("Style:"),
+            html.H6("Z-Data:", style={"marginRight": "10px"}),
+            dcc.Dropdown(
+                id=ids.DropDown.Z_DATA,
+                options=[],
+                multi=False,
+                clearable=False,
+                style={"width": "200px"},
+            ),
+        ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+
+
+        # colormaps
+        html.Div([
+            html.H6("Colormap:", style={"marginRight": "10px"}),
+            dcc.Dropdown(
+                id=ids.DropDown.COLORMAPS,
+                multi=False,
+                clearable=False,
+                style={"alignItems": "right", "width": "200px"},
+            ),
+        ], 
+        style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+
+
+        # Marker style
+        html.Div([
+            html.H6("Marker style:"),
             dcc.RadioItems(
                 id=ids.RadioItems.PLOT_STYLE,
                 options=[
@@ -23,7 +52,8 @@ spot_layout = html.Div(
             ),
         ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
 
-    
+
+        # Angle of incident
         html.H6("Angle of incident (deg)", style={'textAlign': 'center',}),
         dcc.Slider(
             id=ids.Slider.ANGLE_OF_INCIDENT, 
@@ -34,13 +64,14 @@ spot_layout = html.Div(
         ),
 
 
+        # Focus probes
         html.Div([
-            html.H6("Size", style={"marginRight": "10px"}),
+            html.H6("Focus probe", style={"marginRight": "10px"}),
             dcc.RadioItems(
                 id=ids.RadioItems.SPOT_SIZE,
                 options=[
-                    {'label': 'wo. FP', 'value': 0.3},
-                    {'label': 'w. FP', 'value': 0.03},
+                    {'label': 'ON', 'value': 0.3},
+                    {'label': 'OFF', 'value': 0.03},
                 ],
                 inline=True,
                 style={"alignItems": "right", "width": "200px"},

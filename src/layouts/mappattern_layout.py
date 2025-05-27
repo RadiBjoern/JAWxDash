@@ -1,6 +1,8 @@
 from dash import dcc, html
 
+
 import ids
+
 
 
 def get_input_div(info:dict) -> html.Div:
@@ -16,33 +18,18 @@ def get_input_div(info:dict) -> html.Div:
 
 
 map_pattern_info = [
-    {"label": "X:", "id": ids.Offset.MAPPATTERN_X},
-    {"label": "Y:", "id": ids.Offset.MAPPATTERN_Y},
-    {"label": "Theta:", "id": ids.Offset.MAPPATTERN_THETA},
+    {"label": "X:", "id": ids.Input.MAPPATTERN_X},
+    {"label": "Y:", "id": ids.Input.MAPPATTERN_Y},
+    {"label": "Theta:", "id": ids.Input.MAPPATTERN_THETA},
 ]
 map_pattern_div = [get_input_div(setting) for setting in map_pattern_info]
 
 
-
-sample_info = [
-    {"label": "X:", "id": ids.Offset.SAMPLE_X},
-    {"label": "Y:", "id": ids.Offset.SAMPLE_Y},
-    {"label": "Theta:", "id": ids.Offset.SAMPLE_THETA},
-]
-sample_div = [get_input_div(setting) for setting in sample_info]
-
-
-
-offset_layout = html.Div(
+mappattern_layout = html.Div(
     [
         ### MapPattern Offset ###
         html.H6("MapPattern Offset"),
         html.Div(map_pattern_div),
-
-
-        ### Sample offset ###
-        html.H6("Sample Offset"),
-        html.Div(sample_div),
     ],
     style={
         'width': '100%',

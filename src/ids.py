@@ -24,6 +24,12 @@ class Graph:
 
 class Input:
     EDGE_EXCLUSION_DISTANCE = "input_edge_exclusion_distance"
+    MAPPATTERN_X = "input_mappattern_x"
+    MAPPATTERN_Y = "input_mappattern_y"
+    MAPPATTERN_THETA = "input_mappattern_theta"
+    SAMPLE_X = "input_sample_x"
+    SAMPLE_Y = "input_sample_y"
+    SAMPLE_THETA = "input_sample_theta"
 
 class Slider:
     ANGLE_OF_INCIDENT = "slider_angle_of_incident"
@@ -47,10 +53,3 @@ class RadioItems:
     EDGE_EXCLUSION_TYPE = "radioitems_edge_exclusion_type"
     BATCH_PROCESSING = "radioitems_batch_processing"
 
-class Offset:
-    MAPPATTERN_X = "mappattern_x"
-    MAPPATTERN_Y = "mappattern_y"
-    MAPPATTERN_THETA = "mappattern_theta"
-    SAMPLE_X = "sample_x"
-    SAMPLE_Y = "sample_y"
-    SAMPLE_THETA = "sample_theta"

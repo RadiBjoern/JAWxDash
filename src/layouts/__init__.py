@@ -2,5 +2,6 @@ from layouts.edge_exclusion_layout import edge_exclusion_layout
 from layouts.filemanager_layout import filemanager_layout
 from layouts.spot_layout import spot_layout
 from layouts.graph_layout import graph_layout
-from layouts.sample_layout import sample_layout
-from layouts.offset_layout import offset_layout
+from layouts.outline_layout import outline_layout
+from layouts.mappattern_layout import mappattern_layout
+

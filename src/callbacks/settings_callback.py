@@ -20,14 +20,14 @@ logger = logging.getLogger(__name__)
     Output(ids.DropDown.Z_DATA, "value"),
     
     # MapPattern offsets
-    Output(ids.Offset.MAPPATTERN_X, "value"),
-    Output(ids.Offset.MAPPATTERN_Y, "value"),
-    Output(ids.Offset.MAPPATTERN_THETA, "value"),
+    Output(ids.Input.MAPPATTERN_X, "value"),
+    Output(ids.Input.MAPPATTERN_Y, "value"),
+    Output(ids.Input.MAPPATTERN_THETA, "value"),
     
     # Sample offsets
-    Output(ids.Offset.SAMPLE_X, "value"),
-    Output(ids.Offset.SAMPLE_Y, "value"),
-    Output(ids.Offset.SAMPLE_THETA, "value"),
+    Output(ids.Input.SAMPLE_X, "value"),
+    Output(ids.Input.SAMPLE_Y, "value"),
+    Output(ids.Input.SAMPLE_THETA, "value"),
     
     # Edge exclusion
     Output(ids.RadioItems.EDGE_EXCLUSION_STATE, "value"),
@@ -87,14 +87,14 @@ def load_default_settings(default_settings):
     Input(ids.DropDown.Z_DATA, "value"),
     
     # MapPattern offset
-    Input(ids.Offset.MAPPATTERN_X, "value"),
-    Input(ids.Offset.MAPPATTERN_Y, "value"),
-    Input(ids.Offset.MAPPATTERN_THETA, "value"),
+    Input(ids.Input.MAPPATTERN_X, "value"),
+    Input(ids.Input.MAPPATTERN_Y, "value"),
+    Input(ids.Input.MAPPATTERN_THETA, "value"),
     
     # Sample offset
-    Input(ids.Offset.SAMPLE_X, "value"),
-    Input(ids.Offset.SAMPLE_Y, "value"),
-    Input(ids.Offset.SAMPLE_THETA, "value"),
+    Input(ids.Input.SAMPLE_X, "value"),
+    Input(ids.Input.SAMPLE_Y, "value"),
+    Input(ids.Input.SAMPLE_THETA, "value"),
 
     # Edge exclusion
     Input(ids.RadioItems.EDGE_EXCLUSION_STATE, "value"),
