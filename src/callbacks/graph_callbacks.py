@@ -8,7 +8,7 @@ import logging
 # Local imports
 import ids
 from utils.readers import JAWFile
-from utils.sample_outlines import sample_outlines, uniform_edge_exclusion_outline, radial_edge_exclusion_outline
+from utils import sample_outlines
 from utils.utilities import gen_spot, rotate, translate
 
 from templates.graph_template import FIGURE_LAYOUT
@@ -84,9 +84,9 @@ def update_figure(
     x_data = np.array(file.data["x"])
     y_data = np.array(file.data["y"])
 
-    xy = rotate(np.vstack([x_data, y_data]), settings["theta_mappattern"])
+    xy = rotate(np.vstack([x_data, y_data]), settings["mappattern_theta"])
 
-    xy = translate(xy, [settings["x_mappattern"], settings["y_mappattern"]])
+    xy = translate(xy, [settings["mappattern_x"], settings["mappattern_y"]])
     x_data = xy[0,:]
     y_data = xy[1,:]
     
@@ -130,22 +130,16 @@ def update_figure(
     # Adds outline if outline is selected
     if settings["sample_outline"]:
         # add sample outline to 'shapes'
-        kwargs = dict(
-            x_off = settings["x_sample"], 
-            y_off = settings["y_sample"],
-            t_off = settings["theta_sample"],
-        )
         
- 
-        shapes.append(sample_outlines[settings["sample_outline"]](**kwargs))
+        shapes.append(sample_outlines.generate_outline(settings))
 
     
     # Add edge exclusion outline if selected
     if settings["sample_outline"] and settings["ee_state"]:
         if settings["ee_type"] == "radial":
-            ee = radial_edge_exclusion_outline(settings["x_sample"], settings["y_sample"], settings["theta_sample"], settings["ee_distance"])
+            ee = sample_outlines.radial_edge_exclusion_outline(settings["x_sample"], settings["y_sample"], settings["theta_sample"], settings["ee_distance"])
         elif settings["ee_type"] == "uniform":
-            ee = uniform_edge_exclusion_outline(settings["x_sample"], settings["y_sample"], settings["theta_sample"], settings["ee_distance"])
+            ee = sample_outlines.uniform_edge_exclusion_outline(settings["x_sample"], settings["y_sample"], settings["theta_sample"], settings["ee_distance"])
 
         shapes.extend(ee)
     

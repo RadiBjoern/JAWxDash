@@ -30,6 +30,10 @@ class Input:
     SAMPLE_X = "input_sample_x"
     SAMPLE_Y = "input_sample_y"
     SAMPLE_THETA = "input_sample_theta"
+    SAMPLE_RADIUS = "input_sample_radius"
+    SAMPLE_WIDTH = "input_sample_width"
+    SAMPLE_HEIGHT = "input_sample_height"
+
 
 class Slider:
     ANGLE_OF_INCIDENT = "slider_angle_of_incident"

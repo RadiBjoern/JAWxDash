@@ -10,22 +10,25 @@ DEFAULT_SETTINGS = dict(
     # Sample settings
     colormap_value="viridis",
     colormap_options=sorted([colorscale for colorscale in px.colors.named_colorscales()]),
-    sample_outline="1/4 wafer 4 inch",
+    sample_outline="sector",
     z_data_value="",
 
     # Mappattern offset
-    x_mappattern=0.0,
-    y_mappattern=2.5,
-    theta_mappattern=4.1,
+    mappattern_x=0.0,
+    mappattern_y=2.5,
+    mappattern_theta=4.1,
 
     # Sample offset
-    x_sample=-0.067,
-    y_sample=2.948,
-    theta_sample=5.1+225,
+    sample_x=-0.067,
+    sample_y=2.948,
+    sample_theta=5.1+225,
+    sample_radius=2*2.54,
+    sample_width=2*2.54,
+    sample_height=2*2.54,
 
     # Edge exclusion
     ee_state=False,
     ee_type="radial",
     ee_distance=1.0,
-    batch_processing=False,
+    ee_batch_processing=False,
 )

@@ -20,7 +20,7 @@ def get_input_div(info:dict) -> html.Div:
 map_pattern_info = [
     {"label": "X:", "id": ids.Input.MAPPATTERN_X},
     {"label": "Y:", "id": ids.Input.MAPPATTERN_Y},
-    {"label": "Theta:", "id": ids.Input.MAPPATTERN_THETA},
+    {"label": "\u03F4:", "id": ids.Input.MAPPATTERN_THETA},
 ]
 map_pattern_div = [get_input_div(setting) for setting in map_pattern_info]
 

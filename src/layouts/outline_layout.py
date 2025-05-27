@@ -4,6 +4,8 @@ import ids
 from utils.sample_outlines import sample_outlines
 
 
+
+
 def get_input_div(info:dict) -> html.Div:
     return html.Div([
         html.H6(info["label"]),
@@ -16,11 +18,13 @@ def get_input_div(info:dict) -> html.Div:
 
 
 
-
 outline_info = [
     {"label": "X:", "id": ids.Input.SAMPLE_X},
     {"label": "Y:", "id": ids.Input.SAMPLE_Y},
-    {"label": "Theta:", "id": ids.Input.SAMPLE_THETA},
+    {"label": "\u03F4:", "id": ids.Input.SAMPLE_THETA},
+    {"label": "R", "id": ids.Input.SAMPLE_RADIUS},
+    {"label": "W", "id": ids.Input.SAMPLE_WIDTH},
+    {"label": "H", "id": ids.Input.SAMPLE_HEIGHT},
 ]
 outline_div = [get_input_div(setting) for setting in outline_info]
 
@@ -36,7 +40,7 @@ outline_layout = html.Div(
             html.H6("Outline:", style={"marginRight": "10px"}),
             dcc.Dropdown(
                 id=ids.DropDown.SAMPLE_OUTLINE,
-                options=list(sample_outlines.keys()),
+                options=sample_outlines,
                 multi=False,
                 clearable=True,
                 style={"width": "200px"},

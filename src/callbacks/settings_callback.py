@@ -28,6 +28,9 @@ logger = logging.getLogger(__name__)
     Output(ids.Input.SAMPLE_X, "value"),
     Output(ids.Input.SAMPLE_Y, "value"),
     Output(ids.Input.SAMPLE_THETA, "value"),
+    Output(ids.Input.SAMPLE_RADIUS, "value"),
+    Output(ids.Input.SAMPLE_WIDTH, "value"),
+    Output(ids.Input.SAMPLE_HEIGHT, "value"),
     
     # Edge exclusion
     Output(ids.RadioItems.EDGE_EXCLUSION_STATE, "value"),
@@ -56,20 +59,23 @@ def load_default_settings(default_settings):
         default_settings["z_data_value"],
         
         # Mappattern offset
-        default_settings["x_mappattern"],
-        default_settings["y_mappattern"],
-        default_settings["theta_mappattern"],
+        default_settings["mappattern_x"],
+        default_settings["mappattern_y"],
+        default_settings["mappattern_theta"],
 
         # Sample offset
-        default_settings["x_sample"],
-        default_settings["y_sample"],
-        default_settings["theta_sample"],
+        default_settings["sample_x"],
+        default_settings["sample_y"],
+        default_settings["sample_theta"],
+        default_settings["sample_radius"],
+        default_settings["sample_width"],
+        default_settings["sample_height"],
 
         # Edge exclusion
         default_settings["ee_state"],
         default_settings["ee_type"],
         default_settings["ee_distance"],
-        default_settings["batch_processing"],
+        default_settings["ee_batch_processing"],
     )
 
 
@@ -95,6 +101,9 @@ def load_default_settings(default_settings):
     Input(ids.Input.SAMPLE_X, "value"),
     Input(ids.Input.SAMPLE_Y, "value"),
     Input(ids.Input.SAMPLE_THETA, "value"),
+    Input(ids.Input.SAMPLE_RADIUS, "value"),
+    Input(ids.Input.SAMPLE_WIDTH, "value"),
+    Input(ids.Input.SAMPLE_HEIGHT, "value"),
 
     # Edge exclusion
     Input(ids.RadioItems.EDGE_EXCLUSION_STATE, "value"),
@@ -109,7 +118,7 @@ def update_offset_setting_store(
     marker_type, angle_of_incident, spot_size,
     colormap_value, sample_outline, z_data_value,
     x_map, y_map, t_map, 
-    x_sam, y_sam, t_sam, 
+    x_sam, y_sam, t_sam, r_sam, w_sam, h_sam,
     ee_state, ee_type, ee_distance, batch_processing,
     settings
     ):
@@ -117,17 +126,31 @@ def update_offset_setting_store(
     logger.debug("Updated store")
 
     keys = (
-        "marker_type", "angle_of_incident", "spot_size",
-        "colormap_value", "sample_outline", "z_data_value",
-        "x_mappattern", "y_mappattern", "theta_mappattern",
-        "x_sample", "y_sample", "theta_sample",
-        "ee_state", "ee_type", "ee_distance", "batch_processing",
+        "marker_type", 
+        "angle_of_incident", 
+        "spot_size",
+        "colormap_value", 
+        "sample_outline", 
+        "z_data_value",
+        "mappattern_x",
+        "mappattern_y",
+        "mappattern_theta",
+        "sample_x",
+        "sample_y",
+        "sample_theta",
+        "sample_radius",
+        "sample_width",
+        "sample_height",
+        "ee_state", 
+        "ee_type", 
+        "ee_distance", 
+        "batch_processing",
     )
     values = (
         marker_type, angle_of_incident, spot_size,
         colormap_value, sample_outline, z_data_value,
         x_map, y_map, t_map,
-        x_sam, y_sam, t_sam,
+        x_sam, y_sam, t_sam, r_sam, w_sam, h_sam,
         ee_state, ee_type, ee_distance, batch_processing,
     )
 
