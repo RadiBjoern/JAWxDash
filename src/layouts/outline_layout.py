@@ -5,7 +5,6 @@ from utils.sample_outlines import sample_outlines
 
 
 
-
 def get_input_div(info:dict) -> html.Div:
     return html.Div([
         html.H6(info["label"]),
