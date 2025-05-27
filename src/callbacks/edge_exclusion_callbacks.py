@@ -6,7 +6,7 @@ import io
 import zipfile
 
 from utils.readers import JAWFile
-from utils.edge_exclusion_helper import create_masked_file
+from utils.edge_exclusion import create_masked_file
 import ids
 
 

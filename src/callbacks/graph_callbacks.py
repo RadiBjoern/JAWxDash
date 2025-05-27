@@ -8,7 +8,7 @@ import logging
 # Local imports
 import ids
 from utils.readers import JAWFile
-from utils import sample_outlines
+from utils.sample_outlines import generate_outline, radial_edge_exclusion_outline, uniform_edge_exclusion_outline
 from utils.utilities import gen_spot, rotate, translate
 
 from templates.graph_template import FIGURE_LAYOUT
@@ -131,7 +131,7 @@ def update_figure(
     if settings["sample_outline"]:
         # add sample outline to 'shapes'
         
-        shapes.append(sample_outlines.generate_outline(settings))
+        shapes.append(generate_outline(settings))
 
     
     # Add edge exclusion outline if selected
@@ -139,9 +139,9 @@ def update_figure(
 
         ee = []
         if settings["ee_type"] == "radial":
-            ee.append(sample_outlines.radial_edge_exclusion_outline(settings["sample_x"], settings["sample_y"], settings["sample_theta"], settings["ee_distance"]))
+            ee.append(radial_edge_exclusion_outline(settings["sample_x"], settings["sample_y"], settings["sample_theta"], settings["ee_distance"]))
         elif settings["ee_type"] == "uniform":
-            ee.append(sample_outlines.uniform_edge_exclusion_outline(settings["sample_x"], settings["sample_y"], settings["sample_theta"], settings["ee_distance"]))
+            ee.append(uniform_edge_exclusion_outline(settings["sample_x"], settings["sample_y"], settings["sample_theta"], settings["ee_distance"]))
 
         shapes.extend(ee)
     
