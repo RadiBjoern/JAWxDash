@@ -21,7 +21,6 @@ def generate_outline(settings:dict) -> dict:
     
 
     elif settings["sample_outline"] == "rectangle_corner":
-        #x, y = settings["sample_x"], settings["sample_y"]
         w, h = settings["sample_width"], settings["sample_height"]
 
         x = (0, w, w, 0, 0)
@@ -79,7 +78,6 @@ def generate_outline(settings:dict) -> dict:
 
 sample_outlines = [
     {"label": "Circle", "value": "circle"},
-    {"label": "Rectangle (center)", "value": "rectangle_center"},
     {"label": "Rectangle (corner)", "value": "rectangle_corner"},
     {"label": "Sector", "value": "sector"},
 ]

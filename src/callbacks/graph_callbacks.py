@@ -8,7 +8,8 @@ import logging
 # Local imports
 import ids
 from utils.readers import JAWFile
-from utils.sample_outlines import generate_outline, radial_edge_exclusion_outline, uniform_edge_exclusion_outline
+from utils.sample_outlines import generate_outline
+from utils.edge_exclusion import radial_edge_exclusion_outline, uniform_edge_exclusion_outline
 from utils.utilities import gen_spot, rotate, translate
 
 from templates.graph_template import FIGURE_LAYOUT
@@ -55,8 +56,6 @@ def update_figure(
         - theta
     """
     
-    logger.debug("Tiggered")
-
     # Setting up an empty figure
     figure = go.Figure(
         layout=go.Layout(
@@ -99,8 +98,7 @@ def update_figure(
 
     # Determine if we're plotting spots as ellipse or points
     if settings["marker_type"] == "point":
-        logger.debug("Plotting 'points'")
-
+        
         figure.add_trace(go.Scatter(
             x=x_data,
             y=y_data,
@@ -116,8 +114,6 @@ def update_figure(
 
 
     else:
-        logger.debug("Plotting NOT 'points'")
-
         # Making colors
         d_min, d_max = z_data.min(), z_data.max()
 
@@ -139,9 +135,9 @@ def update_figure(
 
         ee = []
         if settings["ee_type"] == "radial":
-            ee.append(radial_edge_exclusion_outline(settings["sample_x"], settings["sample_y"], settings["sample_theta"], settings["ee_distance"]))
+            ee.append(radial_edge_exclusion_outline(settings))
         elif settings["ee_type"] == "uniform":
-            ee.append(uniform_edge_exclusion_outline(settings["sample_x"], settings["sample_y"], settings["sample_theta"], settings["ee_distance"]))
+            ee.append(uniform_edge_exclusion_outline(settings))
 
         shapes.extend(ee)
     

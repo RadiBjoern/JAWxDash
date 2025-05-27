@@ -22,7 +22,6 @@ logger = logging.getLogger(__name__)
 )
 def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, settings:dict):
     
-    logger.debug("Button pressed")
 
     # check if a file is selected and edge exclusion is turned on
     if not selected_file or not settings["ee_state"]:

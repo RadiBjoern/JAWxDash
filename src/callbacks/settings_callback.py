@@ -44,8 +44,6 @@ logger = logging.getLogger(__name__)
 )
 def load_default_settings(default_settings):
 
-    logger.debug("Loaded settings")
-
     return (
         # Spot
         default_settings["marker_type"],
@@ -123,7 +121,6 @@ def update_offset_setting_store(
     settings
     ):
 
-    logger.debug("Updated store")
 
     keys = (
         "marker_type", 
