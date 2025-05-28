@@ -14,9 +14,9 @@ def create_masked_file(file:JAWFile, settings:dict) -> JAWFile:
 
     # Getting instrumented coordinate of the measurement
     xy_off = file.offset(
-        x=settings["x_mappattern"],
-        y=settings["y_mappattern"],
-        theta=settings["theta_mappattern"],
+        x=settings["mappattern_x"],
+        y=settings["mappattern_y"],
+        theta=settings["mappattern_theta"],
     )
 
     
@@ -24,10 +24,10 @@ def create_masked_file(file:JAWFile, settings:dict) -> JAWFile:
     if settings["ee_type"] == "radial":
 
         # Sector parameters
-        cx, cy = settings["x_sample"], settings["y_sample"]  # center
-        radius = (2*2.54 - settings["ee_distance"])
-        angle_start = np.deg2rad(0 + settings["theta_sample"])  # in radians
-        angle_end = np.deg2rad(90 + settings["theta_sample"])
+        cx, cy = settings["sample_x"], settings["sample_y"]  # center
+        radius = (settings["sample_radius"] - settings["ee_distance"])
+        angle_start = np.deg2rad(0 + settings["sample_theta"])  # in radians
+        angle_end = np.deg2rad(90 + settings["sample_theta"])
 
 
         # Polar coordinates
@@ -51,7 +51,7 @@ def create_masked_file(file:JAWFile, settings:dict) -> JAWFile:
     out_file.data = file.data[mask]
 
 
-    out_file.data.drop(["x", "y"], axis="columns", inplace=True)
+    out_file.data = out_file.data.drop(["x", "y"], axis="columns")
 
 
     # Check the new header

@@ -14,6 +14,27 @@ logger = logging.getLogger(__name__)
 
 
 @callback(
+        Output(ids.Text.EXCLUDED_POINTS, "children"),
+        Input(ids.DropDown.UPLOADED_FILES, "value"),
+        Input(ids.Store.SETTINGS, "data"),
+        State(ids.Store.UPLOADED_FILES, "data"),
+)
+def update_excluded_points_text(selected_file:str, settings:dict, stored_files:dict) -> str:
+
+    # check if a file is selected and edge exclusion is turned on
+    if not selected_file or not settings["ee_state"]:
+        return ""
+    
+    # Loading into JAWFile object
+    file = JAWFile.from_dict(stored_files[selected_file])
+    out_file = create_masked_file(file, settings)
+
+
+    return "%i/%i" % (len(file.data.index) - len(out_file.data.index), len(file.data.index))
+
+
+
+@callback(
     Output(ids.Download.EDGE_EXCLUDED_FILE, "data"),
     Input(ids.Button.DOWNLOAD_MASKED_DATA, "n_clicks"),
     State(ids.DropDown.UPLOADED_FILES, "value"),
