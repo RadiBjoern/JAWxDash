@@ -21,13 +21,13 @@ def create_masked_file(file:JAWFile, settings:dict) -> JAWFile:
 
     
 
-    if settings["ee_type"] == "radial":
+    if settings["ee_type"] == "radial" and settings["outline_type"] == "sector":
 
         # Sector parameters
         cx, cy = settings["sample_x"], settings["sample_y"]  # center
         radius = (settings["sample_radius"] - settings["ee_distance"])
-        angle_start = np.deg2rad(0 + settings["sample_theta"])  # in radians
-        angle_end = np.deg2rad(90 + settings["sample_theta"])
+        angle_start = np.deg2rad(settings["sample_theta"])  # in radians
+        angle_end = angle_start + 0.5*np.pi
 
 
         # Polar coordinates
@@ -43,8 +43,10 @@ def create_masked_file(file:JAWFile, settings:dict) -> JAWFile:
         mask = (r <= radius) & (theta >= angle_start) & (theta <= angle_end)
 
 
+
     else:
-        print("Edge exclusion type not implemented. Please select another")
+        logger.error("Exclusion type: %s for outline type: %s, not implemented" % (settings["ee_type"], settings["outline_type"]))
+        mask = []
 
 
     out_file = copy(file)
