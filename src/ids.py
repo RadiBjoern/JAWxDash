@@ -3,13 +3,13 @@ class Button:
     DOWNLOAD_MASKED_DATA = "btn_apply_edge_exclusion"
 
 
-class Download:
-    EDGE_EXCLUDED_FILE = "download_edge_excluded_file"
-
-
 class Div:
     INFO = "div_info"
     STAT_TABLE = "div_stat_table"
+
+
+class Download:
+    EDGE_EXCLUDED_FILE = "download_edge_excluded_file"
 
 
 class DropDown:
@@ -36,6 +36,14 @@ class Input:
     SAMPLE_HEIGHT = "input_sample_height"
 
 
+class RadioItems:
+    PLOT_STYLE = "radioitems_plot_style"
+    SPOT_SIZE = "radioitems_spot_size"
+    EDGE_EXCLUSION_STATE = "radioitems_edge_exclusion_state"
+    EDGE_EXCLUSION_TYPE = "radioitems_edge_exclusion_type"
+    BATCH_PROCESSING = "radioitems_batch_processing"
+
+
 class Slider:
     ANGLE_OF_INCIDENT = "slider_angle_of_incident"
     SPOT_SIZE = "slider_spot_size"
@@ -47,14 +55,12 @@ class Store:
     SETTINGS = "store_settings"
 
 
+class Text:
+    EXCLUDED_POINTS = "text_excluded_points" \
+    ""
+
 class Upload:
     DRAG_N_DROP = "upload_drag_n_drop"
 
 
-class RadioItems:
-    PLOT_STYLE = "radioitems_plot_style"
-    SPOT_SIZE = "radioitems_spot_size"
-    EDGE_EXCLUSION_STATE = "radioitems_edge_exclusion_state"
-    EDGE_EXCLUSION_TYPE = "radioitems_edge_exclusion_type"
-    BATCH_PROCESSING = "radioitems_batch_processing"
 

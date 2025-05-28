@@ -45,6 +45,12 @@ edge_exclusion_layout = html.Div([
 
 
     html.Div([
+        html.H6("Excluded points:"),
+        html.H6(id=ids.Text.EXCLUDED_POINTS),
+    ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+
+
+    html.Div([
         html.H6("Batch process:"),
         dcc.RadioItems(
             id=ids.RadioItems.BATCH_PROCESSING,
