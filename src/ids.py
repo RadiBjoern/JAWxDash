@@ -9,6 +9,7 @@ class Download:
 
 class Div:
     INFO = "div_info"
+    STAT_TABLE = "div_stat_table"
 
 
 class DropDown:

@@ -1,9 +1,10 @@
-from dash import Dash, dcc, html
+from dash import Dash, dcc, html, dash_table
 
 # Local import
 import ids
 from logger_config import setup_logging
-from layouts import edge_exclusion_layout, filemanager_layout, graph_layout, outline_layout, spot_layout, mappattern_layout
+from layouts import edge_exclusion_layout, filemanager_layout, graph_layout, outline_layout, spot_layout, mappattern_layout, stat_table_layout
+
 
 from templates.settings_template import DEFAULT_SETTINGS
 
@@ -12,6 +13,7 @@ external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 setup_logging()  # initiate logging module
 
 app = Dash(__name__, external_stylesheets=external_stylesheets)
+
 
 
 app.layout = html.Div([
@@ -38,6 +40,7 @@ app.layout = html.Div([
         [
             # Main graph window
             graph_layout,
+            stat_table_layout,
         ], 
         style={
             'width': '60%', 
