@@ -27,6 +27,7 @@ filemanager_layout = dbc.CardBody([
     ),
     # Vertical spacing
     html.Div(style={"height": "15px"}),
+    
     # File dropdown
     dcc.Dropdown(
         id=ids.DropDown.UPLOADED_FILES,

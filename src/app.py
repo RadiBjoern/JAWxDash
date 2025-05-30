@@ -46,12 +46,13 @@ app.layout = dbc.Container([
 
         # Right column
         dbc.Col([
-
+            dbc.Card([
                 spot_layout,
                 outline_layout,
                 stage_layout,
                 mappattern_layout,
                 edge_exclusion_layout,
+            ], className="mt-4")
         ], width=2),
     ]),
 
