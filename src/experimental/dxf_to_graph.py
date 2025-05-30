@@ -15,7 +15,9 @@ shapes = []
 
 def arc_to_path(center, radius, start_angle, end_angle, closed= False):
 
-    t = np.deg2rad(np.linspace(start_angle, end_angle, 50))
+
+    n = int((end_angle - start_angle) / 5 + 1)
+    t = np.deg2rad(np.linspace(start_angle, end_angle, n))
     x = center[0] + radius*np.cos(t)
     y = center[1] + radius*np.sin(t)
 
