@@ -1,9 +1,11 @@
 from dash import html, dcc
+import dash_bootstrap_components as dbc
+
 
 import ids
 
-filemanager_layout = html.Div(
-    [
+filemanager_layout = dbc.Card([
+    dbc.CardBody([
         # Drag-n-drop field
         dcc.Upload(
             id=ids.Upload.DRAG_N_DROP,
@@ -13,17 +15,21 @@ filemanager_layout = html.Div(
             ]),
             style={
                 'width': '100%',
-                'height': '60px',
-                'lineHeight': '60px',
+                'height': '100px',
+                'lineHeight': '100px',
                 'borderWidth': '1px',
                 'borderStyle': 'dashed',
-                'borderRadius': '10px',
+                'borderRadius': '5px',
                 'textAlign': 'center',
-                'margin': '10px'
-            },
-            # Allow multiple files to be uploaded
+                'backgroundColor': '#f8f9fa',
+                'cursor': 'pointer'
+            },            # Allow multiple files to be uploaded
             multiple=True
         ),
+
+
+        # Vertical spacing
+        html.Div(style={"height": "15px"}),
 
 
         # File dropdown
@@ -33,13 +39,16 @@ filemanager_layout = html.Div(
             value='',
             multi=False,
             clearable=False,
+            className="mb-3",
         ),
-        
+
 
         # File delete button
-        html.Button(
+        dbc.Button(
             "Delete Selected",
             id=ids.Button.DELETE_SELECTED,
+            color="primary",
+            className="w-100"
         ),
-    ],
-)
+    ], className="mt-4", style={"maxWidth": "400px"}),
+])
