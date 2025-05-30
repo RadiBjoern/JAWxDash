@@ -27,16 +27,20 @@ app.layout = dbc.Container([
 
         # Left column
         dbc.Col([
-            filemanager_layout,
-
+            dbc.Card([
+                filemanager_layout,
+            ], className="mt-4"),
         ], width=3),
 
 
         # Middle column
         dbc.Col([
-                graph_layout,
-                stat_table_layout,
-
+            dbc.Card([
+                dbc.CardBody([
+                    graph_layout,
+                    stat_table_layout,
+                ])
+            ], className="mt-4"),
         ], width=7),
 
 
@@ -59,7 +63,7 @@ app.layout = dbc.Container([
         ),
     ]),
 
-])  #, className="app-container")
+], fluid=True)  #, className="app-container")
 
 
 # Register callbacks

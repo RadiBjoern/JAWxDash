@@ -1,5 +1,6 @@
 from dash import dcc
 import plotly.graph_objs as go
+import dash_bootstrap_components as dbc
 
 
 import ids
@@ -24,6 +25,6 @@ figure.add_trace(go.Scatter(
 
 graph_layout = dcc.Graph(
     id=ids.Graph.MAIN, 
-    style={'height': '1000px', 'width': '100%'},
+    style={'height': '1000px'},
     figure=figure,
 )
