@@ -5,3 +5,4 @@ from layouts.graph_layout import graph_layout
 from layouts.outline_layout import outline_layout
 from layouts.mappattern_layout import mappattern_layout
 from layouts.stat_table_layout import stat_table_layout
+from layouts.stage_layout import stage_layout

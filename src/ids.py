@@ -42,6 +42,7 @@ class RadioItems:
     EDGE_EXCLUSION_STATE = "radioitems_edge_exclusion_state"
     EDGE_EXCLUSION_TYPE = "radioitems_edge_exclusion_type"
     BATCH_PROCESSING = "radioitems_batch_processing"
+    STAGE_STATE = "radioitems_stage_state"
 
 
 class Slider:

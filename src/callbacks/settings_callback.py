@@ -38,6 +38,9 @@ logger = logging.getLogger(__name__)
     Output(ids.Input.EDGE_EXCLUSION_DISTANCE, "value"),
     Output(ids.RadioItems.BATCH_PROCESSING, "value"),
 
+    # Stage outline
+    Output(ids.RadioItems.STAGE_STATE, "value"),
+
     # Input
     Input(ids.Store.DEFAULT_SETTINGS, "data"),
 
@@ -74,6 +77,9 @@ def load_default_settings(default_settings):
         default_settings["ee_type"],
         default_settings["ee_distance"],
         default_settings["ee_batch_processing"],
+
+        # Stage outline
+        default_settings["stage_state"],
     )
 
 
@@ -109,6 +115,9 @@ def load_default_settings(default_settings):
     Input(ids.Input.EDGE_EXCLUSION_DISTANCE, "value"),
     Input(ids.RadioItems.BATCH_PROCESSING, "value"),
 
+    # Stage outline
+    Input(ids.RadioItems.STAGE_STATE, "value"),
+
     # Store state
     State(ids.Store.SETTINGS, "data"),
 )
@@ -118,6 +127,7 @@ def update_offset_setting_store(
     x_map, y_map, t_map, 
     x_sam, y_sam, t_sam, r_sam, w_sam, h_sam,
     ee_state, ee_type, ee_distance, batch_processing,
+    stage_state,
     settings
     ):
 
@@ -142,6 +152,7 @@ def update_offset_setting_store(
         "ee_type", 
         "ee_distance", 
         "batch_processing",
+        "stage_state",
     )
     values = (
         marker_type, angle_of_incident, spot_size,
@@ -149,6 +160,7 @@ def update_offset_setting_store(
         x_map, y_map, t_map,
         x_sam, y_sam, t_sam, r_sam, w_sam, h_sam,
         ee_state, ee_type, ee_distance, batch_processing,
+        stage_state,
     )
 
     for key, value in zip(keys, values):

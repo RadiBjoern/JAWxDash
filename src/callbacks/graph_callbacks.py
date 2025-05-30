@@ -11,6 +11,8 @@ from utils.readers import JAWFile
 from utils.sample_outlines import generate_outline
 from utils.edge_exclusion import radial_edge_exclusion_outline, uniform_edge_exclusion_outline
 from utils.utilities import gen_spot, rotate, translate
+from utils.dxf import dxf_to_path
+
 
 from templates.graph_template import FIGURE_LAYOUT
 
@@ -125,7 +127,14 @@ def update_figure(
         # add sample outline to 'shapes'
         
         shapes.append(generate_outline(settings))
+    
 
+    # Add stage outline
+    if settings["stage_state"]:
+        dxf_filepath = r"src\assets\JAW stage outline.dxf"
+        
+        stage_outline = dxf_to_path(dxf_filepath)
+        shapes.extend(stage_outline)
     
     # Add edge exclusion outline if selected
     if settings["sample_outline"] and settings["ee_state"]:

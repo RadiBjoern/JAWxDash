@@ -31,4 +31,7 @@ DEFAULT_SETTINGS = dict(
     ee_type="radial",
     ee_distance=1.0,
     ee_batch_processing=False,
+
+    # Stage outline
+    stage_state=True,
 )
