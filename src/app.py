@@ -1,4 +1,6 @@
 from dash import Dash, dcc, html, dash_table
+import dash_bootstrap_components as dbc
+
 
 # Local import
 import ids
@@ -9,69 +11,53 @@ from layouts import edge_exclusion_layout, filemanager_layout, graph_layout, out
 from templates.settings_template import DEFAULT_SETTINGS
 
 
-external_stylesheets = ['https://codepen.io/chriddyp/pen/bWLwgP.css']
 setup_logging()  # initiate logging module
 
-app = Dash(__name__, external_stylesheets=external_stylesheets)
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 
 
-app.layout = html.Div([
+app.layout = dbc.Container([
     # Initiating 'Store' for holding uploaded files i.e. *.txt and *.csv
-    dcc.Store(id=ids.Store.UPLOADED_FILES, data={}, storage_type="session"),
-    dcc.Store(id=ids.Store.DEFAULT_SETTINGS, data=DEFAULT_SETTINGS),
-    dcc.Store(id=ids.Store.SETTINGS, data={}),
+        dcc.Store(id=ids.Store.UPLOADED_FILES, data={}, storage_type="session"),
+        dcc.Store(id=ids.Store.DEFAULT_SETTINGS, data=DEFAULT_SETTINGS),
+        dcc.Store(id=ids.Store.SETTINGS, data={}),
 
-    # Left column
-    html.Div(
-        [
+        dbc.Row([
+
+        # Left column
+        dbc.Col([
             filemanager_layout,
-        ], 
-        style={
-            'width': '15%', 
-            'display': 'inline-block', 
-            'verticalAlign': 'top', 
-            'padding': '10px'
-        }
-    ),
 
-    # Middle column
-    html.Div(
-        [
-            # Main graph window
-            graph_layout,
-            stat_table_layout,
-        ], 
-        style={
-            'width': '60%', 
-            'display': 'inline-block', 
-            'verticalAlign': 'top', 
-            'padding': '10px'
-        }
-    ),
+        ], width=3),
 
-    # Right column
-    html.Div(
-        [
-            spot_layout,
-            outline_layout,
-            stage_layout,
-            mappattern_layout,
-            edge_exclusion_layout,
-        ], 
-        style={
-            'width': '20%', 
-            'display': 'inline-block', 
-            'verticalAlign': 'top', 
-            'padding': '10px'
-        }
-    ),
-    
+
+        # Middle column
+        dbc.Col([
+                graph_layout,
+                stat_table_layout,
+
+        ], width=7),
+
+
+        # Right column
+        dbc.Col([
+
+                spot_layout,
+                outline_layout,
+                stage_layout,
+                mappattern_layout,
+                edge_exclusion_layout,
+        ], width=2),
+    ]),
+
     # Bottom info panel
-    html.Div(
-        id=ids.Div.INFO, 
-        style={'border': '1px solid black', 'padding': '10px', 'marginTop': '20px'}
-    ),
+    dbc.Row([
+        html.Div(
+            id=ids.Div.INFO, 
+            style={'border': '1px solid black', 'padding': '10px', 'marginTop': '20px'}
+        ),
+    ]),
 
 ])  #, className="app-container")
 
