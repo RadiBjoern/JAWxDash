@@ -77,17 +77,17 @@ class JAWFile:
         """
 
         # Generating the state for the columns
-        average = ["%.4f" % self.data[col].mean() if self.data[col].dtypes  in (float, int) else "N/A" for col in self.data.columns]
-        minimum = ["%.4f" % self.data[col].min() if self.data[col].dtypes in (float, int) else "N/A" for col in self.data.columns]
-        maximum = ["%.4f" % self.data[col].max() if self.data[col].dtypes in (float, int) else "N/A" for col in self.data.columns]
-        std_dev = ["%.4f" % self.data[col].std() if self.data[col].dtypes in (float, int) else "N/A" for col in self.data.columns]
+        average = ["%.4f" % self.data[col].mean() for col in self.data.columns if (self.data[col].dtypes == float) and (col != "Point #")]
+        minimum = ["%.4f" % self.data[col].min()  for col in self.data.columns if (self.data[col].dtypes == float) and (col != "Point #")]
+        maximum = ["%.4f" % self.data[col].max()  for col in self.data.columns if (self.data[col].dtypes == float) and (col != "Point #")]
+        std_dev = ["%.4f" % self.data[col].std()  for col in self.data.columns if (self.data[col].dtypes == float) and (col != "Point #")]
 
 
         # Removing the stat for the "Point #"
-        average.pop(1)
-        minimum.pop(1)
-        maximum.pop(1)
-        std_dev.pop(1)
+        #average.pop(1)
+        #minimum.pop(1)
+        #maximum.pop(1)
+        #std_dev.pop(1)
 
 
         # Generate new header

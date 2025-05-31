@@ -21,7 +21,7 @@ def create_masked_file(file:JAWFile, settings:dict) -> JAWFile:
 
     
 
-    if settings["ee_type"] == "radial" and settings["outline_type"] == "sector":
+    if settings["ee_type"] == "radial" and settings["sample_outline"] == "sector":
 
         # Sector parameters
         cx, cy = settings["sample_x"], settings["sample_y"]  # center
@@ -45,15 +45,12 @@ def create_masked_file(file:JAWFile, settings:dict) -> JAWFile:
 
 
     else:
-        logger.error("Exclusion type: %s for outline type: %s, not implemented" % (settings["ee_type"], settings["outline_type"]))
+        logger.error("Exclusion type: %s for sample outline: %s, not implemented" % (settings["ee_type"], settings["sample_outline"]))
         mask = []
 
 
     out_file = copy(file)
     out_file.data = file.data[mask]
-
-
-    out_file.data = out_file.data.drop(["x", "y"], axis="columns")
 
 
     # Check the new header

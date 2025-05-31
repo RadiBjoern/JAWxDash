@@ -64,11 +64,12 @@ app.layout = dbc.Container([
 
 
 # Register callbacks
+import callbacks.edge_exclusion_callbacks
 import callbacks.filemanager_callbacks
 import callbacks.graph_callbacks
-import callbacks.store_callbacks
 import callbacks.settings_callback
-import callbacks.edge_exclusion_callbacks
+import callbacks.stat_table_callback
+import callbacks.store_callbacks
 
 
 if __name__ == '__main__':

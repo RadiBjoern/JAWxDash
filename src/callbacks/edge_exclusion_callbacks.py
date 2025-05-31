@@ -67,6 +67,8 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
             # Loading into JAWFile object
             file = JAWFile.from_dict(stored_files[selected_file])
             out_file = create_masked_file(file, settings)
+
+            out_file.data.drop(["x", "y"], axis="columns")
             
             file_dict[filename] = out_file.content()
 
@@ -95,6 +97,7 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
         file = JAWFile.from_dict(stored_files[selected_file])
         out_file = create_masked_file(file, settings)
 
+        out_file.data.drop(["x", "y"], axis="columns")
 
         # Build the output manually
         buffer = StringIO()
