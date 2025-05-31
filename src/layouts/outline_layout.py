@@ -1,62 +1,73 @@
 from dash import dcc, html
+import dash_bootstrap_components as dbc
+
 
 import ids
 from utils.sample_outlines import sample_outlines
 
 
-
-def get_input_div(info:dict) -> html.Div:
-    return html.Div([
-        html.H6(info["label"]),
-        dcc.Input(
-            id=info["id"],
-            type="number",
-            debounce=True,
-        )
-    ], style={"display": "flex", "alignItems": "center", "gap": "10px"})
-
-
-
-outline_info = [
-    {"label": "X:", "id": ids.Input.SAMPLE_X},
-    {"label": "Y:", "id": ids.Input.SAMPLE_Y},
-    {"label": "\u03F4:", "id": ids.Input.SAMPLE_THETA},
-    {"label": "R", "id": ids.Input.SAMPLE_RADIUS},
-    {"label": "W", "id": ids.Input.SAMPLE_WIDTH},
-    {"label": "H", "id": ids.Input.SAMPLE_HEIGHT},
+row_info = [
+    {"label": "X offset", "id": ids.Input.SAMPLE_X},
+    {"label": "Y offset", "id": ids.Input.SAMPLE_Y},
+    {"label": "\u03F4 offset", "id": ids.Input.SAMPLE_THETA},
+    {"label": "Radius", "id": ids.Input.SAMPLE_RADIUS},
+    {"label": "Width", "id": ids.Input.SAMPLE_WIDTH},
+    {"label": "Height", "id": ids.Input.SAMPLE_HEIGHT},
 ]
-outline_div = [get_input_div(setting) for setting in outline_info]
 
-
-
-outline_layout = html.Div(
-    [
-        ### Sample offset ###
-        html.H6("Sample Outline"),
-
-        # sample_outline
-        html.Div([
-            html.H6("Outline:", style={"marginRight": "10px"}),
-            dcc.Dropdown(
-                id=ids.DropDown.SAMPLE_OUTLINE,
-                options=sample_outlines,
-                multi=False,
-                clearable=True,
-                style={"width": "200px"},
+def generate_row(label, comp_id):
+    return dbc.Row([
+        dbc.Col(
+            html.Label(
+                children=label,
+                className="mb-1 d-block text-body text-decoration-none",
             ),
-        ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+            width=5,
+        ),
+        dbc.Col(
+            dcc.Input(
+                id=comp_id,
+                type="number",
+                debounce=True,
+                className="form-control mb-1"
+            ),
+            width=7,
+        ),
+    ], className="mb-1")
 
 
-        # Offset
-        html.Div(outline_div),
-    ],
-    style={
-        'width': '100%',
-        #'lineHeight': '60px',
-        'borderWidth': '1px',
-        'borderStyle': 'solid',
-        'borderRadius': '10px',
-        'textAlign': 'center',
-        'margin': '10px'
-    },
-)
+outline_layout = dbc.Card([
+    ### Sample offset ###
+    dbc.CardHeader("Sample"),
+    dbc.CardBody([
+
+        # Sample_outline
+        dbc.Row([
+            dbc.Col(
+                html.A(
+                    "Outline:", 
+                    className="mb-2 d-block text-body text-decoration-none"
+                ),
+                width=5
+            ),
+            dbc.Col(
+                dcc.Dropdown(
+                    id=ids.DropDown.SAMPLE_OUTLINE,
+                    options=sample_outlines,
+                    multi=False,
+                    clearable=True,
+                    className="mb-2",
+                ),
+                width=7
+            ),
+        ], className="mb-2"),   
+
+        generate_row("X offset", ids.Input.SAMPLE_X),
+        generate_row("Y offset", ids.Input.SAMPLE_Y),
+        generate_row("\u03F4 offset", ids.Input.SAMPLE_THETA),
+        generate_row("Radius", ids.Input.SAMPLE_RADIUS),
+        generate_row("Width", ids.Input.SAMPLE_WIDTH),
+        generate_row("Height", ids.Input.SAMPLE_HEIGHT),
+        
+    ]),
+], className="mt-4")
