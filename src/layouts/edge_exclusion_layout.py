@@ -1,82 +1,108 @@
 from dash import dcc, html
+import dash_bootstrap_components as dbc
 
 import ids
 
 
-edge_exclusion_layout = html.Div([
-    html.H6("Edge Exclusion"),
-    html.Div([
-        html.H6("Overlay:"),
-        dcc.RadioItems(
-            id=ids.RadioItems.EDGE_EXCLUSION_STATE,
-            options=[
-                {"label": "On", "value": True},
-                {"label": "Off", "value": False},
-            ],
-            inline=True,
-            style={"alignItems": "right", "width": "200px"},
-        )
-    ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+edge_exclusion_layout = dbc.Card([
+    dbc.CardHeader("Edge Exclusion"),
+    dbc.CardBody([
 
-    
-    html.Div([
-        html.H6("Type:"),
-        dcc.RadioItems(
-            id=ids.RadioItems.EDGE_EXCLUSION_TYPE,
-            options=[
-                {"label": "Radial", "value": "radial"},
-                {"label": "Uniform", "value": "uniform"},
-            ],
-            inline=True,
-            style={"alignItems": "right", "width": "200px"},
-        )
-    ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+        # Overlay
+        dbc.Row([
+            dbc.Col([
+                html.Label("Overlay", className="mb-0 d-block text-body text-decoration-none"),
+            ], width=5),
+            dbc.Col([
+                dcc.RadioItems(
+                    id=ids.RadioItems.EDGE_EXCLUSION_STATE,
+                    options=[
+                        {"label": "ON", "value": True},
+                        {"label": "OFF", "value": False},
+                    ],
+                    inline=True,
+                    labelStyle={"margin-right": "15px"},
+                    className="mb-0"
+                )
+            ], width=7)
+        ]),
 
-    
-    html.Div([
-        html.H6("Distance:"),
-        dcc.Input(
-            id=ids.Input.EDGE_EXCLUSION_DISTANCE,
-            type="number",
-            step=0.1,
-            debounce=True,
-        )
-    ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+        # Type
+        dbc.Row([
+            dbc.Col([
+                html.Label("Type", className="mb-0 d-block text-body text-decoration-none"),
+            ], width=5),
+            dbc.Col([
+                dcc.RadioItems(
+                    id=ids.RadioItems.EDGE_EXCLUSION_TYPE,
+                    options=[
+                        {"label": "RAD", "value": "radial"},
+                        {"label": "UNI", "value": "uniform"},
+                    ],
+                    inline=True,
+                    labelStyle={"margin-right": "15px"},
+                    className="mb-0"
+                )
+            ], width=7)
+        ]),
 
+        # Distance
+        dbc.Row([
+            dbc.Col([
+                html.Label("Distance", className="mb-0 d-block text-body text-decoration-none"),
+            ], width=5),
+            dbc.Col([
+                dcc.Input(
+                    id=ids.Input.EDGE_EXCLUSION_DISTANCE,
+                    type="number",
+                    step=0.1,
+                    debounce=True,
+                    className="form-control mb-0",
+                )
+            ], width=7)
+        ]),
 
-    html.Div([
-        html.H6("Excluded points:"),
-        html.H6(id=ids.Text.EXCLUDED_POINTS),
-    ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+        # Excluded points
+        dbc.Row([
+            dbc.Col([
+                html.Label("Excl. pts", className="mb-0 d-block text-body text-decoration-none"),
+            ], width=5),
+            dbc.Col([
+                html.H6(id=ids.Text.EXCLUDED_POINTS),
+            ], width=7)
+        ]),
 
+        # Batch proc.
+        dbc.Row([
+            dbc.Col([
+                html.Label("Batch proc.", className="mb-0 d-block text-body text-decoration-none"),
+            ], width=5),
+            dbc.Col([
+                dcc.RadioItems(
+                    id=ids.RadioItems.BATCH_PROCESSING,
+                    options=[
+                        {"label": "ON", "value": True},
+                        {"label": "OFF", "value": False},
+                    ],
+                    inline=True,
+                    labelStyle={"margin-right": "15px"},
+                    className="mb-0",
+                ),
+            ], width=7)
+        ]),
 
-    html.Div([
-        html.H6("Batch process:"),
-        dcc.RadioItems(
-            id=ids.RadioItems.BATCH_PROCESSING,
-            options=[
-                {"label": "On", "value": True},
-                {"label": "Off", "value": False},
-            ],
-            inline=True,
-            style={"alignItems": "rigth", "width": "200px"},
-        ),
-    ], style={"display": "flex", "alignItems": "center", "gap": "10px"}),
+        # Vertical spacing
+        html.Div(style={"height": "10px"}),
 
-
-    html.Button(
-        "Download masked data",
-        id=ids.Button.DOWNLOAD_MASKED_DATA,
-    ),
-    dcc.Download(id=ids.Download.EDGE_EXCLUDED_FILE)
-],
-style={
-        'width': '100%',
-        #'lineHeight': '60px',
-        'borderWidth': '1px',
-        'borderStyle': 'solid',
-        'borderRadius': '10px',
-        'textAlign': 'center',
-        'margin': '10px'
-    },
-)
+        # Download btn
+        dbc.Row([
+            dbc.Button(
+                "Download masked data",
+                id=ids.Button.DOWNLOAD_MASKED_DATA,
+                color="primary",
+                className="mb-0 w-100"
+            ),
+            dcc.Download(id=ids.Download.EDGE_EXCLUDED_FILE)
+        ]),
+    ])
+], className="mt-1")

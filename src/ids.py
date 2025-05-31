@@ -1,5 +1,6 @@
 class Button:
     DELETE_SELECTED = "btn_delete_selected"
+    CLEAR_FILE_MANAGER = "btn_clear_file_manager"
     DOWNLOAD_MASKED_DATA = "btn_apply_edge_exclusion"
 
 

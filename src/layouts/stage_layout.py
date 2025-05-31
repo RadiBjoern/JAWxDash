@@ -9,7 +9,7 @@ stage_layout = dbc.Card([
     dbc.CardBody([
         dbc.Row([
             dbc.Col(
-                html.Label("Watermark:", className="mb-0 d-block text-body text-decoration-none"),
+                html.Label("Watermark", className="mb-0 d-block text-body text-decoration-none"),
                 width=5,
             ),
             dbc.Col(
@@ -20,6 +20,7 @@ stage_layout = dbc.Card([
                         {"label": "OFF", "value": False},
                     ],
                     inline=True,
+                    labelStyle={"margin-right": "15px"},
                     className="mb-0"
                 ),
                 width=7,

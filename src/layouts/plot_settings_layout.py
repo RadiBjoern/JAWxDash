@@ -9,12 +9,12 @@ logger = logging.getLogger(__name__)
 
 
 spot_layout = dbc.Card([
-    dbc.CardHeader("Beam Settings"),
+    dbc.CardHeader("Plot Settings"),
     dbc.CardBody([
         # Z data
         dbc.Row([
             dbc.Col(
-                html.A("Z-Data:", className="mb-0 d-block text-body text-decoration-none"),
+                html.Label("Z-Data", className="mb-0 d-block text-body text-decoration-none"),
                 width=5,
             ),
             dbc.Col(
@@ -32,7 +32,7 @@ spot_layout = dbc.Card([
         # Colormap
         dbc.Row([
             dbc.Col(
-                html.A("Colormap:", className="mb-0 d-block text-body text-decoration-none"),
+                html.Label("Colormap", className="mb-0 d-block text-body text-decoration-none"),
                 width=5,
             ),
             dbc.Col(
@@ -49,17 +49,18 @@ spot_layout = dbc.Card([
         # Marker style
         dbc.Row([
             dbc.Col(
-                html.A("Marker style:", className="mb-0 d-block text-body text-decoration-none"),
+                html.Label("Marker style", className="mb-0 d-block text-body text-decoration-none"),
                 width=5,
             ),
             dbc.Col(
                 dcc.RadioItems(
                     id=ids.RadioItems.PLOT_STYLE,
                     options=[
-                       {'label': 'Pnt.', 'value': 'point'},
-                       {'label': 'Ell.', 'value': 'ellipse'},
+                       {'label': 'PTS', 'value': 'point'},
+                       {'label': 'ELL', 'value': 'ellipse'},
                     ],
                     inline=True,
+                    labelStyle={"margin-right": "15px"},
                     className="mb-0",
                 ),
                 width=7,
@@ -69,7 +70,7 @@ spot_layout = dbc.Card([
         # Focus probes
         dbc.Row([
             dbc.Col(
-                html.A("Probes:", className="mb-0 d-block text-body text-decoration-none"),
+                html.Label("Probes", className="mb-0 d-block text-body text-decoration-none"),
                 width=5,
             ),
             dbc.Col(
@@ -80,6 +81,7 @@ spot_layout = dbc.Card([
                         {'label': 'OFF', 'value': 0.3},
                     ],
                     inline=True,
+                    labelStyle={"margin-right": "15px"},
                     className="mb-0",
                 ),
                 width=7,

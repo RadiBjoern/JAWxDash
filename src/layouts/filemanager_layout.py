@@ -25,10 +25,12 @@ filemanager_layout = dbc.Card([
                 'backgroundColor': '#f8f9fa',
                 'cursor': 'pointer'
             },            # Allow multiple files to be uploaded
-            multiple=True
+            multiple=True,
+            className="mb-1"
         ),
+        
         # Vertical spacing
-        html.Div(style={"height": "10px"}),
+        #html.Div(style={"height": "10px"}),
         
         # File dropdown
         dcc.Dropdown(
@@ -37,15 +39,23 @@ filemanager_layout = dbc.Card([
             value='',
             multi=False,
             clearable=False,
-            className="mb-0",
+            className="mb-1",
         ),
     
         # File delete button
         dbc.Button(
                 "Delete Selected",
                 id=ids.Button.DELETE_SELECTED,
-                color="primary",
-                className="mb-0 w-100"
+                color="warning",
+                className="mb-1 w-100"
+        ),
+
+        # Clear file manager
+        dbc.Button(
+                "Clear File Manager",
+                id=ids.Button.CLEAR_FILE_MANAGER,
+                color="danger",
+                className="mb-1 w-100"
         ),
     ])
 ], className="mt-1")
