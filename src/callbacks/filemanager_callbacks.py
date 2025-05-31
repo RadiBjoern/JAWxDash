@@ -1,5 +1,5 @@
 # Package import
-from dash import html, callback, Output, Input, State
+from dash import html, callback, Output, Input, State, ctx
 
 # Local import
 import ids
@@ -39,13 +39,23 @@ def update_uploaded_files(contents, filename:str, current_data:dict):
     Output(ids.DropDown.UPLOADED_FILES, 'options'),
     Output(ids.Div.INFO, 'children'),
     Input(ids.Button.DELETE_SELECTED, 'n_clicks'),
+    Input(ids.Button.CLEAR_FILE_MANAGER, "n_clicks"),
     State(ids.DropDown.UPLOADED_FILES, 'value'),
     State(ids.Store.UPLOADED_FILES, 'data'),
     prevent_initial_call=True,
 )
-def delete_selected_from_list(_, selected_file, current_files):
+def delete_selected_from_list(delete, clear, selected_file, current_files):
+
+    triggered_id = ctx.triggered_id  # This tells you which button was clicked
+
     # Removing selected file from dropdown
-    new_options = [f for f in current_files if f != selected_file]
-    del current_files[selected_file]
+    if triggered_id == ids.Button.DELETE_SELECTED:
+
+        new_options = [f for f in current_files if f != selected_file]
+        del current_files[selected_file]
+
+        return current_files, new_options, html.Div(f"Deleted: {selected_file}")
     
-    return current_files, new_options, html.Div(f"Deleted: {selected_file}")
+
+    elif triggered_id == ids.Button.CLEAR_FILE_MANAGER:
+        return {}, [], html.Div("File manager was cleared")
