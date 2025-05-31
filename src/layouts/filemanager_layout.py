@@ -35,7 +35,7 @@ filemanager_layout = dbc.CardBody([
         value='',
         multi=False,
         clearable=False,
-        className="mb-3",
+        className="mb-2",
     ),
     # File delete button
     dbc.Button(
@@ -44,4 +44,4 @@ filemanager_layout = dbc.CardBody([
             color="primary",
             className="w-100"
         ),
-], className="mt-4", style={"maxWidth": "400px"})
+], className="mt-4")
