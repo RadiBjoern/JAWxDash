@@ -97,7 +97,7 @@ edge_exclusion_layout = dbc.Card([
         # Download btn
         dbc.Row([
             dbc.Button(
-                "Download masked data",
+                "Download Masked Data",
                 id=ids.Button.DOWNLOAD_MASKED_DATA,
                 color="primary",
                 className="mb-0 w-100"
