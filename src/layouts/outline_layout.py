@@ -20,7 +20,7 @@ def generate_row(label, comp_id):
         dbc.Col(
             html.Label(
                 children=label,
-                className="mb-1 d-block text-body text-decoration-none",
+                className="mb-0 d-block text-body text-decoration-none",
             ),
             width=5,
         ),
@@ -29,11 +29,11 @@ def generate_row(label, comp_id):
                 id=comp_id,
                 type="number",
                 debounce=True,
-                className="form-control mb-1"
+                className="form-control mb-0"
             ),
             width=7,
         ),
-    ], className="mb-1")
+    ], className="mb-0")
 
 
 outline_layout = dbc.Card([
@@ -46,7 +46,7 @@ outline_layout = dbc.Card([
             dbc.Col(
                 html.A(
                     "Outline:", 
-                    className="mb-2 d-block text-body text-decoration-none"
+                    className="mb-0 d-block text-body text-decoration-none"
                 ),
                 width=5
             ),
@@ -56,11 +56,11 @@ outline_layout = dbc.Card([
                     options=sample_outlines,
                     multi=False,
                     clearable=True,
-                    className="mb-2",
+                    className="mb-0",
                 ),
                 width=7
             ),
-        ], className="mb-2"),   
+        ], className="mb-0"),   
 
         generate_row("X offset", ids.Input.SAMPLE_X),
         generate_row("Y offset", ids.Input.SAMPLE_Y),
@@ -70,4 +70,4 @@ outline_layout = dbc.Card([
         generate_row("Height", ids.Input.SAMPLE_HEIGHT),
         
     ]),
-], className="mt-4")
+], className="mt-1")

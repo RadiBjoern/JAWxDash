@@ -14,7 +14,7 @@ spot_layout = dbc.Card([
         # Z data
         dbc.Row([
             dbc.Col(
-                html.A("Z-Data:", className="mb-2 d-block text-body text-decoration-none"),
+                html.A("Z-Data:", className="mb-0 d-block text-body text-decoration-none"),
                 width=5,
             ),
             dbc.Col(
@@ -23,7 +23,7 @@ spot_layout = dbc.Card([
                     options=[],
                     multi=False,
                     clearable=False,
-                    className="mb-2",
+                    className="mb-0",
                 ),
                 width=7,
             )
@@ -32,7 +32,7 @@ spot_layout = dbc.Card([
         # Colormap
         dbc.Row([
             dbc.Col(
-                html.A("Colormap:", className="mb-2 d-block text-body text-decoration-none"),
+                html.A("Colormap:", className="mb-0 d-block text-body text-decoration-none"),
                 width=5,
             ),
             dbc.Col(
@@ -40,7 +40,7 @@ spot_layout = dbc.Card([
                     id=ids.DropDown.COLORMAPS,
                     multi=False,
                     clearable=False,
-                    className="mb-2",
+                    className="mb-0",
                 ),      
                 width=7,          
             )
@@ -49,7 +49,7 @@ spot_layout = dbc.Card([
         # Marker style
         dbc.Row([
             dbc.Col(
-                html.A("Marker style:", className="mb-2 d-block text-body text-decoration-none"),
+                html.A("Marker style:", className="mb-0 d-block text-body text-decoration-none"),
                 width=5,
             ),
             dbc.Col(
@@ -60,7 +60,7 @@ spot_layout = dbc.Card([
                        {'label': 'Ell.', 'value': 'ellipse'},
                     ],
                     inline=True,
-                    className="mb-2",
+                    className="mb-0",
                 ),
                 width=7,
             )
@@ -69,7 +69,7 @@ spot_layout = dbc.Card([
         # Focus probes
         dbc.Row([
             dbc.Col(
-                html.A("Probes:", className="mb-2 d-block text-body text-decoration-none"),
+                html.A("Probes:", className="mb-0 d-block text-body text-decoration-none"),
                 width=5,
             ),
             dbc.Col(
@@ -80,7 +80,7 @@ spot_layout = dbc.Card([
                         {'label': 'OFF', 'value': 0.3},
                     ],
                     inline=True,
-                    className="mb-2",
+                    className="mb-0",
                 ),
                 width=7,
             )
@@ -97,10 +97,10 @@ spot_layout = dbc.Card([
                 max=85, 
                 step=1, 
                 marks={i: str(i) for i in range(45, 86, 5)},
-                className="mb-2",
+                className="mb-0",
             ),
         )
 
     ])
-], className="mt-4")
+], className="mt-1")
 

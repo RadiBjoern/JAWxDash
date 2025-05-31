@@ -27,9 +27,7 @@ app.layout = dbc.Container([
 
         # Left column
         dbc.Col([
-            dbc.Card([
-                filemanager_layout,
-            ], className="mt-4"),
+            filemanager_layout,
         ], width=3),
 
 
@@ -40,7 +38,7 @@ app.layout = dbc.Container([
                     graph_layout,
                     stat_table_layout,
                 ])
-            ], className="mt-4"),
+            ], className="mt-1"),
         ], width=7),
 
 
