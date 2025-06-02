@@ -21,7 +21,7 @@ DEFAULT_SETTINGS = dict(
     # Sample offset
     sample_x=-0.067,
     sample_y=2.948,
-    sample_theta=5.1+225,
+    sample_theta=4.1+225,
     sample_radius=2*2.54,
     sample_width=2*2.54,
     sample_height=2*2.54,

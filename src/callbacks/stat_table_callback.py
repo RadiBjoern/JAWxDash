@@ -29,7 +29,6 @@ def update_stat_table(selected_file, settings, stored_files):
         file = create_masked_file(file, settings)
 
     tmp_data = file.data.select_dtypes(include=["float64", "int64"])
-
     tmp_data.drop(columns=["Point #"], inplace=True)
 
     minimum = tmp_data.min(axis=0)

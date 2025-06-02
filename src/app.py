@@ -1,4 +1,4 @@
-from dash import Dash, dcc, html, dash_table
+from dash import Dash, dcc, html
 import dash_bootstrap_components as dbc
 
 
