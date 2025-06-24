@@ -13,7 +13,7 @@ from templates.settings_template import DEFAULT_SETTINGS
 
 setup_logging()  # initiate logging module
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, requests_pathname_prefix='/JxD/', external_stylesheets=[dbc.themes.BOOTSTRAP])
 
 
 
@@ -71,6 +71,7 @@ import callbacks.settings_callback
 import callbacks.stat_table_callback
 import callbacks.store_callbacks
 
+server = app.server
 
 if __name__ == '__main__':
     app.run(debug=True)
