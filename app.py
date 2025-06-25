@@ -15,8 +15,8 @@ setup_logging()  # initiate logging module
 
 app = Dash(
     __name__, 
-    url_base_pathname="/ellipsometer/",
     requests_pathname_prefix="/ellipsometer/", 
+    routes_pathname_prefix="/ellipsometer",
     external_stylesheets=[dbc.themes.BOOTSTRAP]
 )
 server = app.server
