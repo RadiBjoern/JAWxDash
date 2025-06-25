@@ -5,7 +5,7 @@ import re
 import numpy as np
 
 
-from utils.utilities import rotate, translate
+from src.utils.utilities import rotate, translate
 
 
 class JAWFile:

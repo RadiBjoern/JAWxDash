@@ -6,15 +6,15 @@ import numpy as np
 import logging
 
 # Local imports
-import ids
-from utils.readers import JAWFile
-from utils.sample_outlines import generate_outline
-from utils.edge_exclusion import radial_edge_exclusion_outline, uniform_edge_exclusion_outline
-from utils.utilities import gen_spot, rotate, translate
-from utils.dxf import dxf_to_path
+from src import ids
+from src.utils.readers import JAWFile
+from src.utils.sample_outlines import generate_outline
+from src.utils.edge_exclusion import radial_edge_exclusion_outline, uniform_edge_exclusion_outline
+from src.utils.utilities import gen_spot, rotate, translate
+from src.utils.dxf import dxf_to_path
 
 
-from templates.graph_template import FIGURE_LAYOUT
+from src.templates.graph_template import FIGURE_LAYOUT
 
 logger = logging.getLogger(__name__)
 

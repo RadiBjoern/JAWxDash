@@ -5,9 +5,9 @@ import os
 import io
 import zipfile
 
-from utils.readers import JAWFile
-from utils.edge_exclusion import create_masked_file
-import ids
+from src.utils.readers import JAWFile
+from src.utils.edge_exclusion import create_masked_file
+from src import ids
 
 
 logger = logging.getLogger(__name__)

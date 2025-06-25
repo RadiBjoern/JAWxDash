@@ -2,7 +2,7 @@ from dash import callback, Output, Input, State
 import logging
 
 
-import ids
+from src import ids
 
 logger = logging.getLogger(__name__)
 

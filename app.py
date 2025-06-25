@@ -3,18 +3,18 @@ import dash_bootstrap_components as dbc
 
 
 # Local import
-import ids
-from logger_config import setup_logging
-from layouts import edge_exclusion_layout, filemanager_layout, graph_layout, outline_layout, spot_layout, mappattern_layout, stat_table_layout, stage_layout
+from src import ids
+from src.logger_config import setup_logging
+from src.layouts import edge_exclusion_layout, filemanager_layout, graph_layout, outline_layout, spot_layout, mappattern_layout, stat_table_layout, stage_layout
 
 
-from templates.settings_template import DEFAULT_SETTINGS
+from src.templates.settings_template import DEFAULT_SETTINGS
 
 
 setup_logging()  # initiate logging module
 
-app = Dash(__name__, requests_pathname_prefix='/JxD/', external_stylesheets=[dbc.themes.BOOTSTRAP])
-
+app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+server = app.server
 
 
 app.layout = dbc.Container([
@@ -64,12 +64,12 @@ app.layout = dbc.Container([
 
 
 # Register callbacks
-import callbacks.edge_exclusion_callbacks
-import callbacks.filemanager_callbacks
-import callbacks.graph_callbacks
-import callbacks.settings_callback
-import callbacks.stat_table_callback
-import callbacks.store_callbacks
+import src.callbacks.edge_exclusion_callbacks
+import src.callbacks.filemanager_callbacks
+import src.callbacks.graph_callbacks
+import src.callbacks.settings_callback
+import src.callbacks.stat_table_callback
+import src.callbacks.store_callbacks
 
 server = app.server
 

@@ -3,9 +3,9 @@ import plotly.graph_objs as go
 import dash_bootstrap_components as dbc
 
 
-import ids
+from src import ids
 
-from templates.graph_template import FIGURE_LAYOUT
+from src.templates.graph_template import FIGURE_LAYOUT
 
 
 # Base template for the figure

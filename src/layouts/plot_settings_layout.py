@@ -2,7 +2,7 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 import logging
 
-import ids
+from src import ids
 
 
 logger = logging.getLogger(__name__)

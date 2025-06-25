@@ -1,7 +1,7 @@
 from dash import callback, Output, Input
 
 
-import ids
+from src import ids
 
 
 @callback(

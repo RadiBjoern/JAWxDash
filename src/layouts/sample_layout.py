@@ -2,8 +2,8 @@ from dash import dcc, html
 import dash_bootstrap_components as dbc
 
 
-import ids
-from utils.sample_outlines import sample_outlines
+from src import ids
+from src.utils.sample_outlines import sample_outlines
 
 
 row_info = [

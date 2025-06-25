@@ -2,8 +2,8 @@ import numpy as np
 from copy import copy
 import logging
 
-from utils.readers import JAWFile
-from utils.utilities import rotate, translate
+from src.utils.readers import JAWFile
+from src.utils.utilities import rotate, translate
 
 
 logger = logging.getLogger(__name__)

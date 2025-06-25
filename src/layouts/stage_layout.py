@@ -1,7 +1,7 @@
 from dash import dcc, html
 import dash_bootstrap_components as dbc
 
-import ids
+from src import ids
 
 
 stage_layout = dbc.Card([

@@ -1,7 +1,7 @@
 import numpy as np
 
 
-from utils.utilities import rotate, translate
+from src.utils.utilities import rotate, translate
 
 INCH2MM = 25.4
 INCH2CM = 2.54

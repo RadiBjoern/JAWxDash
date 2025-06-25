@@ -4,9 +4,9 @@ import logging
 import numpy as np
 import pandas as pd
 
-import ids
-from utils.readers import JAWFile
-from utils.edge_exclusion import create_masked_file
+from src import ids
+from src.utils.readers import JAWFile
+from src.utils.edge_exclusion import create_masked_file
 
 
 logger = logging.getLogger(__name__)

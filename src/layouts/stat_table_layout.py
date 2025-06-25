@@ -1,7 +1,7 @@
 from dash import html
 import logging
 
-import ids
+from src import ids
 
 logger = logging.getLogger(__name__)
 

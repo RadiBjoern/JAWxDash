@@ -2,7 +2,7 @@ from dash import html, dcc
 import dash_bootstrap_components as dbc
 
 
-import ids
+from src import ids
 
 filemanager_layout = dbc.Card([
     dbc.CardHeader("File Manager"),

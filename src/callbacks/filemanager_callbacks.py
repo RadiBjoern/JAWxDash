@@ -2,8 +2,8 @@
 from dash import html, callback, Output, Input, State, ctx
 
 # Local import
-import ids
-from utils.readers import parse_contents
+from src import ids
+from src.utils.readers import parse_contents
 
 
 @callback(
