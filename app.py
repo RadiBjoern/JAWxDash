@@ -13,7 +13,7 @@ from src.templates.settings_template import DEFAULT_SETTINGS
 
 setup_logging()  # initiate logging module
 
-app = Dash(__name__, external_stylesheets=[dbc.themes.BOOTSTRAP])
+app = Dash(__name__, requests_pathname_prefix="/ellipsometer/", external_stylesheets=[dbc.themes.BOOTSTRAP])
 server = app.server
 
 
