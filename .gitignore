@@ -19,6 +19,8 @@ lib64/
 parts/
 sdist/
 var/
+tmp/uploads/
+ellipsometer/uploads/
 wheels/
 share/python-wheels/
 *.egg-info/

@@ -263,8 +263,6 @@ def save_upload(content, filename):
     _, ext = os.path.splitext(filename)
     unique_name = "%s_%s" % (uuid.uuid4().hex, filename)
 
-    print(os.getcwd())
-
     file_path = os.path.join(UPLOAD_DIRECTORY, unique_name)
 
     with open(file_path, "wb") as f:

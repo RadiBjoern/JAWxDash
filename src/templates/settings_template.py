@@ -1,6 +1,10 @@
 import plotly.express as px
+import os
 
-UPLOAD_DIRECTORY = r".\tmp\uploads"
+
+UPLOAD_DIRECTORY = os.path.join(os.getcwd(), "ellipsometer", "uploads")
+os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
+
 
 DEFAULT_SETTINGS = dict(
     # Spot settings
