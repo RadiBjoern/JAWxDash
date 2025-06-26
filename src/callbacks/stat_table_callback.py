@@ -23,7 +23,7 @@ def update_stat_table(selected_file, settings, stored_files):
     if not selected_file:
         return None
     
-    file = JAWFile.from_dict(stored_files[selected_file])
+    file = JAWFile.from_csv(stored_files[selected_file])
 
     if settings["ee_state"]:
         file = create_masked_file(file, settings)

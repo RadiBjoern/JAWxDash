@@ -3,7 +3,7 @@ from dash import html, callback, Output, Input, State, ctx
 
 # Local import
 from src import ids
-from src.utils.readers import parse_contents
+from src.utils.readers import parse_contents, save_upload
 
 
 @callback(
@@ -14,23 +14,23 @@ from src.utils.readers import parse_contents
     State(ids.Store.UPLOADED_FILES, 'data'),
     prevent_initial_call=True,
 )
-def update_uploaded_files(contents, filename:str, current_data:dict):
+def update_uploaded_files(contents, filenames:str, stored_files:dict):
     
     # check if the 'contents' is NOT none
-    if contents != None:
+    if not contents:
+        return stored_files
         
-        # iterate over the contents and filename pairs
-        for content, file in zip(contents, filename):
+    # iterate over the contents and filename pairs
+    for content, filename in zip(contents, filenames):
 
-            # check if the file is already loaded
-            if file not in current_data:
-                data = parse_contents(content, file)
+        # check if the file is already loaded
+        if filename not in stored_files:
+            path = save_upload(content, filename)
 
-                # check if 'data' is NOT none
-                if data:
-                    current_data[file] = data.to_dict()
-        
-        return current_data, html.Div("Uploaded: " + ', '.join([name for name in filename]))
+            stored_files[filename] = path
+    
+
+    return stored_files, html.Div("Uploaded: " + ', '.join([name for name in filenames]))
 
 
 

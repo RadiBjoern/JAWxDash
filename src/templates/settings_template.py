@@ -1,5 +1,6 @@
 import plotly.express as px
 
+UPLOAD_DIRECTORY = r".\tmp\uploads"
 
 DEFAULT_SETTINGS = dict(
     # Spot settings

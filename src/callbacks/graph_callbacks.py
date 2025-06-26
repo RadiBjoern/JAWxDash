@@ -72,7 +72,7 @@ def update_figure(
     
     
     # A sample has been selected, now let's unpack
-    file = JAWFile.from_dict(uploaded_files[selected_file])
+    file = JAWFile.from_csv(uploaded_files[selected_file])
     
 
 
