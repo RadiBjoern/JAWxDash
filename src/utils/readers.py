@@ -140,7 +140,7 @@ def read_jaw_txt(file:bytes):
     
 
     # Reading header
-    header = lines[:i]
+    header = lines[:data_line]
 
 
     # Reading the file with Pandas

@@ -24,17 +24,15 @@ server = app.server
 
 app.layout = dbc.Container([
     # Initiating 'Store' for holding uploaded files i.e. *.txt and *.csv
-        dcc.Store(id=ids.Store.UPLOADED_FILES, data={}, storage_type="session"),
-        dcc.Store(id=ids.Store.DEFAULT_SETTINGS, data=DEFAULT_SETTINGS),
-        dcc.Store(id=ids.Store.SETTINGS, data={}),
+    dcc.Store(id=ids.Store.UPLOADED_FILES, data={}, storage_type="session"),
+    dcc.Store(id=ids.Store.DEFAULT_SETTINGS, data=DEFAULT_SETTINGS),
+    dcc.Store(id=ids.Store.SETTINGS, data={}),
 
-        dbc.Row([
-
+    dbc.Row([
         # Left column
         dbc.Col([
             filemanager_layout,
         ], width=3),
-
 
         # Middle column
         dbc.Col([
@@ -45,8 +43,7 @@ app.layout = dbc.Container([
                 ])
             ], className="mt-1"),
         ], width=7),
-
-
+        
         # Right column
         dbc.Col([
             spot_layout,
