@@ -4,6 +4,8 @@ import plotly.graph_objs as go
 import plotly.express as px
 import numpy as np
 import logging
+import os 
+
 
 # Local imports
 from src import ids
@@ -131,9 +133,12 @@ def update_figure(
 
     # Add stage outline
     if settings["stage_state"]:
-        dxf_filepath = r"src\assets\JAW stage outline.dxf"
+        STATIC_DIR = os.path.join(os.path.dirname(__file__), "src", "assets")
+        DXF_FILEPATH = os.path.join(STATIC_DIR, "JAW stage outline.dxf")
+
+        #dxf_filepath = r"src\assets\JAW stage outline.dxf"
         
-        stage_outline = dxf_to_path(dxf_filepath)
+        stage_outline = dxf_to_path(DXF_FILEPATH)
         shapes.extend(stage_outline)
     
     # Add edge exclusion outline if selected
