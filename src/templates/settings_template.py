@@ -5,7 +5,7 @@ import os
 
 #UPLOAD_DIRECTORY = os.path.join(os.getcwd(), "tmp", "uploads")
 UPLOAD_DIRECTORY = "/app/uploads"
-
+ASSETS_DIRECTORY = "/assets"
 os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 
 
