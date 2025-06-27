@@ -26,7 +26,7 @@ def update_excluded_points_text(selected_file:str, settings:dict, stored_files:d
         return ""
     
     # Loading into JAWFile object
-    file = JAWFile.from_dict(stored_files[selected_file])
+    file = JAWFile.from_csv(stored_files[selected_file])
     out_file = create_masked_file(file, settings)
 
 
