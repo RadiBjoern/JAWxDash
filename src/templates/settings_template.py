@@ -41,5 +41,5 @@ DEFAULT_SETTINGS = dict(
     ee_batch_processing=False,
 
     # Stage outline
-    stage_state=True,
+    stage_state=False,
 )

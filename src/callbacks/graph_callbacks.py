@@ -133,12 +133,13 @@ def update_figure(
 
     # Add stage outline
     if settings["stage_state"]:
-        STATIC_DIR = os.path.join(os.path.dirname(__file__), "src", "assets")
-        DXF_FILEPATH = os.path.join(STATIC_DIR, "JAW stage outline.dxf")
-
+        PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+        ASSETS_DIR = os.path.join(PROJECT_ROOT, "src", "assets")
+        DXF_FILE = os.path.join(ASSETS_DIR, "jaw_stage_outline.dxf")
+        
         #dxf_filepath = r"src\assets\JAW stage outline.dxf"
         
-        stage_outline = dxf_to_path(DXF_FILEPATH)
+        stage_outline = dxf_to_path(DXF_FILE)
         shapes.extend(stage_outline)
     
     # Add edge exclusion outline if selected
