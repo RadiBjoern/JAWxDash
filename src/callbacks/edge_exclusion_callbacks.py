@@ -48,7 +48,7 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
     if not selected_file or not settings["ee_state"]:
         return None
 
-
+    print(stored_files)
 
     if settings["batch_processing"]:
         """
@@ -65,7 +65,7 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
 
 
             # Loading into JAWFile object
-            file = JAWFile.from_dict(stored_files[selected_file])
+            file = JAWFile.from_csv(stored_files[selected_file])
             out_file = create_masked_file(file, settings)
 
             out_file.data.drop(["x", "y"], axis="columns")
@@ -94,7 +94,7 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
     
 
         # Loading into JAWFile object
-        file = JAWFile.from_dict(stored_files[selected_file])
+        file = JAWFile.from_csv(stored_files[selected_file])
         out_file = create_masked_file(file, settings)
 
         out_file.data.drop(["x", "y"], axis="columns")

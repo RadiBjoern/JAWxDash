@@ -1,5 +1,5 @@
 # Library imports
-from dash import callback, Output, Input, State
+from dash import callback, Output, Input, State, no_update
 import plotly.graph_objs as go
 import plotly.express as px
 import numpy as np
@@ -35,11 +35,7 @@ r = 1*2.54
         State(ids.Store.UPLOADED_FILES, "data"),
         Input(ids.Store.SETTINGS, "data")
 )
-def update_figure(
-    selected_file:str, 
-    uploaded_files:dict, 
-    settings:dict
-    ) -> go.Figure:
+def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
     """
     Updates the figure, in accordance with:
     - Selected file
@@ -70,7 +66,7 @@ def update_figure(
 
     # If no file or z-data-value selected, return an empty figure
     if not selected_file:
-        return figure, []
+        return no_update, no_update
     
     
     # A sample has been selected, now let's unpack
