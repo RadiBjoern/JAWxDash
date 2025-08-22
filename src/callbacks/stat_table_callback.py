@@ -47,7 +47,7 @@ def update_stat_table(selected_file, settings, stored_files):
     cv_mm[mask] = np.nan
 
     stat = pd.concat([mean, std, cv, cv_mm,minimum,maximum], axis=1).T
-    stat.insert(0, "Stats", ["Mean", "Std.", "CV [%]", "CV_max-min [%]","min.","max."])
+    stat.insert(0, "Stats", ["Avg", "min.", "max.", "Std.", "CV [%]", "CV_max-min [%]"])
 
 
     columns = [{"id": col, "name": col, "type": "numeric", "format": Format(precision=4, scheme=Scheme.fixed)} for col in stat.columns]

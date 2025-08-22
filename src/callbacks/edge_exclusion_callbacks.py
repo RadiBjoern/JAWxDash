@@ -48,8 +48,7 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
     if not selected_file or not settings["ee_state"]:
         return None
 
-    print(stored_files)
-
+    
     if settings["batch_processing"]:
         """
         Batch processing is selected and all the files in the 'file_manager' will be processed
@@ -97,14 +96,14 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
         file = JAWFile.from_csv(stored_files[selected_file])
         out_file = create_masked_file(file, settings)
 
-        out_file.data.drop(["x", "y"], axis="columns")
+        out_file.data.drop(["x", "y"], axis="columns", inplace=True)
 
         # Build the output manually
         buffer = StringIO()
 
 
         # 1. Write header
-        for line in out_file.header:
+        for line in out_file.header():
             buffer.write(line)
 
         # 2. Write data rows

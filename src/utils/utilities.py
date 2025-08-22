@@ -2,6 +2,30 @@
 import numpy as np
 
 
+def uniformity(arr:np.ndarray):
+    """
+    Calculates the uniformity of the array
+    
+    uniformity = sum((x-mean)**2)/n
+    """
+
+    mean = np.mean(arr)
+    sum_sq = np.sum((arr-mean)**2)
+    return sum_sq / len(arr)
+
+
+
+def perc_range(arr:np.ndarray):
+    """
+    Calculated the range in percentage
+    
+    perc_range = (max-min)/mean * 100
+    """
+
+    return (np.max(arr)-np.min(arr))/np.mean(arr) * 100
+
+
+
 def gen_spot(x:float, y:float, color, dia_beam:float, angle_incident:float) -> dict:
     minor = dia_beam
     major = dia_beam / np.cos(np.deg2rad(angle_incident))

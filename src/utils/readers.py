@@ -6,7 +6,7 @@ import pandas as pd
 import re
 import uuid
 
-from src.utils.utilities import rotate, translate
+from src.utils.utilities import rotate, translate, uniformity, perc_range
 from src.templates.settings_template import UPLOAD_DIRECTORY
 
 
@@ -15,33 +15,31 @@ class JAWFile:
     @classmethod
     def from_dict(cls, file:dict):
         return JAWFile(
-            header=file["header"],
             data=pd.DataFrame(data=file["data"]),
         )
     
     
     @classmethod
     def from_csv(cls, file):
-        header, data = read_jaw_file(file)
+        data = read_jaw_file(file)
 
-        return JAWFile(header, data)
+        return JAWFile(data)
     
 
     @classmethod
     def from_stream(cls, stream):
-        header, data = read_jaw_stream(stream)
+        data = read_jaw_stream(stream)
 
-        return JAWFile(header, data)
+        return JAWFile(data)
     
 
-    def __init__(self, header:str, data:pd.DataFrame):
+    def __init__(self, data:pd.DataFrame):
         """
         This class is intended to hold the data from J.A.Woollam ellipsometer
 
         The data holds a header and a data section.
         """
 
-        self.header = header
         self.data = data
 
         return None
@@ -57,7 +55,7 @@ class JAWFile:
     def content(self):
         data_list = ["\t".join(map(str, row)) + "\n" for row in self.data.itertuples(index=False)]
 
-        return "".join(self.header) + "".join(data_list)
+        return "".join(self.header()) + "".join(data_list)
     
 
     def get_z_values(self) -> list:
@@ -80,48 +78,60 @@ class JAWFile:
         return xy_rot_trans.T
     
 
-    def update_header(self) -> None:
+    def header(self) -> list[str]:
         """
-        Updates the header will update the following:
-        - Average
-        - Min
-        - Max
-        - Std. Dev.
+        Generates a header based on active data
 
-        Sets a new header 
+        Header template:
+
+        ###     Point #     Z Align     SigIng     Tilt X     Tilt Y     Hardware OK     MSE     Thickness # 1 (nm)     A     B     n of Cauchy @ 632.8 nm     Fit OK
+        Average
+        Min
+        Max
+        Std dev
+        %Range
+        %Uniformity
         """
+
 
         # Generating the state for the columns
-        average = ["%.4f" % self.data[col].mean() for col in self.data.columns if (self.data[col].dtypes == float) and (col != "Point #")]
-        minimum = ["%.4f" % self.data[col].min()  for col in self.data.columns if (self.data[col].dtypes == float) and (col != "Point #")]
-        maximum = ["%.4f" % self.data[col].max()  for col in self.data.columns if (self.data[col].dtypes == float) and (col != "Point #")]
-        std_dev = ["%.4f" % self.data[col].std()  for col in self.data.columns if (self.data[col].dtypes == float) and (col != "Point #")]
+        excluded_col = ("Point #", "x", "y")
+        average = ["%.4f" % self.data[col].mean() for col in self.data.columns if (self.data[col].dtypes == float) and (col not in excluded_col)]
+        minimum = ["%.4f" % self.data[col].min()  for col in self.data.columns if (self.data[col].dtypes == float) and (col not in excluded_col)]
+        maximum = ["%.4f" % self.data[col].max()  for col in self.data.columns if (self.data[col].dtypes == float) and (col not in excluded_col)]
+        std_dev = ["%.4f" % self.data[col].std()  for col in self.data.columns if (self.data[col].dtypes == float) and (col not in excluded_col)]
+        p_range = ["%.4f" % perc_range(self.data[col].to_numpy()) for col in self.data.columns if (self.data[col].dtypes == float) and (col not in excluded_col)]  # (max-min)/avg * 100
+        p_uni = ["%.4f" % uniformity(self.data[col].to_numpy()) for col in self.data.columns if (self.data[col].dtypes == float) and (col not in excluded_col)]  # sum((x-mean)**2)/n
 
 
-        # Removing the stat for the "Point #"
-        #average.pop(1)
-        #minimum.pop(1)
-        #maximum.pop(1)
-        #std_dev.pop(1)
-
-
+        head_1st = (
+            " ",
+            "Point #",
+            "Z Align",
+            "SigInt",
+            "Tilt X",
+            "Tilt Y",
+            "Hardware OK",
+            "MSE",
+            "Thickness # 1 (nm)",
+            "A",
+            "B",
+            "n of Cauchy @ 632.8 nm",
+            "Fit OK"
+        )
         # Generate new header
         new_header = [
-            " \t" + self.header[0].strip() + "\n",
-            "Average\t" + "\t".join(average) + "\n",
-            "Min\t" + "\t".join(minimum) + "\n",
-            "Max\t" + "\t".join(maximum) + "\n",
-            "Std. Dev.\t" + "\t".join(std_dev) + "\n",
-            self.header[5].strip() + "\n",
-            self.header[6].strip() + "\n",
+            "\t".join(head_1st) + "\n",
+            "Average\t" + "N/A\t" + "\t".join(average) + "\n",
+            "Min\t" + "N/A\t" + "\t".join(minimum) + "\n",
+            "Max\t" + "N/A\t" + "\t".join(maximum) + "\n",
+            "Std. Dev.\t" + "N/A\t" + "\t".join(std_dev) + "\n",
+            "% Range\t" + "N/A\t" + "\t".join(p_range) + "\n",
+            "% Uniformity\t" + "N/A\t" + "\t".join(p_uni) + "\n",
         ]
 
 
-        # Setting new header
-        self.header = new_header
-
-
-        return None
+        return new_header
 
 
 
@@ -149,7 +159,6 @@ def read_jaw_file(file):
             break
 
     # Reading header
-    header = lines[:data_line]
     data = pd.read_csv(file, delimiter="\t", header=0, skiprows=range(1, data_line))
 
 
@@ -174,7 +183,7 @@ def read_jaw_file(file):
     data['x'] = x
     data['y'] = y
 
-    return header, data
+    return data
 
 
 
@@ -207,10 +216,6 @@ def read_jaw_stream(stream:bytes):
             break
     
 
-    # Reading header
-    header = lines[:data_line]
-
-
     # Reading the file with Pandas
     data = pd.read_csv(io.StringIO(stream.decode("utf-8")), delimiter="\t", header=0, skiprows=range(1, data_line))
     
@@ -236,7 +241,7 @@ def read_jaw_stream(stream:bytes):
     data['x'] = x
     data['y'] = y
 
-    return header, data
+    return data
 
 
 

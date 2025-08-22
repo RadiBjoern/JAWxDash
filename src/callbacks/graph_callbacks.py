@@ -73,7 +73,6 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
     file = JAWFile.from_csv(uploaded_files[selected_file])
     
 
-
     # Setting z-data-value default if non selected
     if not settings["z_data_value"]:
         settings["z_data_value"] = sorted(file.get_z_values())[1]
@@ -94,7 +93,7 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
     # List for holding 'shapes'
     shapes = []
 
-
+    
     # Plotting trace
     figure.add_trace(go.Scatter(
         x=x_data,
