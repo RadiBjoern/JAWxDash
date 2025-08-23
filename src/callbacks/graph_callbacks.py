@@ -70,7 +70,9 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
     
     
     # A sample has been selected, now let's unpack
-    file = JAWFile.from_csv(uploaded_files[selected_file])
+    file = JAWFile.from_path_or_stream(uploaded_files[selected_file])
+
+    file.stats()
     
 
     # Setting z-data-value default if non selected

@@ -26,7 +26,7 @@ def update_excluded_points_text(selected_file:str, settings:dict, stored_files:d
         return ""
     
     # Loading into JAWFile object
-    file = JAWFile.from_csv(stored_files[selected_file])
+    file = JAWFile.from_path_or_stream(stored_files[selected_file])
     out_file = create_masked_file(file, settings)
 
 
@@ -64,7 +64,7 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
 
 
             # Loading into JAWFile object
-            file = JAWFile.from_csv(stored_files[selected_file])
+            file = JAWFile.from_path_or_stream(stored_files[selected_file])
             out_file = create_masked_file(file, settings)
 
             out_file.data.drop(["x", "y"], axis="columns")
@@ -93,7 +93,7 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
     
 
         # Loading into JAWFile object
-        file = JAWFile.from_csv(stored_files[selected_file])
+        file = JAWFile.from_path_or_stream(stored_files[selected_file])
         out_file = create_masked_file(file, settings)
 
         out_file.data.drop(["x", "y"], axis="columns", inplace=True)
@@ -104,7 +104,7 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
 
         # 1. Write header
         for line in out_file.header():
-            buffer.write(line)
+            buffer.write(line + "\n")
 
         # 2. Write data rows
         for row in out_file.data.itertuples(index=False):

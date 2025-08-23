@@ -1,10 +1,7 @@
 import ezdxf
 import numpy as np
 import plotly.graph_objects as go
-import os
 
-
-print(os.getcwd())
 
 # Load your DXF file
 doc = ezdxf.readfile("src/assets/JAW stage outline.dxf")
@@ -68,8 +65,6 @@ for entity in msp:
             'x1': end[0], 'y1': end[1],
             'line': {'color': 'rgba(0.5, 0.5, 0.5, 0.35)', "width": 1}
         })
-
-print("no. arc: %i" % n_arc)
 
 
 # Create figure

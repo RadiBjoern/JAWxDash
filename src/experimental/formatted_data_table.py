@@ -10,8 +10,7 @@ df = pd.DataFrame({
     'Price': [1234.5, 6789.01, 2345.67],
     'Discount': [0.1, 0.05, 0.2]
 })
-print(df)
-print(df.dtypes)
+
 
 app = Dash(__name__)
 

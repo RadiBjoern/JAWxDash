@@ -4,8 +4,8 @@ import numpy as np
 
 def uniformity(arr:np.ndarray):
     """
-    Calculates the uniformity of the array
-    
+    Uniformity
+
     uniformity = sum((x-mean)**2)/n
     """
 
@@ -17,12 +17,32 @@ def uniformity(arr:np.ndarray):
 
 def perc_range(arr:np.ndarray):
     """
-    Calculated the range in percentage
+    Percentile range
     
     perc_range = (max-min)/mean * 100
     """
 
     return (np.max(arr)-np.min(arr))/np.mean(arr) * 100
+
+
+def coefficient_variation(arr:np.ndarray):
+    """
+    Calculates the coefficient of variation
+    
+    CV = std/mean
+    """
+
+    return np.std(arr)/np.mean(arr)
+
+
+def cv_min_max(arr:np.ndarray):
+    """
+    Calculates the coefficient of variation min-max
+    
+    cv_mm = (max - min) / (2*mean)
+    """
+
+    return (np.max(arr)-np.min(arr)) / (2*np.mean(arr))
 
 
 
