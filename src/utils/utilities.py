@@ -1,48 +1,51 @@
 # Library imports
 import numpy as np
+import pandas as pd
 
 
-def uniformity(arr:np.ndarray):
+def uniformity(arr:pd.Series) -> float:
     """
     Uniformity
 
     uniformity = sum((x-mean)**2)/n
     """
 
-    mean = np.mean(arr)
-    sum_sq = np.sum((arr-mean)**2)
+    sum_sq = np.sum((arr-arr.mean())**2)
+
     return sum_sq / len(arr)
 
 
 
-def perc_range(arr:np.ndarray):
+def perc_range(arr:pd.Series) -> float:
     """
     Percentile range
     
     perc_range = (max-min)/mean * 100
     """
 
-    return (np.max(arr)-np.min(arr))/np.mean(arr) * 100
+    return (arr.max()-arr.min())/arr.mean() * 100
 
 
-def coefficient_variation(arr:np.ndarray):
+
+def coefficient_variation(arr:pd.Series) -> float:
     """
     Calculates the coefficient of variation
     
     CV = std/mean
     """
 
-    return np.std(arr)/np.mean(arr)
+    return arr.std()/arr.mean()
 
 
-def cv_min_max(arr:np.ndarray):
+
+def cv_min_max(arr:pd.Series) -> float:
     """
     Calculates the coefficient of variation min-max
     
     cv_mm = (max - min) / (2*mean)
     """
 
-    return (np.max(arr)-np.min(arr)) / (2*np.mean(arr))
+    return (arr.max()-arr.min()) / (2*arr.mean())
 
 
 

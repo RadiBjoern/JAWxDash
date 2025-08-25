@@ -55,32 +55,30 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
         and downloaded as a zip-file
         """
 
-        file_dict = {}
-        for selected_file in stored_files:
+        zip_buffer = io.BytesIO()
 
-            # File output name
-            root, ext = os.path.splitext(selected_file)
-            filename = root + "_masked" + ext
+        with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
+
+            for selected_file in stored_files:
+
+                # File output name
+                root, ext = os.path.splitext(selected_file)
+                filename = root + "_masked" + ext
 
 
-            # Loading into JAWFile object
-            file = JAWFile.from_path_or_stream(stored_files[selected_file])
-            out_file = create_masked_file(file, settings)
+                # Loading into JAWFile object
+                file = JAWFile.from_path_or_stream(stored_files[selected_file])
+                masked_file = create_masked_file(file, settings)
 
-            out_file.data.drop(["x", "y"], axis="columns")
-            
-            file_dict[filename] = out_file.content()
+                buffer = masked_file.to_buffer()
+
+                zf.writestr(filename, buffer.getvalue())
 
         
-        # Create in-memory zip
-        buffer = io.BytesIO()
-        with zipfile.ZipFile(buffer, "w") as zf:
-            for filename, content in file_dict.items():
-                zf.writestr(filename, content)
+        zip_buffer.seek(0)
         
-        buffer.seek(0)
-        
-        return dcc.send_bytes(buffer.getvalue(), filename="multiple_files.zip")           
+        return dict(content=zip_buffer.getvalue(), filename="ellipsometer_download.zip", type="application/zip")
+        #return dcc.send_bytes(buffer.getvalue(), filename="multiple_files.zip")           
         
 
     else:
@@ -94,20 +92,8 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
 
         # Loading into JAWFile object
         file = JAWFile.from_path_or_stream(stored_files[selected_file])
+        masked_file = create_masked_file(file, settings)
         
-        
-        out_file = create_masked_file(file, settings)
-        #out_file.data.drop(["x", "y"], axis="columns", inplace=True)
-        ## Build the output manually
-        #buffer = StringIO()
-        ## 1. Write header
-        #for line in out_file.header():
-        #    buffer.write(line + "\n")
-        ## 2. Write data rows
-        #for row in out_file.data.itertuples(index=False):
-        #    buffer.write("\t".join(map(str, row)) + "\n")
-        #buffer.seek(0)
-
-        buffer = out_file.to_buffer()
+        buffer = masked_file.to_buffer()
         
         return dcc.send_string(buffer.getvalue(), filename=filename)

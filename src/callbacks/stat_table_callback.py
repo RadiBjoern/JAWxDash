@@ -1,9 +1,9 @@
 from dash import callback, dash_table, Output, Input, State
 from dash.dash_table.Format import Format, Scheme
 import logging
-import numpy as np
-import pandas as pd
 
+
+# Local imports
 from src import ids
 from src.utils.readers import JAWFile
 from src.utils.edge_exclusion import create_masked_file
@@ -30,7 +30,7 @@ def update_stat_table(selected_file, settings, stored_files):
 
 
     stat = file.stats()
-    stat.pop("Point #")
+    
 
     columns = [{"id": col, "name": col, "type": "numeric", "format": Format(precision=4, scheme=Scheme.fixed)} for col in stat.columns]
     

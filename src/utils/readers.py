@@ -39,20 +39,6 @@ class JAWFile:
     
 
 
-    def to_dict(self):
-        return dict(
-            data=self.data.to_dict(orient="list"),
-        )
-    
-
-
-    def content(self):
-        data_list = ["\t".join(map(str, row)) + "\n" for row in self.data.itertuples(index=False)]
-
-        return "".join(self.header()) + "".join(data_list)
-    
-
-
     def get_z_values(self) -> list:
         return list(self.data.columns.values)
     
@@ -81,18 +67,34 @@ class JAWFile:
 
         Excluded are column 'x' and 'y', and 'Point #' defaults to N/A
         
-        ###     Point #     Z Align     SigIng     Tilt X     Tilt Y     Hardware OK     MSE     Thickness # 1 (nm)     A     B     n of Cauchy @ 632.8 nm     Fit OK
-        Average
-        Min
-        Max
-        Std dev
-        %Range
-        %Uniformity
+        Columns:
+        - Point #
+        - Z Align
+        - SigIng
+        - Tilt X
+        - Tilt Y
+        - Hardware OK
+        - MSE
+        - Thickness # 1 (nm)
+        - A
+        - B
+        - n of Cauchy @ 632.8 nm
+        - Fit OK
+
+        Index:
+        - Average
+        - Min
+        - Max
+        - Std dev
+        - %Range
+        - %Uniformity
+        - CV
+        - CV min-max
         """
         data = self.data
 
         kwargs = dict(
-            axis="index",
+            axis=0,
             skipna=True,
             numeric_only=True,
         )
@@ -101,10 +103,10 @@ class JAWFile:
         minimum = data.min(**kwargs)
         maximum = data.max(**kwargs)
         std = data.std(**kwargs)
-        p_range = data.apply(perc_range, axis="index")
-        p_unif = data.apply(uniformity, axis="index")
-        cv = data.apply(coefficient_variation, axis="index")
-        cv_mm = data.apply(cv_min_max, axis="index")
+        p_range = data.apply(perc_range, axis=0)
+        p_unif = data.apply(uniformity, axis=0)
+        cv = data.apply(coefficient_variation, axis=0)
+        cv_mm = data.apply(cv_min_max, axis=0)
         
         col_names = {
             0: "Average", 
@@ -124,58 +126,28 @@ class JAWFile:
     
 
 
-    def header(self) -> list[str]:
-        """
-        Generates a header which include statistics
-
-        Header template:
-
-        Stats     Point #     Z Align     SigIng     Tilt X     Tilt Y     Hardware OK     MSE     Thickness # 1 (nm)     A     B     n of Cauchy @ 632.8 nm     Fit OK
-        Average
-        Min
-        Max
-        Std dev
-        %Range
-        %Uniformity
-        """
-
-        stat = self.stats()
-        stat.drop(index=["CV","CV min-max"])
-
-
-        output = [re.sub(r"\s{2,}", "\t", los) for los in stat.to_string(float_format=lambda x: "%.4f" % x).split("\n")]
-        output[0] = " " + output[0]
-
-        return output
-    
-
-
-
     def to_buffer(self) -> io.StringIO:
-        """
-        Creates an io.StringIO object representation of the *.txt file
-        """
-
-        header = self.header()  # retriving header
-        data = self.data  # loading tmp data
-        xy_col = data.apply(lambda row: "(%.3f,%.3f)" % (row.x, row.y), axis=1)  # Gen string repr of x,y-coordinates
-        data.insert(0, "xy_str", xy_col)  # inserts str(x,y) column
-        data.drop(columns=["x", "y"], inplace=True)  # drops x and y column
-
-
-        # Initiates buffer object
+        
         buffer = io.StringIO()
 
+
         # Write header to buffer
-        for line in header:
-            buffer.write(line + "\n")
-        
+        stats = self.stats()
+        stats.drop(labels=["x", "y"], axis=1, inplace=True)
+        stats.drop(labels=["CV", "CV min-max"], axis=0, inplace=True)
+        stats.to_csv(buffer, sep="\t", float_format="%.4f", header=True, index=True)
+
+
+        # Write data to buffer
+        data = self.data
+        xy_col = data.apply(lambda row: "(%.4f,%.4f)" % (row.x, row.y), axis=1)
+        data.insert(0, "xy", xy_col)
+        data.drop(labels=["x", "y"], axis=1, inplace=True)  # drops 'x' and 'y' column
         data.to_csv(buffer, sep="\t", header=False, index=False)
 
-        buffer.seek(0)
 
         return buffer
-
+    
 
 
 def read_jaw_data(filepath_or_stream:str|bytes) -> pd.DataFrame:
@@ -264,148 +236,19 @@ def read_jaw_data(filepath_or_stream:str|bytes) -> pd.DataFrame:
 
 
 
-#def read_jaw_file(file:str) -> pd.DataFrame:
-#    """
-#    Read a *.txt file from the JAW instrument
+#def parse_contents(contents, filename) -> JAWFile|None:
+#    content_type, content_string = contents.split(',')
+#    file = base64.b64decode(content_string)
 #
-#    Dumps the first column containing the (x, y) string coordinates and replaces it with two column 'x'<float> and 'y'<float>
+#    # Assume the user uploaded a CSV file
+#    if '.txt' in filename:
+#        data = read_jaw_data(file)
 #
-#    Available columns:
-#    - Point #	
-#    - Z Align	
-#    - SigInt	
-#    - Tilt X	
-#    - Tilt Y	
-#    - Hardware OK	
-#    - MSE	
-#    - Thickness # 1 (nm)	
-#    - A	
-#    - B	
-#    - n of Cauchy @ 632.8 nm	
-#    - Fit OK
-#
-#    returns: pd.DataFrame
-#    """
-#    with open(file, "r") as f:
-#        lines = f.readlines()
+#        return JAWFile(data)
 #    
-#    # Find lines with the data, by matching (decimal,decimal)
-#
-#    # Pattern explanation
-#    # \( and \): Match the parentheses that enclose the two numbers.
-#    # [+-]?: Matches an optional + or - sign before each number.
-#    # \d+\.\d+: Matches a decimal number (one or more digits before and after the decimal point).
-#    # ,: Matches the comma separating the two numbers.
-#    pattern = r"\([+-]?\d+(\.\d+)?,[+-]?\d+(\.\d+)?\)"
-#
-#    data_line = False
-#    for i, line in enumerate(lines):
-#        matches = re.findall(pattern, line)
-#        if matches:
-#            data_line = i
-#            break
-#
-#    # Reading header
-#    data = pd.read_csv(file, delimiter="\t", header=0, skiprows=range(1, data_line))
-#
-#
-#    # Extract x and y
-#    pattern = r"[-+]?(?:\d*\.*\d+)"
-#
-#    x, y = [], []
-#    for i, xy in enumerate(data.iloc[:, 0].values.tolist()):
-#        matches = re.findall(pattern, xy)
-#
-#        if len(matches) == 2:
-#            x.append(float(matches[0]))
-#            y.append(float(matches[1]))
-#        
-#        else:
-#            x.append(np.nan)
-#            y.append(np.nan)
-#
-#            print(f"Bad pattern! row: {i}, string: {xy}, match: {matches}")
-#
-#    # Adding x and y to DataFrame
-#    data['x'] = x
-#    data['y'] = y
-#    data.drop(data.columns[0], axis=1)
-#
-#    return data
-#
-#
-#
-#def read_jaw_stream(stream:bytes):
-#    """
-#    Read a *.txt io-stream from the JAW instruments
-#    
-#    Returns: Header[list], Data[Pandas.DataFrame]
-#    """
-#
-#    # Opening file and reading into list
-#    buffer = io.StringIO(stream.decode("utf-8"))
-#    lines = buffer.readlines()
-#    
-#
-#    # Find lines with the data, by matching (decimal,decimal)
-#
-#    # Pattern explanation
-#    # \( and \): Match the parentheses that enclose the two numbers.
-#    # [+-]?: Matches an optional + or - sign before each number.
-#    # \d+\.\d+: Matches a decimal number (one or more digits before and after the decimal point).
-#    # ,: Matches the comma separating the two numbers.
-#    pattern = r"\([+-]?\d+(\.\d+)?,[+-]?\d+(\.\d+)?\)"
-#
-#    data_line = False
-#    for i, line in enumerate(lines):
-#        matches = re.findall(pattern, line)
-#        if matches:
-#            data_line = i
-#            break
-#    
-#
-#    # Reading the file with Pandas
-#    data = pd.read_csv(io.StringIO(stream.decode("utf-8")), delimiter="\t", header=0, skiprows=range(1, data_line))
-#    
-#    
-#    # Extract x and y
-#    pattern = r"[-+]?(?:\d*\.*\d+)"
-#
-#    x, y = [], []
-#    for i, xy in enumerate(data.iloc[:, 0].values.tolist()):
-#        matches = re.findall(pattern, xy)
-#
-#        if len(matches) == 2:
-#            x.append(float(matches[0]))
-#            y.append(float(matches[1]))
-#        
-#        else:
-#            x.append(np.nan)
-#            y.append(np.nan)
-#
-#            print(f"Bad pattern! row: {i}, string: {xy}, match: {matches}")
-#
-#    # Adding x and y to DataFrame
-#    data['x'] = x
-#    data['y'] = y
-#
-#    return data
-
-
-
-def parse_contents(contents, filename) -> JAWFile|None:
-    content_type, content_string = contents.split(',')
-    file = base64.b64decode(content_string)
-
-    # Assume the user uploaded a CSV file
-    if '.txt' in filename:
-        data = read_jaw_data(file)
-
-        return JAWFile(data)
-    
-    else:
-        # File type NOT supported
-        return None
+#    else:
+#        # File type NOT supported
+#        return None
     
 
 

@@ -53,10 +53,6 @@ def create_masked_file(file:JAWFile, settings:dict) -> JAWFile:
     out_file.data = file.data[mask]
 
 
-    # Check the new header
-    out_file.header()
-
-
     return out_file
 
 
