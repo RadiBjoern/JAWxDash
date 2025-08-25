@@ -29,13 +29,15 @@ def update_stat_table(selected_file, settings, stored_files):
         file = create_masked_file(file, settings)
 
 
-    stat = file.stats()
+    stats = file.stats()
+    stats.drop(columns=["x", "y"], inplace=True)
     
 
-    columns = [{"id": col, "name": col, "type": "numeric", "format": Format(precision=4, scheme=Scheme.fixed)} for col in stat.columns]
+    columns = [{"id": col, "name": col, "type": "numeric", "format": Format(precision=3, scheme=Scheme.fixed)} for col in stats.columns]
+    columns.insert(0, {"id": "stats", "name": "Stats"})
     
-    
-    data = stat.to_dict("records")
+    stats.insert(0, "stats", stats.index.to_list())
+    data = stats.to_dict("records")
 
 
     table = dash_table.DataTable(
