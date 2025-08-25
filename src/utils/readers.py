@@ -130,7 +130,7 @@ class JAWFile:
 
         Header template:
 
-        ###     Point #     Z Align     SigIng     Tilt X     Tilt Y     Hardware OK     MSE     Thickness # 1 (nm)     A     B     n of Cauchy @ 632.8 nm     Fit OK
+        Stats     Point #     Z Align     SigIng     Tilt X     Tilt Y     Hardware OK     MSE     Thickness # 1 (nm)     A     B     n of Cauchy @ 632.8 nm     Fit OK
         Average
         Min
         Max
@@ -140,14 +140,41 @@ class JAWFile:
         """
 
         stat = self.stats()
-        stat.drop(["CV","CV min-max"])
+        stat.drop(index=["CV","CV min-max"])
 
 
         output = [re.sub(r"\s{2,}", "\t", los) for los in stat.to_string(float_format=lambda x: "%.4f" % x).split("\n")]
-
         output[0] = " " + output[0]
 
         return output
+    
+
+
+
+    def to_buffer(self) -> io.StringIO:
+        """
+        Creates an io.StringIO object representation of the *.txt file
+        """
+
+        header = self.header()  # retriving header
+        data = self.data  # loading tmp data
+        xy_col = data.apply(lambda row: "(%.3f,%.3f)" % (row.x, row.y), axis=1)  # Gen string repr of x,y-coordinates
+        data.insert(0, "xy_str", xy_col)  # inserts str(x,y) column
+        data.drop(columns=["x", "y"], inplace=True)  # drops x and y column
+
+
+        # Initiates buffer object
+        buffer = io.StringIO()
+
+        # Write header to buffer
+        for line in header:
+            buffer.write(line + "\n")
+        
+        data.to_csv(buffer, sep="\t", header=False, index=False)
+
+        buffer.seek(0)
+
+        return buffer
 
 
 
