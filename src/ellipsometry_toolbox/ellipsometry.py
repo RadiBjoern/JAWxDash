@@ -91,8 +91,8 @@ class Ellipsometry:
         - 50%
         - 75%
         - Max
-        - %Range
-        - %Uniformity
+        - % Range
+        - % Uniformity
         - CV
         - CV min-max
         """

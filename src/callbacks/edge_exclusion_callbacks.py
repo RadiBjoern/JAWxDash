@@ -1,7 +1,8 @@
 from dash import callback, dcc, Input, Output, State
+import io
 import logging
 import os
-import io
+import pandas as pd
 import zipfile
 
 
@@ -60,35 +61,68 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
 
         with zipfile.ZipFile(zip_buffer, "w", zipfile.ZIP_DEFLATED) as zf:
 
+            file_names = []
+            n_points = []
+            thickness_avg = []
+            thickness_std = []
+            mse_avg = []
+            mse_std = []
+            sigint_avg = []
+            sigint_std = []
             for selected_file in stored_files:
-
                 # File output name
                 root, ext = os.path.splitext(selected_file)
-                filename = root + "_masked" + ext
+                file_name = root + "_masked" + ext
 
 
                 # Loading into JAWFile object
                 file = Ellipsometry.from_path_or_stream(stored_files[selected_file])
                 masked_file = create_masked_file(file, settings)
 
+                file_names.append(file_name)
+                n_points.append(len(masked_file.data.index))
+                thickness_avg.append(masked_file.data["Thickness # 1 (nm)"].mean())
+                thickness_std.append(masked_file.data["Thickness # 1 (nm)"].std())
+                mse_avg.append(masked_file.data["MSE"].mean())
+                mse_std.append(masked_file.data["MSE"].std())
+                sigint_avg.append(masked_file.data["SigInt"].mean())
+                sigint_std.append(masked_file.data["SigInt"].std())
+
+
                 buffer = masked_file.to_buffer()
+                zf.writestr(file_name, buffer.getvalue())
+            
+            
+            stats = pd.DataFrame(data={
+                "File Name": file_names,
+                "# Points": n_points,
+                "Avg. Thickness": thickness_avg,
+                "Std. Thickness": thickness_std,
+                "Avg. MSE": mse_avg,
+                "Std. MSE": mse_std,
+                "Avg. SigInt": sigint_avg,
+                "Std. SigInt": sigint_std
+            })
 
-                zf.writestr(filename, buffer.getvalue())
+            buffer = io.StringIO()
+            stats.to_csv(buffer, sep="\t", float_format="%.4f", header=True, index=False)
+            zf.writestr("ellipsometer_summary.txt", buffer.getvalue())
 
-        
         zip_buffer.seek(0)
         
-        return dict(content=zip_buffer.getvalue(), filename="ellipsometer_download.zip", type="application/zip")
-        #return dcc.send_bytes(buffer.getvalue(), filename="multiple_files.zip")           
+
+        return dcc.send_bytes(zip_buffer.getvalue(), filename="ellipsometer_download.zip")           
         
 
     else:
         """
         Single file processing
         """
+        
+
         # File output name
         root, ext = os.path.splitext(selected_file)
-        filename = os.path.join(root, "_masked", ext)
+        file_name = os.path.join(root, "_masked", ext)
     
 
         # Loading into JAWFile object
@@ -97,4 +131,4 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
         
         buffer = masked_file.to_buffer()
         
-        return dcc.send_string(buffer.getvalue(), filename=filename)
+        return dcc.send_string(buffer.getvalue(), filename=file_name)
