@@ -2,14 +2,14 @@ import numpy as np
 from copy import copy
 import logging
 
-from src.utils.readers import JAWFile
-from src.utils.utilities import rotate, translate
+from src.ellipsometry_toolbox.ellipsometry import Ellipsometry
+from src.ellipsometry_toolbox.linear_translations import rotate, translate
 
 
 logger = logging.getLogger(__name__)
 
 
-def create_masked_file(file:JAWFile, settings:dict) -> JAWFile:
+def create_masked_file(file:Ellipsometry, settings:dict) -> Ellipsometry:
 
 
     # Getting instrumented coordinate of the measurement

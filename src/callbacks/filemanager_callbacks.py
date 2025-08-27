@@ -3,7 +3,7 @@ from dash import html, callback, Output, Input, State, ctx
 
 # Local import
 from src import ids
-from src.utils.readers import save_upload
+from src.utils.file_handler import save_upload
 
 
 @callback(

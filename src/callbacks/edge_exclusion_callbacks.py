@@ -1,12 +1,13 @@
 from dash import callback, dcc, Input, Output, State
 import logging
-from io import StringIO
 import os
 import io
 import zipfile
 
-from src.utils.readers import JAWFile
-from src.utils.edge_exclusion import create_masked_file
+
+# Local imports
+from src.ellipsometry_toolbox.ellipsometry import Ellipsometry
+from src.ellipsometry_toolbox.masking import create_masked_file
 from src import ids
 
 
@@ -26,7 +27,7 @@ def update_excluded_points_text(selected_file:str, settings:dict, stored_files:d
         return ""
     
     # Loading into JAWFile object
-    file = JAWFile.from_path_or_stream(stored_files[selected_file])
+    file = Ellipsometry.from_path_or_stream(stored_files[selected_file])
     out_file = create_masked_file(file, settings)
 
 
@@ -67,7 +68,7 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
 
 
                 # Loading into JAWFile object
-                file = JAWFile.from_path_or_stream(stored_files[selected_file])
+                file = Ellipsometry.from_path_or_stream(stored_files[selected_file])
                 masked_file = create_masked_file(file, settings)
 
                 buffer = masked_file.to_buffer()
@@ -91,7 +92,7 @@ def download_edge_exclusion(n_clicks, selected_file:str, stored_files:dict, sett
     
 
         # Loading into JAWFile object
-        file = JAWFile.from_path_or_stream(stored_files[selected_file])
+        file = Ellipsometry.from_path_or_stream(stored_files[selected_file])
         masked_file = create_masked_file(file, settings)
         
         buffer = masked_file.to_buffer()

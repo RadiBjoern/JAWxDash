@@ -5,8 +5,8 @@ import logging
 
 # Local imports
 from src import ids
-from src.utils.readers import JAWFile
-from src.utils.edge_exclusion import create_masked_file
+from src.ellipsometry_toolbox.ellipsometry import Ellipsometry
+from src.ellipsometry_toolbox.masking import create_masked_file
 
 
 logger = logging.getLogger(__name__)
@@ -23,13 +23,13 @@ def update_stat_table(selected_file, settings, stored_files):
     if not selected_file:
         return None
     
-    file = JAWFile.from_path_or_stream(stored_files[selected_file])
+    file = Ellipsometry.from_path_or_stream(stored_files[selected_file])
 
     if settings["ee_state"]:
         file = create_masked_file(file, settings)
 
 
-    stats = file.stats()
+    stats = file.statistics()
     stats.drop(columns=["x", "y"], inplace=True)
     
 

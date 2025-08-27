@@ -9,10 +9,11 @@ import os
 
 # Local imports
 from src import ids
-from src.utils.readers import JAWFile
+from src.ellipsometry_toolbox.ellipsometry import Ellipsometry
 from src.utils.sample_outlines import generate_outline
-from src.utils.edge_exclusion import radial_edge_exclusion_outline, uniform_edge_exclusion_outline
-from src.utils.utilities import gen_spot, rotate, translate
+from src.ellipsometry_toolbox.masking import radial_edge_exclusion_outline, uniform_edge_exclusion_outline
+from src.utils.utilities import gen_spot
+from src.ellipsometry_toolbox.linear_translations import rotate, translate
 from src.utils.dxf import dxf_to_path
 
 
@@ -70,12 +71,12 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
     
     
     # A sample has been selected, now let's unpack
-    file = JAWFile.from_path_or_stream(uploaded_files[selected_file])
+    file = Ellipsometry.from_path_or_stream(uploaded_files[selected_file])
 
 
     # Setting z-data-value default if non selected
     if not settings["z_data_value"]:
-        settings["z_data_value"] = sorted(file.get_z_values())[1]
+        settings["z_data_value"] = sorted(file.get_column_names())[1]
 
     
     # exposing x,y,z data directly
@@ -162,4 +163,4 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
     )
 
 
-    return figure, sorted(file.get_z_values())
+    return figure, sorted(file.get_column_names())
