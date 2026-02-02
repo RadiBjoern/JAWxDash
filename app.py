@@ -19,6 +19,8 @@ app = Dash(
     routes_pathname_prefix="/ellipsometer/",
     external_stylesheets=[dbc.themes.BOOTSTRAP]
 )
+app.server.config["MAX_CONTENT_LENGTH"] = 1024 * 1024 * 10  # Allow for large file uploads 10MB
+
 server = app.server
 
 
