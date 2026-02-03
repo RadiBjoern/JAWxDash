@@ -89,32 +89,54 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
     y_data = xy[1,:]
     
     z_data = file.data[settings["z_data_value"]].to_numpy()
+    
+    z_scale_min = settings.get("z_scale_min")
+    z_scale_max = settings.get("z_scale_max")
+    auto_min = np.nanmin(z_data)
+    auto_max = np.nanmax(z_data)
+    zmin = auto_min if z_scale_min is None else z_scale_min
+    zmax = auto_max if z_scale_max is None else z_scale_max
+    manual_scale = (z_scale_min is not None) or (z_scale_max is not None)
+
+    if not np.isfinite(zmin) or not np.isfinite(zmax) or zmin >= zmax:
+        zmin, zmax = auto_min, auto_max
+        manual_scale = False
 
 
     # List for holding 'shapes'
     shapes = []
 
     
+    marker = dict(
+        size=15 if settings["marker_type"]=="point" else 1,
+        color=z_data,  # numeric value
+        colorscale=settings["colormap_value"],  # set the colormap
+        colorbar=dict(title="value"),  # optional colorbar
+        showscale=True  # show the color scale
+    )
+
+    if manual_scale:
+        marker.update(cmin=zmin, cmax=zmax, cauto=False)
+
     # Plotting trace
     figure.add_trace(go.Scatter(
         x=x_data,
         y=y_data,
         mode='markers',
-        marker=dict(
-            size=15 if settings["marker_type"]=="point" else 1,
-            color=z_data,  # numeric value
-            colorscale=settings["colormap_value"],  # set the colormap
-            colorbar=dict(title="value"),  # optional colorbar
-            showscale=True  # show the color scale
-        ),
+        marker=marker,
+        hovertemplate="x: %{x}<br>y: %{y}<br>z: %{marker.color}<extra></extra>",
     ))
 
 
     if settings["marker_type"] == "ellipse":
         # Making colors
-        d_min, d_max = z_data.min(), z_data.max()
+        d_min, d_max = zmin, zmax
 
-        norm_zdata = (z_data-d_min) / (d_max-d_min)
+        if d_max > d_min:
+            norm_zdata = (z_data - d_min) / (d_max - d_min)
+            norm_zdata = np.clip(norm_zdata, 0, 1)
+        else:
+            norm_zdata = np.zeros_like(z_data, dtype=float)
         colors = px.colors.sample_colorscale(colorscale=settings["colormap_value"], samplepoints=norm_zdata)
         
         shapes.extend([gen_spot(x, y, c, settings["spot_size"], settings["angle_of_incident"]) for x, y, c in zip(x_data, y_data, colors)])

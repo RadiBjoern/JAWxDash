@@ -45,6 +45,60 @@ spot_layout = dbc.Card([
                 width=7,          
             )
         ]),
+        
+        # Z scale min
+        dbc.Row([
+            dbc.Col(
+                html.Label("Z-Scale Min", className="mb-0 d-block text-body text-decoration-none"),
+                width=5,
+            ),
+            dbc.Col(
+                dbc.InputGroup([
+                    dcc.Input(
+                        id=ids.Input.Z_SCALE_MIN,
+                        type="number",
+                        debounce=True,
+                        placeholder="auto",
+                        className="form-control",
+                    ),
+                    dbc.Button(
+                        "Auto",
+                        id=ids.Button.Z_SCALE_AUTO,
+                        color="secondary",
+                        size="sm",
+                        n_clicks=0,
+                    ),
+                ], className="mb-0"),
+                width=7,
+            )
+        ]),
+        
+        # Z scale max
+        dbc.Row([
+            dbc.Col(
+                html.Label("Z-Scale Max", className="mb-0 d-block text-body text-decoration-none"),
+                width=5,
+            ),
+            dbc.Col(
+                dbc.InputGroup([
+                    dcc.Input(
+                        id=ids.Input.Z_SCALE_MAX,
+                        type="number",
+                        debounce=True,
+                        placeholder="auto",
+                        className="form-control",
+                    ),
+                    dbc.Button(
+                        "2σ",
+                        id=ids.Button.Z_SCALE_2SIGMA,
+                        color="secondary",
+                        size="sm",
+                        n_clicks=0,
+                    ),
+                ], className="mb-0"),
+                width=7,
+            )
+        ]),
 
         # Marker style
         dbc.Row([

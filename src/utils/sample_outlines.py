@@ -57,12 +57,12 @@ def generate_outline(settings:dict) -> dict:
         x = settings["sample_x"] + settings["sample_radius"] * np.cos(t)
         y = settings["sample_y"] + settings["sample_radius"] * np.sin(t)
 
-        path = f"M {settings["sample_x"]},{settings["sample_y"]}"
+        path = f"M {settings['sample_x']},{settings['sample_y']}"
 
         for xc, yc in zip(x, y):
             path += f" L{xc},{yc}"
 
-        path += f" L{settings["sample_x"]},{settings["sample_y"]} Z"
+        path += f" L{settings['sample_x']},{settings['sample_y']} Z"
 
         return dict(
             type="path",

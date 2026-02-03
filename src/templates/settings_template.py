@@ -20,6 +20,8 @@ DEFAULT_SETTINGS = dict(
     colormap_options=sorted([colorscale for colorscale in px.colors.named_colorscales()]),
     sample_outline="sector",
     z_data_value="",
+    z_scale_min=None,
+    z_scale_max=None,
 
     # Mappattern offset
     mappattern_x=0.0,
