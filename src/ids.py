@@ -2,6 +2,8 @@ class Button:
     DELETE_SELECTED = "btn_delete_selected"
     CLEAR_FILE_MANAGER = "btn_clear_file_manager"
     DOWNLOAD_MASKED_DATA = "btn_apply_edge_exclusion"
+    Z_SCALE_2SIGMA = "btn_z_scale_2sigma"
+    Z_SCALE_AUTO = "btn_z_scale_auto"
 
 
 class Div:
@@ -26,6 +28,8 @@ class Graph:
 
 class Input:
     EDGE_EXCLUSION_DISTANCE = "input_edge_exclusion_distance"
+    Z_SCALE_MIN = "input_z_scale_min"
+    Z_SCALE_MAX = "input_z_scale_max"
     MAPPATTERN_X = "input_mappattern_x"
     MAPPATTERN_Y = "input_mappattern_y"
     MAPPATTERN_THETA = "input_mappattern_theta"
