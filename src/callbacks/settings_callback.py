@@ -1,8 +1,10 @@
-from dash import callback, Output, Input, State
+from dash import callback, Output, Input, State, no_update
 import logging
+import numpy as np
 
 
 from src import ids
+from src.ellipsometry_toolbox.ellipsometry import Ellipsometry
 
 logger = logging.getLogger(__name__)
 
@@ -18,6 +20,8 @@ logger = logging.getLogger(__name__)
     Output(ids.DropDown.COLORMAPS, "options"),
     Output(ids.DropDown.SAMPLE_OUTLINE, "value"),
     Output(ids.DropDown.Z_DATA, "value"),
+    Output(ids.Input.Z_SCALE_MIN, "value"),
+    Output(ids.Input.Z_SCALE_MAX, "value"),
     
     # MapPattern offsets
     Output(ids.Input.MAPPATTERN_X, "value"),
@@ -58,6 +62,8 @@ def load_default_settings(default_settings):
         default_settings["colormap_options"],
         default_settings["sample_outline"],
         default_settings["z_data_value"],
+        default_settings["z_scale_min"],
+        default_settings["z_scale_max"],
         
         # Mappattern offset
         default_settings["mappattern_x"],
@@ -95,6 +101,8 @@ def load_default_settings(default_settings):
     Input(ids.DropDown.COLORMAPS, "value"),
     Input(ids.DropDown.SAMPLE_OUTLINE, "value"),
     Input(ids.DropDown.Z_DATA, "value"),
+    Input(ids.Input.Z_SCALE_MIN, "value"),
+    Input(ids.Input.Z_SCALE_MAX, "value"),
     
     # MapPattern offset
     Input(ids.Input.MAPPATTERN_X, "value"),
@@ -123,7 +131,7 @@ def load_default_settings(default_settings):
 )
 def update_offset_setting_store(
     marker_type, angle_of_incident, spot_size,
-    colormap_value, sample_outline, z_data_value,
+    colormap_value, sample_outline, z_data_value, z_scale_min, z_scale_max,
     x_map, y_map, t_map, 
     x_sam, y_sam, t_sam, r_sam, w_sam, h_sam,
     ee_state, ee_type, ee_distance, batch_processing,
@@ -139,6 +147,8 @@ def update_offset_setting_store(
         "colormap_value", 
         "sample_outline", 
         "z_data_value",
+        "z_scale_min",
+        "z_scale_max",
         "mappattern_x",
         "mappattern_y",
         "mappattern_theta",
@@ -157,6 +167,7 @@ def update_offset_setting_store(
     values = (
         marker_type, angle_of_incident, spot_size,
         colormap_value, sample_outline, z_data_value,
+        z_scale_min, z_scale_max,
         x_map, y_map, t_map,
         x_sam, y_sam, t_sam, r_sam, w_sam, h_sam,
         ee_state, ee_type, ee_distance, batch_processing,
@@ -168,3 +179,102 @@ def update_offset_setting_store(
 
     
     return settings
+
+
+def _resolve_z_key(file, z_key):
+    if z_key:
+        return z_key if z_key in file.data else None
+
+    columns = sorted(file.get_column_names())
+    if len(columns) > 1:
+        return columns[1]
+    if columns:
+        return columns[0]
+    return None
+
+
+def _calculate_z_min_max(selected_file, uploaded_files, z_key):
+    if not selected_file or not uploaded_files or selected_file not in uploaded_files:
+        return None
+
+    file = Ellipsometry.from_path_or_stream(uploaded_files[selected_file])
+    z_key = _resolve_z_key(file, z_key)
+    if not z_key:
+        return None
+
+    z_data = file.data[z_key].to_numpy()
+    zmin = float(np.nanmin(z_data))
+    zmax = float(np.nanmax(z_data))
+
+    if not np.isfinite(zmin) or not np.isfinite(zmax):
+        return None
+
+    return zmin, zmax
+
+
+@callback(
+    Output(ids.Input.Z_SCALE_MIN, "value", allow_duplicate=True),
+    Output(ids.Input.Z_SCALE_MAX, "value", allow_duplicate=True),
+    Input(ids.Button.Z_SCALE_2SIGMA, "n_clicks"),
+    State(ids.DropDown.UPLOADED_FILES, "value"),
+    State(ids.Store.UPLOADED_FILES, "data"),
+    State(ids.Store.SETTINGS, "data"),
+    prevent_initial_call=True,
+)
+def set_z_scale_2sigma(n_clicks, selected_file, uploaded_files, settings):
+    if not n_clicks or not selected_file:
+        return no_update, no_update
+
+    if not uploaded_files or selected_file not in uploaded_files:
+        return no_update, no_update
+
+    file = Ellipsometry.from_path_or_stream(uploaded_files[selected_file])
+    z_key = settings.get("z_data_value") if settings else None
+    z_key = _resolve_z_key(file, z_key)
+    if not z_key:
+        return no_update, no_update
+
+    z_data = file.data[z_key].to_numpy()
+    median = float(np.nanmedian(z_data))
+    sigma = float(np.nanstd(z_data))
+
+    if not np.isfinite(median) or not np.isfinite(sigma):
+        return no_update, no_update
+
+    return median - 2 * sigma, median + 2 * sigma
+
+
+@callback(
+    Output(ids.Input.Z_SCALE_MIN, "value", allow_duplicate=True),
+    Output(ids.Input.Z_SCALE_MAX, "value", allow_duplicate=True),
+    Input(ids.Button.Z_SCALE_AUTO, "n_clicks"),
+    State(ids.DropDown.Z_DATA, "value"),
+    State(ids.DropDown.UPLOADED_FILES, "value"),
+    State(ids.Store.UPLOADED_FILES, "data"),
+    prevent_initial_call=True,
+)
+def set_z_scale_auto(n_clicks, z_key, selected_file, uploaded_files):
+    if not n_clicks:
+        return no_update, no_update
+
+    result = _calculate_z_min_max(selected_file, uploaded_files, z_key)
+    if not result:
+        return no_update, no_update
+
+    return result
+
+
+@callback(
+    Output(ids.Input.Z_SCALE_MIN, "value", allow_duplicate=True),
+    Output(ids.Input.Z_SCALE_MAX, "value", allow_duplicate=True),
+    Input(ids.DropDown.Z_DATA, "value"),
+    State(ids.DropDown.UPLOADED_FILES, "value"),
+    State(ids.Store.UPLOADED_FILES, "data"),
+    prevent_initial_call=True,
+)
+def update_z_scale_on_zdata_change(z_key, selected_file, uploaded_files):
+    result = _calculate_z_min_max(selected_file, uploaded_files, z_key)
+    if not result:
+        return no_update, no_update
+
+    return result
