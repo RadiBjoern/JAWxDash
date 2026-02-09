@@ -12,6 +12,7 @@ os.makedirs(UPLOAD_DIRECTORY, exist_ok=True)
 DEFAULT_SETTINGS = dict(
     # Spot settings
     marker_type="point",
+    marker_size=15,
     angle_of_incident=65,
     spot_size=0.3,
 

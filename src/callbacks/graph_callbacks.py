@@ -108,7 +108,7 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
 
     
     marker = dict(
-        size=15 if settings["marker_type"]=="point" else 1,
+        size=settings["marker_size"],
         color=z_data,  # numeric value
         colorscale=settings["colormap_value"],  # set the colormap
         colorbar=dict(title="value"),  # optional colorbar

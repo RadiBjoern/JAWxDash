@@ -14,6 +14,7 @@ logger = logging.getLogger(__name__)
     Output(ids.RadioItems.PLOT_STYLE, "value"),
     Output(ids.Slider.ANGLE_OF_INCIDENT, "value"),
     Output(ids.RadioItems.SPOT_SIZE, "value"),
+    Output(ids.Slider.MARKER_SIZE, "value"),
     
     # Sample
     Output(ids.DropDown.COLORMAPS, "value"),
@@ -56,6 +57,7 @@ def load_default_settings(default_settings):
         default_settings["marker_type"],
         default_settings["angle_of_incident"],
         default_settings["spot_size"],
+        default_settings["marker_size"],
         
         # Sample
         default_settings["colormap_value"],
@@ -96,6 +98,7 @@ def load_default_settings(default_settings):
     Input(ids.RadioItems.PLOT_STYLE, "value"),
     Input(ids.Slider.ANGLE_OF_INCIDENT, "value"),
     Input(ids.RadioItems.SPOT_SIZE, "value"),
+    Input(ids.Slider.MARKER_SIZE, "value"),
 
     # Sample
     Input(ids.DropDown.COLORMAPS, "value"),
@@ -130,7 +133,7 @@ def load_default_settings(default_settings):
     State(ids.Store.SETTINGS, "data"),
 )
 def update_offset_setting_store(
-    marker_type, angle_of_incident, spot_size,
+    marker_type, angle_of_incident, spot_size, marker_size,
     colormap_value, sample_outline, z_data_value, z_scale_min, z_scale_max,
     x_map, y_map, t_map, 
     x_sam, y_sam, t_sam, r_sam, w_sam, h_sam,
@@ -144,6 +147,7 @@ def update_offset_setting_store(
         "marker_type", 
         "angle_of_incident", 
         "spot_size",
+        "marker_size",
         "colormap_value", 
         "sample_outline", 
         "z_data_value",
@@ -165,7 +169,7 @@ def update_offset_setting_store(
         "stage_state",
     )
     values = (
-        marker_type, angle_of_incident, spot_size,
+        marker_type, angle_of_incident, spot_size, marker_size,
         colormap_value, sample_outline, z_data_value,
         z_scale_min, z_scale_max,
         x_map, y_map, t_map,

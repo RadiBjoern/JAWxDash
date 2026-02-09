@@ -53,6 +53,7 @@ class RadioItems:
 class Slider:
     ANGLE_OF_INCIDENT = "slider_angle_of_incident"
     SPOT_SIZE = "slider_spot_size"
+    MARKER_SIZE = "slider_marker_size"
 
 
 class Store:

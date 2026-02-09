@@ -1,6 +1,5 @@
 from dash import dcc
 import plotly.graph_objs as go
-import dash_bootstrap_components as dbc
 
 
 from src import ids

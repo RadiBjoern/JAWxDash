@@ -144,7 +144,7 @@ spot_layout = dbc.Card([
 
         # Angle of incident
         dbc.Row(
-            html.Label("Angle of incident (deg)", style={'textAlign': 'center',}),
+            html.Label("Angle of incident (deg)", style={'textAlign': 'center'}),
         ),
         dbc.Row(
             dcc.Slider(
@@ -155,6 +155,20 @@ spot_layout = dbc.Card([
                 marks={i: str(i) for i in range(45, 86, 5)},
                 className="mb-0",
             ),
+        ),
+
+        # Marker size
+        dbc.Row(
+            html.Label("Marker size", style={"textAlign": "center"})
+        ),
+        dbc.Row(
+            dcc.Slider(
+                id=ids.Slider.MARKER_SIZE,
+                min=1,
+                max=15,
+                step=1,
+                className="mb-0",
+            )
         )
 
     ])
