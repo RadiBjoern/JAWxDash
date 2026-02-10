@@ -89,6 +89,7 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
     y_data = xy[1,:]
     
     z_label = settings["z_data_value"]
+    colorbar_title = dict(title=dict(text=z_label, side="top"))
     z_data = file.data[z_label].to_numpy()
     
     z_scale_min = settings.get("z_scale_min")
@@ -108,28 +109,32 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
     shapes = []
 
     
+    is_ellipse = settings["marker_type"] == "ellipse"
+
     marker = dict(
         size=settings["marker_size"],
-        color=z_data,  # numeric value
+        opacity=0 if is_ellipse else 1,
+        color=z_data,
         colorscale=settings["colormap_value"],  # set the colormap
-        colorbar=dict(title=dict(text=z_label, side="top")),  # show selected Z-data name above color scale
+        colorbar=colorbar_title,  # show selected Z-data name above color scale
         showscale=True  # show the color scale
     )
-
     if manual_scale:
         marker.update(cmin=zmin, cmax=zmax, cauto=False)
 
-    # Plotting trace
-    figure.add_trace(go.Scatter(
+    primary_trace = dict(
         x=x_data,
         y=y_data,
         mode='markers',
         marker=marker,
         hovertemplate="x: %{x}<br>y: %{y}<br>z: %{marker.color}<extra></extra>",
-    ))
+        showlegend=False,
+    )
+
+    figure.add_trace(go.Scatter(**primary_trace))
 
 
-    if settings["marker_type"] == "ellipse":
+    if is_ellipse:
         # Making colors
         d_min, d_max = zmin, zmax
 
