@@ -88,7 +88,8 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
     x_data = xy[0,:]
     y_data = xy[1,:]
     
-    z_data = file.data[settings["z_data_value"]].to_numpy()
+    z_label = settings["z_data_value"]
+    z_data = file.data[z_label].to_numpy()
     
     z_scale_min = settings.get("z_scale_min")
     z_scale_max = settings.get("z_scale_max")
@@ -111,7 +112,7 @@ def update_figure(selected_file:str, uploaded_files:dict, settings:dict):
         size=settings["marker_size"],
         color=z_data,  # numeric value
         colorscale=settings["colormap_value"],  # set the colormap
-        colorbar=dict(title="value"),  # optional colorbar
+        colorbar=dict(title=dict(text=z_label, side="top")),  # show selected Z-data name above color scale
         showscale=True  # show the color scale
     )
 
